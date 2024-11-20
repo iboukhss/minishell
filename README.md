@@ -2,6 +2,8 @@
 
 ## TODO
 
+Initial goals:
+
 - Learn as much information as possible about the subject
   - Use GNU Bash as reference
   - Understand processes, signals, fork, pipe, ect.
@@ -21,6 +23,23 @@ Things to keep in mind:
 Things to avoid:
 
 - Don't get blackholed
+
+## Feature list
+
+- [ ] Display a prompt
+- [ ] Have a working history
+- [ ] Search and launch the right executable based on PATH (or absolute path)
+- [ ] Do not interpret unclosed quotes, backslashes or semicolons
+- [ ] Handle single quotes: `'example'`
+- [ ] Handle double quotes: `"example"`
+- [ ] Implement redirections: `<`, `>`, `<<`, `>>`
+- [ ] Implement pipes: `|`
+- [ ] Handle environment variables: `$FOO`
+- [ ] Handle `$?`
+- [ ] Handle `Ctrl-C`, `Ctrl-D` and `Ctrl-\`
+- [ ] Implement builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
+
+** Anything not asked is not required **
 
 ## Useful ressources
 
