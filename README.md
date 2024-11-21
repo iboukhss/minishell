@@ -89,8 +89,35 @@ Each of the shell _metacharacters_ has special meaning to the shell and must be 
 Check the sections for "Simple Commands", "Pipelines" and "List of Commands" (bonus part only).
 
 ### [Shell Expansions](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions)
+
+Mostly relevant for implementing shell variables (is it even necessary?).
+
 ### [Redirections](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections)
+
+TODO.
+
 ### [Executing Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands)
+
+Simple command expansion:
+
+When a simple command is executed, the shell performs the following expansions, assignments, and redirections, from left to right, in the following order.
+
+1. The _words_ that the parser has marked as variable assignments and redirections are saved for later processing.
+2. The _words_ that are not variable assignments or redirections are expanded. If any _words_ remain after expansion, the first _word_ is taken to be the name of the command and the remaining _words_ are the arguments.
+3. Redirections are performed.
+4. The text after the `=` in each variable assignment undergoes tilde expansion, parameter expansion, command expansion, arithmetic expansion and quote removal before being assigned to the variable.
+
+Command search and execution:
+
+After a command has been split into words, if it results in a simple command and an optional list of arguments, the following actions are taken.
+
+1. If the command name contains no slashes, the shell attempts to locate it. If there exists a shell function by that name, that function is invoked.
+2. If the name does not match a function, the shell searches for it in the list of shell builtins. If a match is found, that builtin is invoked.
+3. If the name is neither a shell function nor a builtin, and contains no slashes, Bash searches each element of $PATH for a directory containing an executable file by that name. If the search is unsuccessful, the shell searches for a function named `command_not_found_handle`. If that function exists, it is invoked in a separate execution environment with the original command and its arguments, and the function exit status becomes the exit status of that subshell. If that function is not defined, the shell prints an error message and returns an exit status of 127.
+4. If the search is successful, or if the command name contains one or more slashes, the shell executes the named program in a separate execution environment. Argument 0 is set to the name given, and the remaining arguments to the command are set to the arguments supplied, if any.
+5. If this execution fails because the file is not in executable format, and the file is not a directory, it is assumed to be a shell script and the shell executes it.
+6. If the command was not begun asynchronously, the shell waits for the command to complete and collects its exit status.
+
 ### [Shell Builtin Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Builtin-Commands)
 ### [Shell Variables](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Variables)
 ### [Using History Facilities](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Using-History-Interactively)
