@@ -39,17 +39,41 @@ Things to avoid:
 - [ ] Handle `Ctrl-C`, `Ctrl-D` and `Ctrl-\`
 - [ ] Implement builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
 
-** Anything not asked is not required **
+**Anything not asked is not required**
 
 ## Useful ressources
 
 - GNU Bash documentation: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html
+- GNU Bash source repository: https://git.savannah.gnu.org/cgit/bash.git/tree/
 - UNIX processes playlist: https://www.youtube.com/playlist?list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY
 - xv6 shell walkthrough: https://www.youtube.com/watch?v=ubt-UjcQUYg
 
-## Relevant sections from Bash manual for minishell
+## Relevant sections of Bash manual for minishell
+
+Definitions:
+
+- **control operator:** A token that performs a control function. It is a <newline> or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(`, or `)`.
+
+- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a <space>, <tab>, <newline> or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<`, or `>`.
+
+- **operator:** A __control operator__ or a __redirection operator__. Operators contain at least one unquoted __metacharacter__.
+
+- **token:** A sequence of characters considered a single unit by the shell. It is either a __word__ or an __operator__.
+
+- **word:** A sequence of characters treated as an unit by the shell. Words may not include unquoted __metacharacters__.
 
 ### [Shell Syntax](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Syntax)
+
+The shell operation goes as follows:
+
+1. Read the input from a file, a string supplied as an argument with `-c` or from the user's terminal.
+2. Break the input into __words__ and __operators__, obeying quoting rules. These __tokens__ are separated by __metacharacters__.
+3. Parse the __tokens__ into simple and compound commands.
+4. Perform the various shell expansions, breaking the expanded __tokens__ into lists of filenames, commands and arguments.
+5. Perform any necessary redirections and remove the redirection __operators__ and their operands from the argument list.
+6. Execute the command.
+7. Optionally wait for the command to complete and collect its exit status.
+
 ### [Shell Expansions](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions)
 ### [Redirections](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections)
 ### [Executing Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands)
