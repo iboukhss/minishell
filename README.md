@@ -74,6 +74,20 @@ The shell operation goes as follows:
 6. Execute the command.
 7. Optionally wait for the command to complete and collect its exit status.
 
+Quoting:
+
+Quoting is used to remove the special meaning of sertain characters or _words_ to the shell. Quoting can be used to disable special treatment for special characters, to prevent reserved words from being recognized as such, and to prevent parameter expansion.
+
+Each of the shell _metacharacters_ has special meaning to the shell and must be quoted if it is to represent itself.
+
+- **Single quotes:** Enclosing characters in single quotes preserves the literal value of each character within the quotes. A single quote may not occur between single quotes, even when preceded by a backslash.
+
+- **Double quotes:** Enclosing characters in double quotes preserves the literal value of all characters within the quotes, with the exception of `$`, `````, `\` and, when history is enabled `!`.
+
+### [Shell Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Commands)
+
+Check the sections for "Simple Commands", "Pipelines" and "List of Commands" (bonus part only).
+
 ### [Shell Expansions](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions)
 ### [Redirections](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections)
 ### [Executing Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands)
