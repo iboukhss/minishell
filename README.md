@@ -82,7 +82,7 @@ Each of the shell _metacharacters_ has special meaning to the shell and must be 
 
 - **Single quotes:** Enclosing characters in single quotes preserves the literal value of each character within the quotes. A single quote may not occur between single quotes, even when preceded by a backslash.
 
-- **Double quotes:** Enclosing characters in double quotes preserves the literal value of all characters within the quotes, with the exception of `$`, `````, `\` and, when history is enabled `!`.
+- **Double quotes:** Enclosing characters in double quotes preserves the literal value of all characters within the quotes, with the exception of `$`, `` ` ``, `\` and, when history is enabled `!`.
 
 ### [Shell Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Commands)
 
