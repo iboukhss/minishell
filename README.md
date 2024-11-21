@@ -52,25 +52,25 @@ Things to avoid:
 
 Definitions:
 
-- **control operator:** A token that performs a control function. It is a <newline> or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(`, or `)`.
+- **control operator:** A _token_ that performs a control function. It is a <newline> or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(` or `)`.
 
-- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a <space>, <tab>, <newline> or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<`, or `>`.
+- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a <space>, <tab>, <newline> or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<` or `>`.
 
-- **operator:** A __control operator__ or a __redirection operator__. Operators contain at least one unquoted __metacharacter__.
+- **operator:** A _control operator_ or a _redirection operator_. Operators contain at least one unquoted _metacharacter_.
 
-- **token:** A sequence of characters considered a single unit by the shell. It is either a __word__ or an __operator__.
+- **token:** A sequence of characters considered a single unit by the shell. It is either a _word_ or an _operator_.
 
-- **word:** A sequence of characters treated as an unit by the shell. Words may not include unquoted __metacharacters__.
+- **word:** A sequence of characters treated as an unit by the shell. Words may not include unquoted _metacharacters_.
 
 ### [Shell Syntax](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Syntax)
 
 The shell operation goes as follows:
 
 1. Read the input from a file, a string supplied as an argument with `-c` or from the user's terminal.
-2. Break the input into __words__ and __operators__, obeying quoting rules. These __tokens__ are separated by __metacharacters__.
-3. Parse the __tokens__ into simple and compound commands.
-4. Perform the various shell expansions, breaking the expanded __tokens__ into lists of filenames, commands and arguments.
-5. Perform any necessary redirections and remove the redirection __operators__ and their operands from the argument list.
+2. Break the input into _words_ and _operators_, obeying quoting rules. These _tokens_ are separated by _metacharacters_.
+3. Parse the _tokens_ into simple and compound commands.
+4. Perform the various shell expansions, breaking the expanded _tokens_ into lists of filenames, commands and arguments.
+5. Perform any necessary redirections and remove the redirection _operators_ and their operands from the argument list.
 6. Execute the command.
 7. Optionally wait for the command to complete and collect its exit status.
 
