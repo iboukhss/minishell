@@ -50,11 +50,11 @@ Things to avoid:
 
 ## Relevant sections of Bash manual for minishell
 
-Definitions:
+### [Definitions](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Definitions)
 
-- **control operator:** A _token_ that performs a control function. It is a <newline> or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(` or `)`.
+- **control operator:** A _token_ that performs a control function. It is a `newline` or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(` or `)`.
 
-- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a <space>, <tab>, <newline> or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<` or `>`.
+- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a `space`, `tab`, `newline` or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<` or `>`.
 
 - **operator:** A _control operator_ or a _redirection operator_. Operators contain at least one unquoted _metacharacter_.
 
@@ -70,7 +70,7 @@ The shell operation goes as follows:
 2. Break the input into _words_ and _operators_, obeying quoting rules. These _tokens_ are separated by _metacharacters_.
 3. Parse the _tokens_ into simple and compound commands.
 4. Perform the various shell expansions, breaking the expanded _tokens_ into lists of filenames, commands and arguments.
-5. Perform any necessary redirections and remove the redirection _operators_ and their operands from the argument list.
+5. Perform any necessary redirections and remove the _redirection operators_ and their operands from the argument list.
 6. Execute the command.
 7. Optionally wait for the command to complete and collect its exit status.
 
