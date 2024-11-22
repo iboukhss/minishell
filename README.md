@@ -52,15 +52,20 @@ Things to avoid:
 
 ### [Definitions](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Definitions)
 
-- **control operator:** A _token_ that performs a control function. It is a `newline` or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(` or `)`.
+- **control operator:**  
+A _token_ that performs a control function. It is a `newline` or one of the following: `|`, `||`, `&`, `&&`, `|&`, `;`, `;;`, `;&`, `;;&`, `(` or `)`.
 
-- **metacharacter:** A character that, when unquoted, separates words. A metacharacter is a `space`, `tab`, `newline` or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<` or `>`.
+- **metacharacter:**  
+A character that, when unquoted, separates words. A metacharacter is a `space`, `tab`, `newline` or one of the following characters: `|`, `&`, `;`, `(`, `)`, `<` or `>`.
 
-- **operator:** A _control operator_ or a _redirection operator_. Operators contain at least one unquoted _metacharacter_.
+- **operator:**  
+A _control operator_ or a _redirection operator_. Operators contain at least one unquoted _metacharacter_.
 
-- **token:** A sequence of characters considered a single unit by the shell. It is either a _word_ or an _operator_.
+- **token:**  
+A sequence of characters considered a single unit by the shell. It is either a _word_ or an _operator_.
 
-- **word:** A sequence of characters treated as an unit by the shell. Words may not include unquoted _metacharacters_.
+- **word:**  
+A sequence of characters treated as an unit by the shell. Words may not include unquoted _metacharacters_.
 
 ### [Shell Syntax](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Syntax)
 
@@ -113,12 +118,45 @@ After a command has been split into words, if it results in a simple command and
 
 1. If the command name contains no slashes, the shell attempts to locate it. If there exists a shell function by that name, that function is invoked.
 2. If the name does not match a function, the shell searches for it in the list of shell builtins. If a match is found, that builtin is invoked.
-3. If the name is neither a shell function nor a builtin, and contains no slashes, Bash searches each element of $PATH for a directory containing an executable file by that name. If the search is unsuccessful, the shell searches for a function named `command_not_found_handle`. If that function exists, it is invoked in a separate execution environment with the original command and its arguments, and the function exit status becomes the exit status of that subshell. If that function is not defined, the shell prints an error message and returns an exit status of 127.
+3. If the name is neither a shell function nor a builtin, and contains no slashes, Bash searches each element of `$PATH` for a directory containing an executable file by that name. If the search is unsuccessful, the shell searches for a function named `command_not_found_handle`. If that function exists, it is invoked in a separate execution environment with the original command and its arguments, and the function exit status becomes the exit status of that subshell. If that function is not defined, the shell prints an error message and returns an exit status of 127.
 4. If the search is successful, or if the command name contains one or more slashes, the shell executes the named program in a separate execution environment. Argument 0 is set to the name given, and the remaining arguments to the command are set to the arguments supplied, if any.
 5. If this execution fails because the file is not in executable format, and the file is not a directory, it is assumed to be a shell script and the shell executes it.
 6. If the command was not begun asynchronously, the shell waits for the command to complete and collects its exit status.
 
 ### [Shell Builtin Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Builtin-Commands)
+
+- **cd:**  
+Change the current working directory to _directory_. If _directory_ is not supplied, the value of the `HOME` shell variable is used.  
+If `..` appears in _directory_, it is processed by removing the immediatly preceding pathname component, back to a slash or the begining of _directory_.  
+If _directory_ is `-`, it is converted to `$OLDPWD` before the directory change is attempted.  
+If the directory change is successful, `cd` sets the value of the `PWD` environment variable to the new directory name, and sets the `OLDPWD` environmnent variable to the value of the current working directory before the change.
+The return status is zero if the directory is successfully changed, non-zero otherwise.
+
+- **echo:**  
+TODO.
+
+- **env:**  
+TODO.
+
+- **exit:**  
+Exit the shell, returning a status of _n_ to the shell's parent. If _n_ is ommited, the exit status is that of the last command executed. Any trap on _EXIT_ is executed before the shell terminates.
+
+- **export:**  
+Mark each _name_ to be passed to child processes in the envirnonment.  
+If the `-f` option is supplied, the _names_ refer to shell functions; otherwise the names refer to shell variables. The `-n` option means to no longer mark each _name_ for export.  
+If no _names_ are supplied, or if the `-p` option is given, a list of all exported variables is displayed. The `-p` option displays output in a form that may be reused as input. If a variable name is followed by `=value`, the value of the variable is set to _value_.  
+The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable, or `-f` is supplied with a name that is not a shell function.
+
+- **pwd:**  
+Prints the absolute pathname of the current working directory. If the `-P` option is supplied, the pathname printed will not contain symbolic links. If the `-L` option is supplied, the pathname printed may contain symbolic links. The return status is zero unless an error is encountered while deteremining the name of the current directory or an invalid option is supplied.
+
+- **unset:**  
+Remove each variable of function _name_. If the `-v` option is given, each _name_ refers to a shell variable and that variable is removed. If the `-f` option is given, the _names_ refer to shell functions, and the function definition is removed. If the `-n` option is supplied, and _name_ is a variable with the `nameref` attribute, _name_ will be unset rather than the variable it references.  
+`-n` has no effect if the `-f` option is supplied. If no options are supplied, each _name_ refers to a variable; if there is no variable by that name, a function with that name, if any, is unset.  
+Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of individual variables.  
+The return status is zero unless a _name_ is a readonly or may not be unset.
+
+
 ### [Shell Variables](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Variables)
 ### [Using History Facilities](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Using-History-Interactively)
 See also: [GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline)
