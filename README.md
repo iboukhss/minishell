@@ -67,7 +67,7 @@ A sequence of characters considered a single unit by the shell. It is either a _
 #### word
 A sequence of characters treated as an unit by the shell. Words may not include unquoted _metacharacters_.
 
-### [Shell Syntax](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Syntax)
+### [Shell Operation](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Operation)
 
 The shell operation goes as follows:
 
@@ -79,7 +79,7 @@ The shell operation goes as follows:
 6. Execute the command.
 7. Optionally wait for the command to complete and collect its exit status.
 
-Quoting:
+### [Quoting](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Quoting)
 
 Quoting is used to remove the special meaning of sertain characters or _words_ to the shell. Quoting can be used to disable special treatment for special characters, to prevent reserved words from being recognized as such, and to prevent parameter expansion.
 
@@ -105,7 +105,7 @@ TODO.
 
 ### [Executing Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands)
 
-Simple command expansion:
+#### Simple command expansion
 
 When a simple command is executed, the shell performs the following expansions, assignments, and redirections, from left to right, in the following order.
 
@@ -114,7 +114,7 @@ When a simple command is executed, the shell performs the following expansions, 
 3. Redirections are performed.
 4. The text after the `=` in each variable assignment undergoes tilde expansion, parameter expansion, command expansion, arithmetic expansion and quote removal before being assigned to the variable.
 
-Command search and execution:
+#### Command search and execution
 
 After a command has been split into words, if it results in a simple command and an optional list of arguments, the following actions are taken.
 
@@ -128,7 +128,8 @@ After a command has been split into words, if it results in a simple command and
 ### [Shell Builtin Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Builtin-Commands)
 
 #### cd
-Change the current working directory to _directory_. If _directory_ is not supplied, the value of the `HOME` shell variable is used.  
+Change the current working directory to _directory_.  
+If _directory_ is not supplied, the value of the `HOME` shell variable is used.  
 If `..` appears in _directory_, it is processed by removing the immediatly preceding pathname component, back to a slash or the begining of _directory_.  
 If _directory_ is `-`, it is converted to `$OLDPWD` before the directory change is attempted.  
 If the directory change is successful, `cd` sets the value of the `PWD` environment variable to the new directory name, and sets the `OLDPWD` environmnent variable to the value of the current working directory before the change.  
@@ -141,7 +142,8 @@ TODO.
 TODO.
 
 #### exit
-Exit the shell, returning a status of _n_ to the shell's parent. If _n_ is ommited, the exit status is that of the last command executed. Any trap on _EXIT_ is executed before the shell terminates.
+Exit the shell, returning a status of _n_ to the shell's parent.  
+If _n_ is ommited, the exit status is that of the last command executed. Any trap on _EXIT_ is executed before the shell terminates.
 
 #### export
 Mark each _name_ to be passed to child processes in the envirnonment.  
@@ -150,15 +152,20 @@ If no _names_ are supplied, or if the `-p` option is given, a list of all export
 The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable, or `-f` is supplied with a name that is not a shell function.
 
 #### pwd
-Prints the absolute pathname of the current working directory. If the `-P` option is supplied, the pathname printed will not contain symbolic links. If the `-L` option is supplied, the pathname printed may contain symbolic links. The return status is zero unless an error is encountered while deteremining the name of the current directory or an invalid option is supplied.
+Prints the absolute pathname of the current working directory.  
+If the `-P` option is supplied, the pathname printed will not contain symbolic links. If the `-L` option is supplied, the pathname printed may contain symbolic links. The return status is zero unless an error is encountered while deteremining the name of the current directory or an invalid option is supplied.
 
 #### unset
-Remove each variable of function _name_. If the `-v` option is given, each _name_ refers to a shell variable and that variable is removed. If the `-f` option is given, the _names_ refer to shell functions, and the function definition is removed. If the `-n` option is supplied, and _name_ is a variable with the `nameref` attribute, _name_ will be unset rather than the variable it references.  
+Remove each variable of function _name_.  
+If the `-v` option is given, each _name_ refers to a shell variable and that variable is removed. If the `-f` option is given, the _names_ refer to shell functions, and the function definition is removed. If the `-n` option is supplied, and _name_ is a variable with the `nameref` attribute, _name_ will be unset rather than the variable it references.  
 `-n` has no effect if the `-f` option is supplied. If no options are supplied, each _name_ refers to a variable; if there is no variable by that name, a function with that name, if any, is unset.  
 Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of individual variables.  
 The return status is zero unless a _name_ is a readonly or may not be unset.
 
-
 ### [Shell Variables](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Variables)
+
+TODO.
+
 ### [Using History Facilities](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Using-History-Interactively)
+
 See also: [GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline)
