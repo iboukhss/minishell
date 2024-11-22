@@ -37,7 +37,7 @@ Things to avoid:
 - [ ] Handle environment variables: `$FOO`
 - [ ] Handle `$?`
 - [ ] Handle `Ctrl-C`, `Ctrl-D` and `Ctrl-\`
-- [ ] Implement builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`
+- [ ] Implement builtins: `echo`, `cd`, `pwd`, `export`, `unset`, `env` and `exit` (no options, except for `echo -n`)
 
 **Anything not asked is not required**
 
@@ -128,7 +128,9 @@ After a command has been split into words, if it results in a simple command and
 ### [Shell Builtin Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Builtin-Commands)
 
 #### cd
-Change the current working directory to _directory_.  
+
+Change the current working directory to _directory_.
+
 If _directory_ is not supplied, the value of the `HOME` shell variable is used.  
 If `..` appears in _directory_, it is processed by removing the immediatly preceding pathname component, back to a slash or the begining of _directory_.  
 If _directory_ is `-`, it is converted to `$OLDPWD` before the directory change is attempted.  
@@ -136,27 +138,39 @@ If the directory change is successful, `cd` sets the value of the `PWD` environm
 The return status is zero if the directory is successfully changed, non-zero otherwise.
 
 #### echo
-TODO.
+
+Output the _args_, separated by spaces, terminated with a newline.
+
+The return status is 0 unless a write error occurs. If `-n` is specified, the trailing newline is suppressed.
 
 #### env
-TODO.
+
+Prints the current environment.
 
 #### exit
-Exit the shell, returning a status of _n_ to the shell's parent.  
+
+Exit the shell, returning a status of _n_ to the shell's parent.
+
 If _n_ is ommited, the exit status is that of the last command executed. Any trap on _EXIT_ is executed before the shell terminates.
 
 #### export
-Mark each _name_ to be passed to child processes in the envirnonment.  
+
+Mark each _name_ to be passed to child processes in the envirnonment.
+
 If the `-f` option is supplied, the _names_ refer to shell functions; otherwise the names refer to shell variables. The `-n` option means to no longer mark each _name_ for export.  
 If no _names_ are supplied, or if the `-p` option is given, a list of all exported variables is displayed. The `-p` option displays output in a form that may be reused as input. If a variable name is followed by `=value`, the value of the variable is set to _value_.  
 The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable, or `-f` is supplied with a name that is not a shell function.
 
 #### pwd
-Prints the absolute pathname of the current working directory.  
+
+Prints the absolute pathname of the current working directory.
+
 If the `-P` option is supplied, the pathname printed will not contain symbolic links. If the `-L` option is supplied, the pathname printed may contain symbolic links. The return status is zero unless an error is encountered while deteremining the name of the current directory or an invalid option is supplied.
 
 #### unset
-Remove each variable of function _name_.  
+
+Remove each variable of function _name_.
+
 If the `-v` option is given, each _name_ refers to a shell variable and that variable is removed. If the `-f` option is given, the _names_ refer to shell functions, and the function definition is removed. If the `-n` option is supplied, and _name_ is a variable with the `nameref` attribute, _name_ will be unset rather than the variable it references.  
 `-n` has no effect if the `-f` option is supplied. If no options are supplied, each _name_ refers to a variable; if there is no variable by that name, a function with that name, if any, is unset.  
 Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of individual variables.  
@@ -164,7 +178,7 @@ The return status is zero unless a _name_ is a readonly or may not be unset.
 
 ### [Shell Variables](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Variables)
 
-TODO.
+Nothing very interesting here in the context of minishell.
 
 ### [Using History Facilities](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Using-History-Interactively)
 
