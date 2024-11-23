@@ -101,7 +101,45 @@ Mostly relevant for implementing shell variables (is it even necessary?).
 
 ### [Redirections](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections)
 
-TODO.
+#### Redirecting input
+
+Redirection of input causes the file whose name results from the expansion of _word_ to be opened for reading on file descriptor _n_, or the standard input (file descriptor 0) if _n_ is not specified.
+
+The general format for redirecting input is:
+```
+[n]<word
+```
+
+#### Redirecting output
+
+Redirection of output causes the file whose name results from the expansion of _word_ to be opened for writing on file descriptor _n_, or the standard output (file descriptor 1) if _n_ is not specified. If the file does not exist it is created; if it does exist it is truncated to zero size.
+
+The general format for redirecting output is:
+```
+[n]>[|]word
+```
+
+#### Appending redirected output
+
+Redirection of output in this fashion causes the file whose name results from the expansion of _word_ to be opened for appending on file descriptor _n_, or the standard output (file descriptor 1) if _n_ is not specified. If the file does not exist it is created.
+
+The general format for appending output is:
+```
+[n]>>word
+```
+
+#### Here documents
+
+This type of redirection instructs the shell to read input from the current source until a line containing only _word_ (with no trailing blanks) is seen. All of the lines read up to that point are then used as the standard input (or file descriptor _n_ if _n_ is specified) for a command.
+
+The format of here-documents is:
+```
+[n]<<[-]word
+	here-document
+delimiter
+```
+
+No parameter and variable expansion, command substitution, arithmetic expansion, or filename is performed on _word_. If any part of _word_ is quoted, the delimiter is the result of quote removal on _word_, and the lines in the here-document are not expanded. If _word_ is unquoted, all lines of the here-document are subjected to parameter expansion, command substitution, and arithmetic expansion, the character sequence `\newline` is ignored, and `\` must be used to quote the characters `\`, `$` and `` ` ``.
 
 ### [Executing Commands](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands)
 
@@ -131,10 +169,8 @@ After a command has been split into words, if it results in a simple command and
 
 Change the current working directory to _directory_.
 
-If _directory_ is not supplied, the value of the `HOME` shell variable is used.  
-If `..` appears in _directory_, it is processed by removing the immediatly preceding pathname component, back to a slash or the begining of _directory_.  
-If _directory_ is `-`, it is converted to `$OLDPWD` before the directory change is attempted.  
-If the directory change is successful, `cd` sets the value of the `PWD` environment variable to the new directory name, and sets the `OLDPWD` environmnent variable to the value of the current working directory before the change.  
+If _directory_ is not supplied, the value of the `HOME` shell variable is used. If `..` appears in _directory_, it is processed by removing the immediatly preceding pathname component, back to a slash or the begining of _directory_. If _directory_ is `-`, it is converted to `$OLDPWD` before the directory change is attempted. If the directory change is successful, `cd` sets the value of the `PWD` environment variable to the new directory name, and sets the `OLDPWD` environmnent variable to the value of the current working directory before the change.
+
 The return status is zero if the directory is successfully changed, non-zero otherwise.
 
 #### echo
@@ -145,7 +181,7 @@ The return status is 0 unless a write error occurs. If `-n` is specified, the tr
 
 #### env
 
-Prints the current environment.
+Print the current environment.
 
 #### exit
 
@@ -157,9 +193,7 @@ If _n_ is ommited, the exit status is that of the last command executed. Any tra
 
 Mark each _name_ to be passed to child processes in the envirnonment.
 
-If the `-f` option is supplied, the _names_ refer to shell functions; otherwise the names refer to shell variables. The `-n` option means to no longer mark each _name_ for export.  
-If no _names_ are supplied, or if the `-p` option is given, a list of all exported variables is displayed. The `-p` option displays output in a form that may be reused as input. If a variable name is followed by `=value`, the value of the variable is set to _value_.  
-The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable, or `-f` is supplied with a name that is not a shell function.
+If the `-f` option is supplied, the _names_ refer to shell functions; otherwise the names refer to shell variables. The `-n` option means to no longer mark each _name_ for export. If no _names_ are supplied, or if the `-p` option is given, a list of all exported variables is displayed. The `-p` option displays output in a form that may be reused as input. If a variable name is followed by `=value`, the value of the variable is set to _value_. The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable, or `-f` is supplied with a name that is not a shell function.
 
 #### pwd
 
@@ -172,8 +206,8 @@ If the `-P` option is supplied, the pathname printed will not contain symbolic l
 Remove each variable of function _name_.
 
 If the `-v` option is given, each _name_ refers to a shell variable and that variable is removed. If the `-f` option is given, the _names_ refer to shell functions, and the function definition is removed. If the `-n` option is supplied, and _name_ is a variable with the `nameref` attribute, _name_ will be unset rather than the variable it references.  
-`-n` has no effect if the `-f` option is supplied. If no options are supplied, each _name_ refers to a variable; if there is no variable by that name, a function with that name, if any, is unset.  
-Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of individual variables.  
+`-n` has no effect if the `-f` option is supplied. If no options are supplied, each _name_ refers to a variable; if there is no variable by that name, a function with that name, if any, is unset. Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of individual variables.
+
 The return status is zero unless a _name_ is a readonly or may not be unset.
 
 ### [Shell Variables](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Variables)
