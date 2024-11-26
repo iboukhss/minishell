@@ -28,7 +28,10 @@ int tokenize(char *line, t_token **token_head)
 		else
 			new_token = init_token(ft_substr(line, 0, 1), type);
 		if (new_token == NULL)
+		{
+			//free list on failure
 			return (0);
+		}
 		add_back(token_head, new_token);
 		return (type == '+' || type == '-') ? 2 : 1;
 	}
