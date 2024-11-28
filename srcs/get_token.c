@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int tokenize(char *line, t_token **token_head)
+int tokenize(char *line, t_token **token_list)
 {
 	char	*start_token;
 	char	*end_token;
@@ -29,10 +29,9 @@ int tokenize(char *line, t_token **token_head)
 			new_token = init_token(ft_substr(line, 0, 1), type);
 		if (new_token == NULL)
 		{
-			//free list on failure
 			return (0);
 		}
-		add_back(token_head, new_token);
+		add_back(token_list, new_token);
 		return (type == '+' || type == '-') ? 2 : 1;
 	}
 	start_token = line;
@@ -43,43 +42,24 @@ int tokenize(char *line, t_token **token_head)
 	new_token = init_token(ft_substr(start_token, 0, end_token - start_token), 'w');
 	if (new_token == NULL)
 		return (0);
-	add_back(token_head, new_token);
+	add_back(token_list, new_token);
 	return (end_token - start_token);
-}
-
-
-void print_tokens(t_token *head)
-{
-	t_token	*current;
-
-	if (head == NULL)
-	{
-		return ;
-	}
-	current = head;	
-	while (current != NULL)
-	{
-		printf("content : %s\n",current->content);
-		printf("type : %c\n", current->type);
-		current = current->next;
-	}
 }
 
 t_token *get_token(char *line)
 {
-	t_token *token_head;
+	t_token *token_list;
 	int		offset;
 
-	token_head = NULL;
+	token_list = NULL;
 	offset = 0;
 	while (*line != '\0')
 	{
 		if (ft_strchr(WHITESPACE, *line) == NULL)
 		{
-			offset = tokenize(line, &token_head);
+			offset = tokenize(line, &token_list);
 			if (offset == 0)
 			{
-				//free list ; to be implemented;
 				return (NULL);
 			}
 			line+= offset;
@@ -90,6 +70,6 @@ t_token *get_token(char *line)
 		}
 		
 	}
-	print_tokens(token_head);
-	return (token_head);
+	print_token_list(token_list);
+	return (token_list);
 }
