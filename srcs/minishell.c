@@ -22,5 +22,5 @@ int	main(void)
 		}
 		free_all(line, token_list);
     }
-    exit(EXIT_FAILURE);
+    return (0);
 }
