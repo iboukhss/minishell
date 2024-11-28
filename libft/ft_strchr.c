@@ -17,11 +17,9 @@ char	*ft_strchr(const char *s, int c)
 	const char	*p_s;
 
 	p_s = s;
-	if (c < 0 || c > 255)
-		return ((char *) s);
 	while (*p_s != '\0')
 	{
-		if (*p_s == c)
+		if (*p_s == (unsigned char)c)
 			return ((char *)p_s);
 		p_s++;
 	}
