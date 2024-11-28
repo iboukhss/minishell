@@ -27,7 +27,7 @@ t_token	*init_token(char *content, char type)
 	if (token == NULL)
 		return (NULL);
 	token->content = content;
-	token->type  =type;
+	token->type = type;
 	token->next = NULL;
 	return (token);
 }

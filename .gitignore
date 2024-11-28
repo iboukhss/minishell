@@ -1,0 +1,6 @@
+.vscode/
+cmd.txt
+libft.a
+libft/*.o
+srcs/*.o
+minishell

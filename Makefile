@@ -11,7 +11,6 @@ CUR_DIR = $(shell pwd)
 
 # files used
 MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
-				ft_split.c \
 				ft_strdup.c \
 				ft_strlen.c \
 				ft_strlcpy.c \
@@ -21,6 +20,8 @@ MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
 MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
 				minishell.c \
 				get_token.c \
+				debug.c \
+				free.c \
 				token_functions.c)
 
 # o files used
