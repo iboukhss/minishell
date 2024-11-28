@@ -29,7 +29,7 @@ MY_LIBFT_OBJS = $(MY_LIBFT_SRCS:.c=.o)
 MY_PROJECT_OBJS = $(MY_PROJECT_SRCS:.c=.o)
 
 # c flags used during compilation
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -g3 -fsanitize=address,undefined
 
 # compiler used
 CC = cc
