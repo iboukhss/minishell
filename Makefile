@@ -11,10 +11,12 @@ CUR_DIR = $(shell pwd)
 
 # files used
 MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
+				ft_memcpy.c \
 				ft_strdup.c \
 				ft_strlen.c \
 				ft_strlcpy.c \
 				ft_strchr.c \
+				ft_strchrnul.c \
 				ft_substr.c)
 
 MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
@@ -24,12 +26,22 @@ MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
 				free.c \
 				token_functions.c)
 
-# o files used
+# object and dependency files
 MY_LIBFT_OBJS = $(MY_LIBFT_SRCS:.c=.o)
 MY_PROJECT_OBJS = $(MY_PROJECT_SRCS:.c=.o)
+MY_PROJECT_DEPS = $(MY_PROJECT_OBJS:.o=.d)
 
-# c flags used during compilation
-CFLAGS = -Wall -Wextra -g3 -fsanitize=address,undefined
+# general c flags (no -Werror)
+CFLAGS = -Wall -Wextra
+
+# debug c flags (full debug with sanitizers and dependency generation)
+CFLAGS += -g3 -fsanitize=address,undefined -MMD
+
+# include dirs
+CFLAGS += -I$(MY_LIBFT_DIR)
+
+# linker flags
+LDFLAGS = -lreadline
 
 # compiler used
 CC = cc
@@ -45,7 +57,7 @@ $(NAME_LIBFT): $(MY_LIBFT_OBJS)
 
 # rules to build my project
 $(NAME_MY_PROJECT): $(NAME_LIBFT) $(MY_PROJECT_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME_MY_PROJECT) $(MY_PROJECT_OBJS) $(MY_LIBFT_OBJS) -lreadline
+	$(CC) $(CFLAGS) -o $(NAME_MY_PROJECT) $(MY_PROJECT_OBJS) $(MY_LIBFT_OBJS) $(LDFLAGS)
 	@echo " "
 	@echo "$(GREEN)     ========>>>>>> PROJECT COMPILED SUCCESSFULLY <<<<<<========      "
 	@echo "$(RESET)"
@@ -75,3 +87,5 @@ run:
 val:
 	make
 	valgrind ./minishell
+
+-include $(MY_PROJECT_DEPS)
