@@ -20,6 +20,7 @@ MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
 				ft_substr.c)
 
 MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
+				exec_command.c \
 				minishell.c \
 				get_token.c \
 				debug.c \
