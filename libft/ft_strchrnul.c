@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:41:43 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/29 17:44:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:40:35 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 char	*ft_strchrnul(const char *s, int c)
 {
-	while (*s != '\0')
+	while (*s && *s != (unsigned char)c)
 	{
-		if (*s == (unsigned char)c)
-		{
-			return ((char *)s);
-		}
 		s++;
 	}
 	return ((char *)s);
