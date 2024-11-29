@@ -73,6 +73,7 @@ $(MY_SRCS_DIR)/%.o : $(MY_SRCS_DIR)/%.c
 
 clean:
 	rm -f $(MY_PROJECT_OBJS)
+	rm -f $(MY_PROJECT_DEPS)
 	rm -f $(MY_LIBFT_OBJS)
 
 fclean: clean
