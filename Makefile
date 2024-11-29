@@ -1,16 +1,15 @@
 # variables to store the names used
-NAME_MY_PROJECT = minishell
-NAME_LIBFT = libft.a
+PROJ_NAME = minishell
+LIBFT_NAME = libft.a
 GREEN = \033[32m
 RESET = \033[0m
 
 # directories
-MY_LIBFT_DIR = libft
-MY_SRCS_DIR = srcs
-CUR_DIR = $(shell pwd)
+LIBFT_DIR = libft
+PROJ_SRCS_DIR = srcs
 
-# files used
-MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
+# source files
+LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_memcpy.c \
 				ft_strdup.c \
 				ft_strlen.c \
@@ -19,7 +18,7 @@ MY_LIBFT_SRCS = $(addprefix $(MY_LIBFT_DIR)/, \
 				ft_strchrnul.c \
 				ft_substr.c)
 
-MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
+PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec_command.c \
 				minishell.c \
 				get_token.c \
@@ -27,10 +26,18 @@ MY_PROJECT_SRCS = $(addprefix $(MY_SRCS_DIR)/, \
 				free.c \
 				token_functions.c)
 
+# header files
+LIBFT_INCS = $(addprefix $(LIBFT_DIR)/, libft.h)
+
+PROJ_INCS = $(addprefix $(PROJ_SRCS_DIR)/, \
+				exec.h \
+				minishell.h)
+
 # object and dependency files
-MY_LIBFT_OBJS = $(MY_LIBFT_SRCS:.c=.o)
-MY_PROJECT_OBJS = $(MY_PROJECT_SRCS:.c=.o)
-MY_PROJECT_DEPS = $(MY_PROJECT_OBJS:.o=.d)
+LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
+LIBFT_DEPS = $(LIBFT_OBJS:.o=.d)
+PROJ_OBJS = $(PROJ_SRCS:.c=.o)
+PROJ_DEPS = $(PROJ_OBJS:.o=.d)
 
 # general c flags (no -Werror)
 CFLAGS = -Wall -Wextra
@@ -39,55 +46,48 @@ CFLAGS = -Wall -Wextra
 CFLAGS += -g3 -fsanitize=address,undefined -MMD
 
 # include dirs
-CFLAGS += -I$(MY_LIBFT_DIR)
+CFLAGS += -I$(LIBFT_DIR)
 
 # linker flags
-LDFLAGS = -lreadline
+LDLIBS = -L.
+LDFLAGS = -lreadline -lft
 
-# compiler used
-CC = cc
+# archiver flags
+ARFLAGS = rcs
 
 # phony targets
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm run val
 
 # default target 
-all: $(NAME_MY_PROJECT)
+all: $(PROJ_NAME)
 
-$(NAME_LIBFT): $(MY_LIBFT_OBJS)
-	ar rcs $(NAME_LIBFT) $(MY_LIBFT_OBJS)
+$(LIBFT_NAME): $(LIBFT_OBJS)
+	$(AR) $(ARFLAGS) $(LIBFT_NAME) $(LIBFT_OBJS)
 
 # rules to build my project
-$(NAME_MY_PROJECT): $(NAME_LIBFT) $(MY_PROJECT_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME_MY_PROJECT) $(MY_PROJECT_OBJS) $(MY_LIBFT_OBJS) $(LDFLAGS)
+$(PROJ_NAME): $(LIBFT_NAME) $(PROJ_OBJS)
+	$(CC) $(CFLAGS) -o $(PROJ_NAME) $(PROJ_OBJS) $(LDLIBS) $(LDFLAGS)
 	@echo " "
 	@echo "$(GREEN)     ========>>>>>> PROJECT COMPILED SUCCESSFULLY <<<<<<========      "
 	@echo "$(RESET)"
 
-# compile libft object files
-$(MY_LIBFT_DIR)/%.o: $(MY_LIBFT_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# compile my project object files
-$(MY_SRCS_DIR)/%.o : $(MY_SRCS_DIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 clean:
-	rm -f $(MY_PROJECT_OBJS)
-	rm -f $(MY_PROJECT_DEPS)
-	rm -f $(MY_LIBFT_OBJS)
+	$(RM) $(PROJ_OBJS) $(PROJ_DEPS)
+	$(RM) $(LIBFT_OBJS) $(LIBFT_DEPS)
 
 fclean: clean
-	rm -f $(NAME_MY_PROJECT)
-	rm -f $(NAME_LIBFT)
+	$(RM) $(PROJ_NAME)
+	$(RM) $(LIBFT_NAME)
 
 re: fclean all
 
-run:
-	make
-	./minishell
+norm:
+	-norminette $(LIBFT_SRCS) $(LIBFT_INCS) $(PROJ_SRCS) $(PROJ_INCS)
 
-val:
-	make
-	valgrind ./minishell
+run: all
+	./$(PROJ_NAME)
 
--include $(MY_PROJECT_DEPS)
+val: all
+	valgrind ./$(PROJ_NAME)
+
+-include $(LIBFT_DEPS) $(PROJ_DEPS)
