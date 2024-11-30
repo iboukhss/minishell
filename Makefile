@@ -11,6 +11,7 @@ PROJ_SRCS_DIR = srcs
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_memcpy.c \
+				ft_strcpy.c \
 				ft_strdup.c \
 				ft_strlen.c \
 				ft_strlcpy.c \

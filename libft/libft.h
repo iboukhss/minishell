@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2024/11/29 18:47:17 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/11/30 03:38:15 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchrnul(const char *s, int c);
+char	*ft_strcpy(char *dst, const char *src);
 char	*ft_strdup(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
