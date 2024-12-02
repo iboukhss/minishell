@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_xmalloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 15:45:48 by dheck             #+#    #+#             */
-/*   Updated: 2024/12/01 18:58:01 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/12/01 00:38:22 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/01 18:03:07 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
-char	*ft_strdup(const char *s)
+void	*ft_xmalloc(size_t size)
 {
-	char	*new_s;
-	size_t	i;
-	size_t	strlen;
+	void	*mem;
 
-	i = 0;
-	strlen = ft_strlen(s);
-	new_s = malloc(sizeof(char) * (strlen + 1));
-	if (new_s == NULL)
-		return (NULL);
-	while (s[i] != '\0')
+	mem = malloc(size);
+	if (mem == NULL)
 	{
-		new_s[i] = s[i];
-		i++;
+		perror("malloc");
+		exit(EXIT_FAILURE);
 	}
-	new_s[i] = '\0';
-	return (new_s);
+	return (mem);
 }
