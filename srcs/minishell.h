@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:07:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/30 23:19:28 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/02 16:55:05 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,21 @@
 typedef struct s_command	t_command;
 typedef struct s_token		t_token;
 
+typedef struct s_shell
+{
+	char	**envs;				// Current shell environment variables
+	int		exit_status;		// Last command exit status ($?)
+}	t_shell;
+
 typedef struct s_command
 {
-	char		**args;		// Command and arguments
-	char		*infile;	// Input redirection file (<)
-	char		*outfile;	// Output redirection file (>)
-	bool		append;		// Flag for appending (>>)
-	char		*heredoc;	// Heredoc delimiter (<<)
-	t_command	*next;		// Pointer to next command in the pipeline
+	char		**args;			// Command and arguments
+	bool		is_builtin;		// Flag for builtins (echo, cd, pwd, ect.)
+	char		*infile;		// Input redirection file (<)
+	char		*outfile;		// Output redirection file (>)
+	bool		append_mode;	// Flag for append mode (>>)
+	char		*heredoc;		// Heredoc delimiter (<<)
+	t_command	*next;			// Pointer to next command in the pipeline (|)
 }	t_command;
 
 typedef struct s_token
