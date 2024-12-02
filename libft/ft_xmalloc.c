@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   ft_xmalloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 21:18:26 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/30 21:18:35 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/12/01 00:38:22 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/01 18:03:07 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
-void print_token_list(t_token *token_list)
+void	*ft_xmalloc(size_t size)
 {
-	t_token	*current;
+	void	*mem;
 
-	if (token_list == NULL)
+	mem = malloc(size);
+	if (mem == NULL)
 	{
-		return ;
+		perror("malloc");
+		exit(EXIT_FAILURE);
 	}
-	current = token_list;	
-	while (current != NULL)
-	{
-		printf("content = %s, type : %c\n",current->content, current->type);
-		current = current->next;
-	}
+	return (mem);
 }

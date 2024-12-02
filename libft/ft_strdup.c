@@ -6,11 +6,13 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 15:45:48 by dheck             #+#    #+#             */
-/*   Updated: 2024/03/15 13:28:47 by dheck            ###   ########.fr       */
+/*   Updated: 2024/12/01 18:58:01 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+#include <stdlib.h>
 
 char	*ft_strdup(const char *s)
 {
