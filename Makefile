@@ -18,7 +18,9 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_strchr.c \
 				ft_strchrnul.c \
 				ft_substr.c \
-				ft_xmalloc.c)
+				ft_xmalloc.c \
+				ft_xstrdup.c \
+				ft_xstrdupv.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec_command.c \
