@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2024/12/03 03:13:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/03 19:20:22 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_xmalloc(size_t size);
 char	*ft_xstrdup(const char *s);
 char	**ft_xstrdupv(char **str_array);
+void	ft_strfreev(char **str_array);
 
 #endif
