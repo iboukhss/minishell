@@ -44,7 +44,7 @@ int tokenize(char *line, t_token **token_list)
 		{
 			return (0);
 		}
-		add_back(token_list, new_token);
+		add_back_token(token_list, new_token);
 		return (type == '+' || type == '-') ? 2 : 1;
 	}
 	start_token = line;
@@ -55,7 +55,7 @@ int tokenize(char *line, t_token **token_list)
 	new_token = init_token(ft_substr(start_token, 0, end_token - start_token), 'w');
 	if (new_token == NULL)
 		return (0);
-	add_back(token_list, new_token);
+	add_back_token(token_list, new_token);
 	return (end_token - start_token);
 }
 
@@ -73,6 +73,7 @@ t_token *get_token(char *line)
 			offset = tokenize(line, &token_list);
 			if (offset == 0)
 			{
+				free_token_list(token_list);
 				return (NULL);
 			}
 			line+= offset;
@@ -83,6 +84,5 @@ t_token *get_token(char *line)
 		}
 		
 	}
-	print_token_list(token_list);
 	return (token_list);
 }

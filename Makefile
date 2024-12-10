@@ -21,7 +21,8 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_substr.c \
 				ft_xmalloc.c \
 				ft_xstrdup.c \
-				ft_xstrdupv.c)
+				ft_xstrdupv.c \
+				ft_strncmp.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec_command.c \
@@ -29,7 +30,9 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				get_token.c \
 				debug.c \
 				free.c \
-				token_functions.c)
+				token_functions.c \
+				cmd_functions.c \
+				parser.c)
 
 # header files
 LIBFT_INCS = $(addprefix $(LIBFT_DIR)/, libft.h)
