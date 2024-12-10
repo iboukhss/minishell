@@ -12,9 +12,7 @@
 
 #include "minishell.h"
 
-#include <stdlib.h>
-
-void add_back(t_token **token_head, t_token *new_token)
+void add_back_token(t_token **token_head, t_token *new_token)
 {
 	t_token *current;
 	if (new_token == NULL)

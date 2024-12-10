@@ -17,8 +17,12 @@
 
 int	main(void)
 {
-	char	*line;
-	t_token *token_list;
+	char		*line;
+	t_token		*token_list;
+	t_command	*cmd_list;
+
+	token_list = NULL;
+	cmd_list = NULL;
 
     while (1)
     {
@@ -31,11 +35,20 @@ int	main(void)
 			token_list = get_token(line);
 			if (token_list == NULL)
 			{
-				free_all(line, token_list);
+				free(line);
 				break ;
 			}
+			//print_token_list(token_list);
+			cmd_list = parsing_tokens(token_list);
+			if (cmd_list == NULL)
+			{
+				free(token_list);
+				free(line);
+				break ;
+			}
+			print_cmd_list(cmd_list);
 		}
-		free_all(line, token_list);
+		free_all(line, token_list, cmd_list);
     }
     return (0);
 }
