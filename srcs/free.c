@@ -48,12 +48,9 @@ void free_cmd_list(t_command *cmd_list)
 	while (current != NULL)
 	{
 		tmp = current;
-		if (current->infile != NULL)
-			free(current->infile);
-		if (current->outfile != NULL)
-			free(current->outfile);		
-		if (current->heredoc != NULL)
-			free(current->heredoc);
+		free(current->infile);
+		free(current->outfile);		
+		free(current->heredoc);
 		i = 0;
 		while(current->args[i] != NULL)
 		{
@@ -68,10 +65,7 @@ void free_cmd_list(t_command *cmd_list)
 //t_command *cmd_list to be included
 void free_all(char *line, t_token *token_list, t_command *cmd_list)
 {
-    if (token_list != NULL)
-		free_token_list(token_list);
-	if (cmd_list != NULL)
-		free_cmd_list(cmd_list);
-    if (line != NULL)
-		free(line);
+	free_token_list(token_list);
+	free_cmd_list(cmd_list);
+	free(line);
 }
