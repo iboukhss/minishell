@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 void add_back_cmd(t_command **cmd_head, t_command *new_cmd)
 {

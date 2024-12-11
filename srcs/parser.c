@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 //parse the tokens and assemble cmd structures
 
