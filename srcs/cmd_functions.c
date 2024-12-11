@@ -24,9 +24,7 @@ t_command	*init_cmd(void)
 	t_command   *cmd;
     size_t      i;
 
-	cmd = malloc(sizeof(t_command));
-	if (cmd == NULL)
-		return (NULL);
+	cmd = ft_xmalloc(sizeof(t_command));
     i = 0;
     while (i < MAX_ARGS)
     {
