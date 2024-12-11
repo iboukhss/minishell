@@ -18,11 +18,10 @@
 # define NAK_SYMBOLS "&/;"
 # define MAX_ARGS 50
 
-# include "../libft/libft.h"
-
+// Try to keep includes as lean as possible (only add typedef includes here)
+// stdlib.h, unistd.h, libft.h, ect. should remain in their own respective file scopes
 # include <stdbool.h>
 # include <stddef.h>
-# include <stdlib.h>
 
 // Forward declarations here
 typedef struct s_command	t_command;
