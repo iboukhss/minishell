@@ -6,11 +6,13 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:18:49 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/30 21:19:00 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:08:57 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include <stdlib.h>
 
 void add_back_token(t_token **token_head, t_token *new_token)
 {
