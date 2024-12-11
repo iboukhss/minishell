@@ -6,12 +6,13 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/30 21:20:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/11 11:07:52 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
