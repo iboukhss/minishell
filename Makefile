@@ -25,6 +25,8 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_strncmp.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
+				builtin_env.c \
+				builtin_unset.c \
 				exec_command.c \
 				minishell.c \
 				get_token.c \

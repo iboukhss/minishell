@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/13 14:07:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:08:03 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	exit_shell(int status, t_shell *shell)
 	exit(status);
 }
 
-static char	*get_env(const char *key, t_shell *shell)
+char	*get_env(const char *key, t_shell *shell)
 {
 	char	**envp;
 	int		key_len;
@@ -92,12 +92,29 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 	return (NULL);
 }
 
+void	exec_builtin(t_command *cmd, t_shell *shell)
+{
+	if (strcmp(cmd->args[0], "env") == 0)
+	{
+		builtin_env(cmd, shell);
+	}
+	else if (strcmp(cmd->args[0], "unset") == 0)
+	{
+		builtin_unset(cmd, shell);
+	}
+}
+
 void	exec_command(t_command *cmd, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
 	char	*cmd_path;
 
+	if (cmd->is_builtin)
+	{
+		exec_builtin(cmd, shell);
+		return ;
+	}
 	pid = fork();
 	if (pid < 0)
 	{

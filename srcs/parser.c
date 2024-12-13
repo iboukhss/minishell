@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/13 17:32:26 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/13 17:32:30 by iboukhss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -71,11 +83,6 @@ int	build_cmd(t_token *token, t_command *cmd)
 	if (cmd->args[0] == NULL && is_builtin(token) == 1)
 	{
 		cmd->is_builtin = 1;
-		add_arg(cmd, token);
-	}
-	else if (cmd->args[0] != NULL && is_builtin(token) == 1)
-	{
-		return (0);
 	}
 	if (token->type == 'w' && cmd->append_mode == 0 && cmd->heredoc == NULL &&
 			cmd->infile == NULL && cmd->outfile == NULL && add_arg(cmd, token) == 0)
