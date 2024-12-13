@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
+#include <stdlib.h>
 
 //parse the tokens and assemble cmd structures
 
@@ -71,11 +72,7 @@ int	build_cmd(t_token *token, t_command *cmd)
 	if (cmd->args[0] == NULL && is_builtin(token) == 1)
 	{
 		cmd->is_builtin = 1;
-		add_arg(cmd, token);
-	}
-	else if (cmd->args[0] != NULL && is_builtin(token) == 1)
-	{
-		return (0);
+		//add_arg(cmd, token);
 	}
 	if (token->type == 'w' && cmd->append_mode == 0 && cmd->heredoc == NULL &&
 			cmd->infile == NULL && cmd->outfile == NULL && add_arg(cmd, token) == 0)

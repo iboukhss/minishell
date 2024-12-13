@@ -50,6 +50,8 @@ void print_cmd_list(t_command *cmd_list)
 		printf("Args : ");
 		while (current->args[i] != NULL)
 		{
+			if (i != 0)
+				printf(", ");
 			printf("%s ", current->args[i]);
 			i++;
 		}
