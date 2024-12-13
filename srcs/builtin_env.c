@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/13 16:05:18 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/12/03 19:54:29 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/13 16:08:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "exec.h"
 
-# include "minishell.h"
+#include <stdio.h>
 
-// Add function prototypes here
-void	exec_command(t_command *cmd, t_shell *shell);
-void	exec_builtin(t_command *cmd, t_shell *shell);
+void	builtin_env(t_command *cmd, t_shell *shell)
+{
+	int	i;
 
-// Builtins
-char	*get_env(const char *key, t_shell *shell);
-void	builtin_env(t_command *cmd, t_shell *shell);
-void	builtin_unset(t_command *cmd, t_shell *shell);
-
-#endif
+	(void)cmd;
+	i = 0;
+	while (shell->envs[i] != NULL)
+	{
+		printf("%s\n", shell->envs[i]);
+		i++;
+	}
+}
