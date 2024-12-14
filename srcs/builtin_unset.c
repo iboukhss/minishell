@@ -53,7 +53,8 @@ void	builtin_unset(t_command *cmd, t_shell *shell)
 	i = 0;
 	while (*envp != NULL && i < envp_len)
 	{
-		if (!(ft_strncmp(*envp, key, key_len) == 0 && *envp[key_len] == '='))
+		// TODO(ismail): This is not reliable and basically a bug.
+		if (!(ft_strncmp(*envp, key, key_len) == 0))
 		{
 			new_env[i++] = *envp;
 		}
