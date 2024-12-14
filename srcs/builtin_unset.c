@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/13 17:20:33 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:20:41 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,6 @@
 #include "libft.h"
 
 #include <stdlib.h>
-
-static int	strlenv(char **str_array)
-{
-	int	i;
-
-	i = 0;
-	while (str_array[i] != NULL)
-	{
-		++i;
-	}
-	return (i);
-}
 
 // NOTE(ismail): Assuming there is always at least 1 argument (cmd->args[1]).
 // Find a way to check and count arguments more consistently?
@@ -47,7 +35,7 @@ void	builtin_unset(t_command *cmd, t_shell *shell)
 	key = cmd->args[1];
 	key_len = ft_strlen(key);
 	envp = shell->envs;
-	envp_len = strlenv(envp);
+	envp_len = ft_strlenv(envp);
 	// One less slot?
 	new_env = ft_xmalloc(envp_len * sizeof(*new_env));
 	i = 0;

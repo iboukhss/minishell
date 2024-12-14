@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 09:30:41 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/14 17:16:24 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-
-static int	strlenv(char **str_array)
-{
-	int	i;
-
-	i = 0;
-	while (str_array[i] != NULL)
-	{
-		i++;
-	}
-	return (i);
-}
 
 void	builtin_export(t_command *cmd, t_shell *shell)
 {
@@ -43,7 +31,7 @@ void	builtin_export(t_command *cmd, t_shell *shell)
 	key_len = end - beg;
 	key = strndup(beg, key_len);
 	envp = shell->envs;
-	envp_len = strlenv(envp);
+	envp_len = ft_strlenv(envp);
 	// Variable doesn't exist, allocate new slot
 	if (get_env(key, shell) == NULL)
 	{

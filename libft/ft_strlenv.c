@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*   ft_strlenv.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 17:10:35 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/12/14 17:09:17 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/14 17:10:54 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
 #include "libft.h"
 
-#include <stdlib.h>
-
-void	builtin_exit(t_command *cmd, t_shell *shell)
+int	ft_strlenv(char **str_array)
 {
-	int	argc;
-	int	status;
+	int	i;
 
-	argc = ft_strlenv(cmd->args);
-	if (argc < 2)
+	i = 0;
+	while (str_array[i] != NULL)
 	{
-		status = shell->exit_status;
+		i++;
 	}
-	else
-	{
-		status = atoi(cmd->args[1]);
-	}
-	exit_shell(status, shell);
+	return (i);
 }
