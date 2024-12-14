@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 09:04:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/14 12:42:58 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-static void	exit_shell(int status, t_shell *shell)
+void	exit_shell(int status, t_shell *shell)
 {
 	shell->exit_status = status;
 	exit(status);
@@ -106,6 +106,10 @@ void	exec_builtin(t_command *cmd, t_shell *shell)
 	{
 		builtin_export(cmd, shell);
 	}
+	else if (strcmp(cmd->args[0], "exit") == 0)
+	{
+		builtin_exit(cmd, shell);
+	}
 }
 
 void	exec_command(t_command *cmd, t_shell *shell)
@@ -128,6 +132,13 @@ void	exec_command(t_command *cmd, t_shell *shell)
 	// Child process
 	if (pid == 0)
 	{
+		// Any memory allocated, file descriptors duplicated only affect
+		// this context, so in theory there should be no memory leaks, or
+		// issues with file descriptors not restored.
+		if (setup_redirections(cmd) < 0)
+		{
+			exit_shell(EXIT_FAILURE, shell);
+		}
 		cmd_path = resolve_path(cmd->args[0], shell);
 		execve(cmd_path, cmd->args, shell->envs);
 		perror("execve");
@@ -152,19 +163,3 @@ void	exec_command(t_command *cmd, t_shell *shell)
 		}
 	}
 }
-
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	t_command	cmd = {argv + 1, 0, NULL, NULL, 0, NULL, NULL};
-	t_shell		shell = {envp, 0};
-
-	if (argc < 2)
-	{
-		fprintf(stderr, "Usage: %s <command> [args...]\n", argv[0]);
-		return (1);
-	}
-	exec_command(&cmd, &shell);
-	return (0);
-}
-*/

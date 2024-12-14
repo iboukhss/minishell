@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 09:03:47 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/14 12:43:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@
 void	exec_command(t_command *cmd, t_shell *shell);
 void	exec_builtin(t_command *cmd, t_shell *shell);
 
+void	exit_shell(int status, t_shell *shell);
+int		setup_redirections(t_command *cmd);
+
 // Builtins
 char	*get_env(const char *key, t_shell *shell);
 void	builtin_env(t_command *cmd, t_shell *shell);
 void	builtin_unset(t_command *cmd, t_shell *shell);
 void	builtin_export(t_command *cmd, t_shell *shell);
+void	builtin_exit(t_command *cmd, t_shell *shell);
 
 #endif
