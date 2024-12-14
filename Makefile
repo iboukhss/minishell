@@ -26,10 +26,12 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				builtin_env.c \
+				builtin_exit.c \
 				builtin_export.c \
 				builtin_unset.c \
 				exec_command.c \
 				minishell.c \
+				setup_redirections.c \
 				get_token.c \
 				debug.c \
 				free.c \
