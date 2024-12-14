@@ -15,6 +15,7 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_strdup.c \
 				ft_strfreev.c \
 				ft_strlen.c \
+				ft_strlenv.c \
 				ft_strlcpy.c \
 				ft_strchr.c \
 				ft_strchrnul.c \
