@@ -22,6 +22,7 @@ int tokenize(char *line, t_token **token_list)
 
 	if (*line == '\0')
 		return (0);
+	//check first for quote to offset until closing quote or return 0 if not found
 	if (ft_strchr(ACK_SYMBOLS, *line) != NULL)
 	{
 		if (*line == '|')
