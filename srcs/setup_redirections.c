@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 14:39:54 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/15 06:30:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	setup_redirections(t_command *cmd)
 	int	fd;
 	int	oflags;
 
+	// Output redir (> and >>)
 	if (cmd->outfile)
 	{
 		oflags = O_WRONLY | O_CREAT | (cmd->append_mode ? O_APPEND : O_TRUNC);
@@ -40,6 +41,24 @@ int	setup_redirections(t_command *cmd)
 			return (-1);
 		}
 		close(fd);
+	}
+	// Input redir (<)
+	if (cmd->infile)
+	{
+		oflags = O_RDONLY;
+		fd = open(cmd->infile, oflags);
+		if (fd < 0)
+		{
+			perror(cmd->infile);
+			return (-1);
+		}
+		if (dup2(fd, STDIN_FILENO) < 0)
+		{
+			perror("dup2");
+			close(fd);
+			return (-1);
+		}
+		close (fd);
 	}
 	return (0);
 }
