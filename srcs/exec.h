@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 12:43:08 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/15 06:48:28 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ void	builtin_env(t_command *cmd, t_shell *shell);
 void	builtin_unset(t_command *cmd, t_shell *shell);
 void	builtin_export(t_command *cmd, t_shell *shell);
 void	builtin_exit(t_command *cmd, t_shell *shell);
+void	builtin_echo(t_command *cmd, t_shell *shell);
 
 #endif
