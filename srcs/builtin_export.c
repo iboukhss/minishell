@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 17:16:24 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/17 08:10:52 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void	builtin_export(t_command *cmd, t_shell *shell)
 		i = 0;
 		while (*envp != NULL)
 		{
-			// TOFIX(ismail): Doesn't work 100% of the time
-			if (ft_strncmp(*envp, key, key_len) == 0)
+			if (ft_strncmp(*envp, key, key_len) == 0 && (*envp)[key_len] == '=')
 			{
 				free(*envp);
 				new_env[i++] = ft_xstrdup(beg);
