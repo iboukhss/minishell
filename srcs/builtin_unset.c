@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 17:20:41 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:00:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,17 @@ void	builtin_unset(t_command *cmd, t_shell *shell)
 	key_len = ft_strlen(key);
 	envp = shell->envs;
 	envp_len = ft_strlenv(envp);
-	// One less slot?
-	new_env = ft_xmalloc(envp_len * sizeof(*new_env));
+	new_env = ft_xmalloc((envp_len + 1) * sizeof(*new_env));
 	i = 0;
-	while (*envp != NULL && i < envp_len)
+	while (*envp != NULL)
 	{
-		// TODO(ismail): This is not reliable and basically a bug.
-		if (!(ft_strncmp(*envp, key, key_len) == 0))
+		if (ft_strncmp(*envp, key, key_len) == 0 && (*envp)[key_len] == '=')
 		{
-			new_env[i++] = *envp;
+			free(*envp);
 		}
 		else
 		{
-			free(*envp);
+			new_env[i++] = *envp;
 		}
 		envp++;
 	}
