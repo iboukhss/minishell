@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/17 13:52:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:27:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ void	exec_builtin(t_command *cmd, t_shell *shell)
 	else if (strcmp(cmd->args[0], "pwd") == 0)
 	{
 		builtin_pwd(cmd, shell);
+	}
+	else if (strcmp(cmd->args[0], "cd") == 0)
+	{
+		builtin_cd(cmd, shell);
 	}
 }
 
