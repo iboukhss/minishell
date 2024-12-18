@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/17 13:51:35 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:05:31 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ void	builtin_export(t_command *cmd, t_shell *shell);
 void	builtin_exit(t_command *cmd, t_shell *shell);
 void	builtin_echo(t_command *cmd, t_shell *shell);
 void	builtin_pwd(t_command *cmd, t_shell *shell);
+void	builtin_cd(t_command *cmd, t_shell *shell);
 
 #endif
