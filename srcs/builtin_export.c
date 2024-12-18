@@ -6,66 +6,25 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/17 08:10:52 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:11:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "libft.h"
 
-#include <stdlib.h>
-#include <string.h>
-
 void	builtin_export(t_command *cmd, t_shell *shell)
 {
-	char	*key;
-	int		key_len;
-	char	**envp;
-	int		envp_len;
-	char	**new_env;
-	char	*beg, *end;
-	int		i;
+	int	argc;
 
-	beg = cmd->args[1];
-	end = ft_strchrnul(beg, '=');
-	key_len = end - beg;
-	key = strndup(beg, key_len);
-	envp = shell->envs;
-	envp_len = ft_strlenv(envp);
-	// Variable doesn't exist, allocate new slot
-	if (get_env(key, shell) == NULL)
+	argc = ft_strlenv(cmd->args);
+	if (argc == 2)
 	{
-		new_env = ft_xmalloc((envp_len + 2) * sizeof(*new_env));
-		i = 0;
-		while (*envp != NULL)
-		{
-			new_env[i++] = *envp;
-			envp++;
-		}
-		new_env[i++] = ft_xstrdup(beg);
+		set_env(cmd->args[1], shell);
+		shell->exit_status = 0;
 	}
-	// Variable already exists, overwrite it
 	else
 	{
-		new_env = ft_xmalloc((envp_len + 1) * sizeof(*new_env));
-		i = 0;
-		while (*envp != NULL)
-		{
-			if (ft_strncmp(*envp, key, key_len) == 0 && (*envp)[key_len] == '=')
-			{
-				free(*envp);
-				new_env[i++] = ft_xstrdup(beg);
-			}
-			else
-			{
-				new_env[i++] = *envp;
-			}
-			envp++;
-		}
+		shell->exit_status = 1;
 	}
-	new_env[i] = NULL;
-	free(key);
-	free(shell->envs);
-	shell->envs = new_env;
-	shell->exit_status = 0;
 }

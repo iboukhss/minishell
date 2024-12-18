@@ -26,26 +26,6 @@ void	exit_shell(int status, t_shell *shell)
 	exit(status);
 }
 
-char	*get_env(const char *key, t_shell *shell)
-{
-	char	**envp;
-	int		key_len;
-	int		i;
-
-	envp = shell->envs;
-	key_len = ft_strlen(key);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
-		{
-			return (envp[i] + key_len + 1);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 static char	*resolve_path(const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
