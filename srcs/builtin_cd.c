@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 19:54:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 18:36:02 by iboukhss         ###   ########.fr       */
+/*   Created: 2024/12/17 13:44:17 by iboukhss          #+#    #+#             */
+/*   Updated: 2024/12/18 19:15:23 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,41 @@
 #include "libft.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-void	builtin_env(t_command *cmd, t_shell *shell)
+void	builtin_cd(t_command *cmd, t_shell *shell)
 {
 	int		argc;
-	char	**envp;
+	char	*new_cwd;
 
 	argc = ft_strlenv(cmd->args);
-	envp = shell->envs;
 	if (argc == 1)
 	{
-		while (*envp != NULL)
+		new_cwd = get_env("HOME", shell);
+		if (new_cwd == NULL)
 		{
-			puts(*envp);
-			envp++;
+			fprintf(stderr, "cd: HOME not set\n");
+			exit(EXIT_FAILURE);
 		}
-		shell->exit_status = 0;
+		if (chdir(new_cwd) < 0)
+		{
+			perror("chdir");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (argc == 2)
+	{
+		new_cwd = cmd->args[1];
+		if (chdir(new_cwd) < 0)
+		{
+			perror("chdir");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
+		fprintf(stderr, "cd: too many arguments\n");
 		shell->exit_status = 1;
 	}
 }

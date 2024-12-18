@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/15 06:49:44 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:27:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,6 @@ void	exit_shell(int status, t_shell *shell)
 {
 	shell->exit_status = status;
 	exit(status);
-}
-
-char	*get_env(const char *key, t_shell *shell)
-{
-	char	**envp;
-	int		key_len;
-	int		i;
-
-	envp = shell->envs;
-	key_len = ft_strlen(key);
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
-		{
-			return (envp[i] + key_len + 1);
-		}
-		i++;
-	}
-	return (NULL);
 }
 
 static char	*resolve_path(const char *cmd_name, t_shell *shell)
@@ -113,6 +93,14 @@ void	exec_builtin(t_command *cmd, t_shell *shell)
 	else if (strcmp(cmd->args[0], "echo") == 0)
 	{
 		builtin_echo(cmd, shell);
+	}
+	else if (strcmp(cmd->args[0], "pwd") == 0)
+	{
+		builtin_pwd(cmd, shell);
+	}
+	else if (strcmp(cmd->args[0], "cd") == 0)
+	{
+		builtin_cd(cmd, shell);
 	}
 }
 
