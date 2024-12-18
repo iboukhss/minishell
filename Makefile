@@ -34,6 +34,7 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				builtin_pwd.c \
 				builtin_unset.c \
 				exec_command.c \
+				env.c \
 				minishell.c \
 				setup_redirections.c \
 				get_token.c \
