@@ -6,13 +6,15 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 16:11:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:32:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "libft.h"
 
+// TODO(ismail): Handle case where experssion doesn't contain an assignment.
+// Meaning, no equal sign.
 void	builtin_export(t_command *cmd, t_shell *shell)
 {
 	int	argc;

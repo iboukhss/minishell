@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:44:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 18:18:40 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:15:23 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,10 @@ void	builtin_cd(t_command *cmd, t_shell *shell)
 			perror("chdir");
 			exit(EXIT_FAILURE);
 		}
+	}
+	else
+	{
+		fprintf(stderr, "cd: too many arguments\n");
+		shell->exit_status = 1;
 	}
 }
