@@ -6,31 +6,36 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/17 13:50:13 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:29:13 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "libft.h"
 
+#include <linux/limits.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void	builtin_pwd(t_command *cmd, t_shell *shell)
 {
 	int		argc;
-	char	*cwd;
+	char	cwd[PATH_MAX];
 
 	argc = ft_strlenv(cmd->args);
 	if (argc == 1)
 	{
-		cwd = get_env("PWD", shell);
-		if (cwd == NULL)
+		if (getcwd(cwd, PATH_MAX) == NULL)
 		{
-			// Find something else
+			perror("getcwd");
+			exit(EXIT_FAILURE);
 		}
-		else
-		{
-			puts(cwd);
-		}
+		puts(cwd);
+		shell->exit_status = 1;
+	}
+	else
+	{
+		shell->exit_status = 1;
 	}
 }
