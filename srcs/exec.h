@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 14:57:02 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:44:27 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	exit_shell(int status, t_shell *shell);
 int		setup_redirections(t_command *cmd);
 
 char	*get_env(const char *key, t_shell *shell);
-int		unset_env(const char *key, t_shell *shell);
+void	unset_env(const char *key, t_shell *shell);
 void	set_env(const char *expr, t_shell *shell);
 
 // Builtins

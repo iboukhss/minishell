@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/14 17:10:35 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:14:53 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,28 @@
 #include "libft.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
+// TODO(ismail): atoi can fail, needs improvement.
 void	builtin_exit(t_command *cmd, t_shell *shell)
 {
 	int	argc;
 	int	status;
 
 	argc = ft_strlenv(cmd->args);
-	if (argc < 2)
+	if (argc == 1)
 	{
 		status = shell->exit_status;
+		exit_shell(status, shell);
+	}
+	else if (argc == 2)
+	{
+		status = atoi(cmd->args[1]);
+		exit_shell(status, shell);
 	}
 	else
 	{
-		status = atoi(cmd->args[1]);
+		fprintf(stderr, "exit: too many arguments\n");
+		shell->exit_status = 1;
 	}
-	exit_shell(status, shell);
 }

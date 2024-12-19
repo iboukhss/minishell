@@ -6,13 +6,16 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 16:11:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:40:42 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "libft.h"
 
+#include <stdio.h>
+
+// TODO(ismail): Improve this function to handle multiple variables.
 void	builtin_export(t_command *cmd, t_shell *shell)
 {
 	int	argc;
@@ -25,6 +28,7 @@ void	builtin_export(t_command *cmd, t_shell *shell)
 	}
 	else
 	{
+		fprintf(stderr, "export: too many arguments\n");
 		shell->exit_status = 1;
 	}
 }
