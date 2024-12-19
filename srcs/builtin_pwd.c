@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 14:35:53 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:44:30 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ void	builtin_pwd(t_command *cmd, t_shell *shell)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
 		{
-			perror("getcwd");
-			exit(EXIT_FAILURE);
+			perror("pwd: getcwd");
+			shell->exit_status = 1;
+			return ;
 		}
 		puts(cwd);
 		shell->exit_status = 0;
 	}
 	else
 	{
+		fprintf(stderr, "pwd: too many arguments\n");
 		shell->exit_status = 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 06:42:18 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/15 06:52:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:57:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,34 @@
 #include "libft.h"
 
 #include <stdio.h>
+#include <string.h>
 
-// TODO(ismail): Implement the "-n" option.
 void	builtin_echo(t_command *cmd, t_shell *shell)
 {
-	int	argc;
-	int	i;
+	bool	newline;
+	int		argc;
+	int		i;
 
 	argc = ft_strlenv(cmd->args);
+	newline = 1;
 	i = 1;
+	if (argc >= 2 && strcmp(cmd->args[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
 	while (i < argc)
 	{
-		if (i + 1 == argc)
+		printf("%s", cmd->args[i]);
+		if (i + 1 < argc)
 		{
-			(void)printf("%s\n", cmd->args[i]);
-		}
-		else
-		{
-			(void)printf("%s ", cmd->args[i]);
+			printf(" ");
 		}
 		i++;
+	}
+	if (newline)
+	{
+		printf("\n");
 	}
 	shell->exit_status = 0;
 }

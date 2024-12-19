@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 11:27:24 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 14:57:30 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:44:17 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_env(const char *key, t_shell *shell)
 	return (NULL);
 }
 
-int	unset_env(const char *key, t_shell *shell)
+void	unset_env(const char *key, t_shell *shell)
 {
 	char	**envp;
 	char	**new_envp;
@@ -46,7 +46,7 @@ int	unset_env(const char *key, t_shell *shell)
 
 	if (get_env(key, shell) == NULL)
 	{
-		return (1);
+		return ;
 	}
 	envp = shell->envs;
 	envp_len = ft_strlenv(envp);
@@ -68,7 +68,6 @@ int	unset_env(const char *key, t_shell *shell)
 	new_envp[i] = NULL;
 	free(shell->envs);
 	shell->envs = new_envp;
-	return (0);
 }
 
 void	set_env(const char *expr, t_shell *shell)

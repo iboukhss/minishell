@@ -6,12 +6,14 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 13:17:02 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:45:25 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "libft.h"
+
+#include <stdio.h>
 
 void	builtin_unset(t_command *cmd, t_shell *shell)
 {
@@ -20,17 +22,12 @@ void	builtin_unset(t_command *cmd, t_shell *shell)
 	argc = ft_strlenv(cmd->args);
 	if (argc == 2)
 	{
-		if (unset_env(cmd->args[1], shell) == 0)
-		{
-			shell->exit_status = 0;
-		}
-		else
-		{
-			shell->exit_status = 1;
-		}
+		unset_env(cmd->args[1], shell);
+		shell->exit_status = 0;
 	}
 	else
 	{
+		fprintf(stderr, "unset: too many arguments\n");
 		shell->exit_status = 1;
 	}
 }
