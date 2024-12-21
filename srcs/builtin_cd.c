@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:44:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 17:01:09 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:01 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	builtin_cd(t_command *cmd, t_shell *shell)
 	int		argc;
 	char	*new_cwd;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
 		new_cwd = get_env("HOME", shell);

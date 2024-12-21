@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 13:45:25 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:00 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	builtin_unset(t_command *cmd, t_shell *shell)
 {
 	int	argc;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	if (argc == 2)
 	{
 		unset_env(cmd->args[1], shell);

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:54:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 16:58:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:01 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	builtin_env(t_command *cmd, t_shell *shell)
 	int		argc;
 	char	**envp;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	envp = shell->envs;
 	if (argc == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 06:42:18 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 16:57:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	builtin_echo(t_command *cmd, t_shell *shell)
 	int		argc;
 	int		i;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	newline = 1;
 	i = 1;
 	if (argc >= 2 && strcmp(cmd->args[i], "-n") == 0)
