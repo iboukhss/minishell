@@ -14,8 +14,9 @@
 # define MINISHELL_H
 
 # define WHITESPACE " \t\r\n\v"
+# define QUOTES "\'\""
 # define ACK_SYMBOLS "<|>"
-# define NAK_SYMBOLS "&/;"
+# define NAK_SYMBOLS "&;"
 # define MAX_ARGS 50
 
 // Try to keep includes as lean as possible (only add typedef includes here)
@@ -52,6 +53,10 @@ typedef struct s_token
 }	t_token;
 
 int			tokenize(char *line, t_token **token_list);
+char 		*tokenize_ack_sym(t_token **token_list, char *line);
+char 		*tokenize_quotes(t_token **token_list, char *line, char quote);
+char 		*tokenize_content(t_token **token_list, char *line);
+char 		*scan_quote(char *line, char quote);
 void		add_back_token(t_token **token_list, t_token *new_token);
 void		add_back_cmd(t_command **cmd_head, t_command *new_cmd);
 void		print_token_list(t_token *token_list);

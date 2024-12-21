@@ -14,6 +14,22 @@
 
 #include <stdlib.h>
 
+char *scan_quote(char *line, char quote)
+{
+	int	i;
+
+	i = 1;
+	while (line[i] != '\0')
+	{
+		if (line[i] == quote)
+		{
+			return (line + (i + 1));
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 void add_back_token(t_token **token_head, t_token *new_token)
 {
 	t_token *current;
