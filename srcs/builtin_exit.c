@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 19:14:53 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:06 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	builtin_exit(t_command *cmd, t_shell *shell)
 	int	argc;
 	int	status;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
 		status = shell->exit_status;

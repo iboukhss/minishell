@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 13:40:42 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:05 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	builtin_export(t_command *cmd, t_shell *shell)
 {
 	int	argc;
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	if (argc == 2)
 	{
 		set_env(cmd->args[1], shell);

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 14:44:30 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	builtin_pwd(t_command *cmd, t_shell *shell)
 	int		argc;
 	char	cwd[PATH_MAX];
 
-	argc = ft_strlenv(cmd->args);
+	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
