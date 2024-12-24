@@ -1,8 +1,6 @@
 # variables to store the names used
 PROJ_NAME = minishell
 LIBFT_NAME = libft.a
-GREEN = \033[32m
-RESET = \033[0m
 
 # directories
 LIBFT_DIR = libft
@@ -10,22 +8,22 @@ PROJ_SRCS_DIR = srcs
 
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
+				ft_isalnum.c \
 				ft_memcpy.c \
+				ft_strchr.c \
+				ft_strchrnul.c \
 				ft_strcpy.c \
 				ft_strdup.c \
 				ft_strfreev.c \
-				ft_strlen.c \
+				ft_strjoin.c \
 				ft_strlcpy.c \
-				ft_strchr.c \
-				ft_strchrnul.c \
+				ft_strlen.c \
+				ft_strncmp.c \
 				ft_strv_length.c \
 				ft_substr.c \
 				ft_xmalloc.c \
 				ft_xstrdup.c \
-				ft_xstrdupv.c \
-				ft_strncmp.c \
-				ft_strjoin.c \
-				ft_isalnum.c)
+				ft_xstrdupv.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				builtin_cd.c \
@@ -35,22 +33,22 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				builtin_export.c \
 				builtin_pwd.c \
 				builtin_unset.c \
-				exec_command.c \
-				env.c \
-				minishell.c \
-				setup_redirections.c \
-				get_token.c \
-				debug.c \
-				free.c \
-				token_functions.c \
-				token_sanitizer.c \
 				cmd_functions.c \
-				parser.c)
+				debug.c \
+				env.c \
+				exec_command.c \
+				free.c \
+				get_token.c \
+				minishell.c \
+				parser.c \
+				setup_redirections.c \
+				token_functions.c \
+				token_sanitizer.c)
 
 # header files
-LIBFT_INCS = $(addprefix $(LIBFT_DIR)/, libft.h)
+LIBFT_HDRS = $(addprefix $(LIBFT_DIR)/, libft.h)
 
-PROJ_INCS = $(addprefix $(PROJ_SRCS_DIR)/, \
+PROJ_HDRS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec.h \
 				minishell.h)
 
@@ -60,14 +58,15 @@ LIBFT_DEPS = $(LIBFT_OBJS:.o=.d)
 PROJ_OBJS = $(PROJ_SRCS:.c=.o)
 PROJ_DEPS = $(PROJ_OBJS:.o=.d)
 
-# general c flags (no -Werror)
-CFLAGS = -Wall -Wextra
+# general debug c flags
+CFLAGS += -Wall -Wextra -g3 -MMD
 
-# debug c flags (full debug with sanitizers and dependency generation)
-CFLAGS += -g3 -fsanitize=address,undefined -MMD
+# asan flags (disabled because of conflict with valgrind)
+# pass these flags via environment if necessary
+#CFLAGS += -fsanitize=address,undefined
 
-# include dirs
-CFLAGS += -I$(LIBFT_DIR)
+# c preprocessor flags
+CPPFLAGS = -I$(LIBFT_DIR)
 
 # linker flags
 LDLIBS = -L.
@@ -87,28 +86,25 @@ $(LIBFT_NAME): $(LIBFT_OBJS)
 
 # rules to build my project
 $(PROJ_NAME): $(LIBFT_NAME) $(PROJ_OBJS)
-	$(CC) $(CFLAGS) -o $(PROJ_NAME) $(PROJ_OBJS) $(LDLIBS) $(LDFLAGS)
-	@echo " "
-	@echo "$(GREEN)     ========>>>>>> PROJECT COMPILED SUCCESSFULLY <<<<<<========      "
-	@echo "$(RESET)"
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(PROJ_NAME) $(PROJ_OBJS) $(LDLIBS) $(LDFLAGS)
 
 clean:
-	$(RM) $(PROJ_OBJS) $(PROJ_DEPS)
-	$(RM) $(LIBFT_OBJS) $(LIBFT_DEPS)
+	$(RM) $(LIBFT_OBJS) $(PROJ_OBJS)
+	$(RM) $(LIBFT_DEPS) $(PROJ_DEPS)
 
 fclean: clean
-	$(RM) $(PROJ_NAME)
 	$(RM) $(LIBFT_NAME)
+	$(RM) $(PROJ_NAME)
 
 re: fclean all
 
 norm:
-	-norminette $(LIBFT_SRCS) $(LIBFT_INCS) $(PROJ_SRCS) $(PROJ_INCS)
+	-norminette $(LIBFT_HDRS) $(LIBFT_SRCS) $(PROJ_HDRS) $(PROJ_SRCS)
 
 run: all
 	./$(PROJ_NAME)
 
 val: all
-	valgrind ./$(PROJ_NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(PROJ_NAME)
 
 -include $(LIBFT_DEPS) $(PROJ_DEPS)
