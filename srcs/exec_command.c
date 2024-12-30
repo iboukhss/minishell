@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 11:27:59 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/30 06:18:48 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void	exit_shell(int status, t_shell *shell)
-{
-	shell->exit_status = status;
-	exit(status);
-}
-
+// NOTE(ismail): Assuming this function is always called from a child process?
+// This is probably bad.
 static char	*resolve_path(const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
@@ -41,7 +37,7 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 	if (path_var == NULL)
 	{
 		fprintf(stderr, "PATH variable not set\n");
-		exit_shell(EXIT_FAILURE, shell);
+		exit(EXIT_FAILURE);
 	}
 	beg = path_var;
 	end = beg;
@@ -52,12 +48,7 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 		if (end - beg > 0)
 		{
 			dir_name = strndup(beg, end - beg);
-			if (asprintf(&cmd_path, "%s/%s", dir_name, cmd_name) == -1)
-			{
-				perror("asprintf");
-				free(dir_name);
-				return (NULL);
-			}
+			asprintf(&cmd_path, "%s/%s", dir_name, cmd_name);
 			free(dir_name);
 			if (access(cmd_path, X_OK) == 0)
 			{
@@ -68,11 +59,10 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 		beg = end + 1;
 	}
 	fprintf(stderr, "%s: command not found\n", cmd_name);
-	exit_shell(127, shell);
-	return (NULL);
+	exit(127);
 }
 
-void	exec_builtin(t_command *cmd, t_shell *shell)
+int	exec_builtin(t_command *cmd, t_shell *shell)
 {
 	if (strcmp(cmd->args[0], "env") == 0)
 	{
@@ -102,56 +92,69 @@ void	exec_builtin(t_command *cmd, t_shell *shell)
 	{
 		builtin_cd(cmd, shell);
 	}
+	// TODO(ismail): Change this.
+	return (0);
+}
+
+// TODO(ismail): Find a way to make the exit status propagate more reliably.
+int	exec_external(t_command *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	char	*bin_path;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		bin_path = resolve_path(cmd->args[0], shell);
+		execve(bin_path, cmd->args, shell->envs);
+		perror(cmd->args[0]);
+		free(bin_path);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid");
+			return (1);
+		}
+		if (WIFEXITED(status))
+		{
+			return (WEXITSTATUS(status));
+		}
+		else if (WIFSIGNALED(status))
+		{
+			return (128 + WTERMSIG(status));
+		}
+		return (1);
+	}
 }
 
 void	exec_command(t_command *cmd, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
+	int	saved_stdin;
+	int	saved_stdout;
 
-	if (cmd->is_builtin)
+	backup_io(cmd, &saved_stdin, &saved_stdout);
+	if (redirect_io(cmd) == -1)
 	{
-		exec_builtin(cmd, shell);
+		restore_io(cmd, saved_stdin, saved_stdout);
+		shell->exit_status = EXIT_FAILURE;
 		return ;
 	}
-	pid = fork();
-	if (pid < 0)
+	if (cmd->is_builtin)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		shell->exit_status = exec_builtin(cmd, shell);
 	}
-	// Child process
-	if (pid == 0)
-	{
-		// Any memory allocated, file descriptors duplicated only affect
-		// this context, so in theory there should be no memory leaks, or
-		// issues with file descriptors not restored.
-		if (setup_redirections(cmd) < 0)
-		{
-			exit_shell(EXIT_FAILURE, shell);
-		}
-		cmd_path = resolve_path(cmd->args[0], shell);
-		execve(cmd_path, cmd->args, shell->envs);
-		perror("execve");
-		free(cmd_path);
-		exit_shell(EXIT_FAILURE, shell);
-	}
-	// Parent process
 	else
 	{
-		if (waitpid(pid, &status, 0) < 0)
-		{
-			perror("waitpid");
-			shell->exit_status = 1;
-		}
-		if (WIFEXITED(status))
-		{
-			shell->exit_status = WEXITSTATUS(status);
-		}
-		else
-		{
-			shell->exit_status = 1;
-		}
+		shell->exit_status = exec_external(cmd, shell);
 	}
+	restore_io(cmd, saved_stdin, saved_stdout);
 }

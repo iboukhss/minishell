@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/21 22:25:06 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/30 06:16:31 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,19 @@
 void	builtin_exit(t_command *cmd, t_shell *shell)
 {
 	int	argc;
-	int	status;
 
 	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
-		status = shell->exit_status;
-		exit_shell(status, shell);
+		exit(shell->exit_status);
 	}
 	else if (argc == 2)
 	{
-		status = atoi(cmd->args[1]);
-		exit_shell(status, shell);
+		exit(atoi(cmd->args[1]));
 	}
 	else
 	{
 		fprintf(stderr, "exit: too many arguments\n");
-		shell->exit_status = 1;
+		exit(EXIT_FAILURE);
 	}
 }

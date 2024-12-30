@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 13:44:27 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/30 06:29:25 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@
 
 // Add function prototypes here
 void	exec_command(t_command *cmd, t_shell *shell);
-void	exec_builtin(t_command *cmd, t_shell *shell);
+int		exec_builtin(t_command *cmd, t_shell *shell);
+int		exec_external(t_command *cmd, t_shell *shell);
 
-void	exit_shell(int status, t_shell *shell);
-int		setup_redirections(t_command *cmd);
+int		backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout);
+int		redirect_io(t_command *cmd);
+int		restore_io(t_command *cmd, int saved_stdin, int saved_stdout);
 
 char	*get_env(const char *key, t_shell *shell);
 void	unset_env(const char *key, t_shell *shell);
