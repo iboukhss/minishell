@@ -11,14 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include "libft.h"
 #include <stdlib.h>
-
-
-char *sanitize_token_content(t_token *token)
-{
-	
-}
 
 char *scan_quote(char *line, char quote)
 {
