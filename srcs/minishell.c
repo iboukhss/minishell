@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		add_history(line);
-		token_list = get_token(line);
+		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
 			free(line);

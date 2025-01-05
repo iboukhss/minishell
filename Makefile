@@ -23,7 +23,9 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_xmalloc.c \
 				ft_xstrdup.c \
 				ft_xstrdupv.c \
-				ft_strncmp.c)
+				ft_strncmp.c \
+				ft_strjoin.c \
+				ft_isalnum.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				builtin_cd.c \
@@ -41,6 +43,7 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				debug.c \
 				free.c \
 				token_functions.c \
+				token_sanitizer.c \
 				cmd_functions.c \
 				parser.c)
 
