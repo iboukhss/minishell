@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/21 22:25:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:54:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,26 @@
 
 #include <linux/limits.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 // NOTE(ismail): Will fail if the current working directory is somehow longer
 // than PATH_MAX.
-void	builtin_pwd(t_command *cmd, t_shell *shell)
+int	builtin_pwd(t_command *cmd, t_shell *shell)
 {
 	int		argc;
 	char	cwd[PATH_MAX];
 
 	argc = ft_strv_length(cmd->args);
-	if (argc == 1)
-	{
-		if (getcwd(cwd, PATH_MAX) == NULL)
-		{
-			perror("pwd: getcwd");
-			shell->exit_status = 1;
-			return ;
-		}
-		puts(cwd);
-		shell->exit_status = 0;
-	}
-	else
+	if (argc != 1)
 	{
 		fprintf(stderr, "pwd: too many arguments\n");
-		shell->exit_status = 1;
+		return (MS_XBADUSAGE);
 	}
+	if (getcwd(cwd, PATH_MAX) == NULL)
+	{
+		perror("pwd: getcwd");
+		return (MS_XFAILURE);
+	}
+	puts(cwd);
+	return (MS_XSUCCESS);
 }
