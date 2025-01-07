@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/30 06:16:31 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:54:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// TODO(ismail): atoi can fail, needs improvement.
-void	builtin_exit(t_command *cmd, t_shell *shell)
+// TODO(ismail): Handle more error codes.
+int	builtin_exit(t_command *cmd, t_shell *shell)
 {
 	int	argc;
 
@@ -33,6 +33,6 @@ void	builtin_exit(t_command *cmd, t_shell *shell)
 	else
 	{
 		fprintf(stderr, "exit: too many arguments\n");
-		exit(EXIT_FAILURE);
+		return (MS_XBADUSAGE);
 	}
 }

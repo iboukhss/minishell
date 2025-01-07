@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 06:42:18 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/21 22:25:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:33:22 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void	builtin_echo(t_command *cmd, t_shell *shell)
+int	builtin_echo(t_command *cmd, t_shell *shell)
 {
 	bool	newline;
 	int		argc;
@@ -43,5 +43,5 @@ void	builtin_echo(t_command *cmd, t_shell *shell)
 	{
 		printf("\n");
 	}
-	shell->exit_status = 0;
+	return (MS_XSUCCESS);
 }

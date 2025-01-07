@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/30 06:29:25 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:15:42 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "minishell.h"
 
 // Add function prototypes here
+int		find_command(char **cmd_path, const char *cmd_name, t_shell *shell);
+
 void	exec_command(t_command *cmd, t_shell *shell);
 int		exec_builtin(t_command *cmd, t_shell *shell);
 int		exec_external(t_command *cmd, t_shell *shell);
@@ -29,12 +31,12 @@ void	unset_env(const char *key, t_shell *shell);
 void	set_env(const char *expr, t_shell *shell);
 
 // Builtins
-void	builtin_env(t_command *cmd, t_shell *shell);
-void	builtin_unset(t_command *cmd, t_shell *shell);
-void	builtin_export(t_command *cmd, t_shell *shell);
-void	builtin_exit(t_command *cmd, t_shell *shell);
-void	builtin_echo(t_command *cmd, t_shell *shell);
-void	builtin_pwd(t_command *cmd, t_shell *shell);
-void	builtin_cd(t_command *cmd, t_shell *shell);
+int		builtin_env(t_command *cmd, t_shell *shell);
+int		builtin_unset(t_command *cmd, t_shell *shell);
+int		builtin_export(t_command *cmd, t_shell *shell);
+int		builtin_exit(t_command *cmd, t_shell *shell);
+int		builtin_echo(t_command *cmd, t_shell *shell);
+int		builtin_pwd(t_command *cmd, t_shell *shell);
+int		builtin_cd(t_command *cmd, t_shell *shell);
 
 #endif
