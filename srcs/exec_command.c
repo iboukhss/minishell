@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/07 12:15:06 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:40:52 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+// TODO(ismail): This function doesn't care about NULL pointers.
 int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
@@ -93,7 +94,7 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	return (MS_XFAILURE);
 }
 
-// TODO(ismail): Find a way to make the exit status propagate more reliably.
+// TODO(ismail): Take care of NULL pointers.
 int	exec_external(t_command *cmd, t_shell *shell)
 {
 	pid_t	pid;

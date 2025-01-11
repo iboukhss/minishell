@@ -6,21 +6,24 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/30 03:55:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/09 19:07:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 #include <fcntl.h>
+#include <readline/readline.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 // NOTE(ismail): Error handling is not perfect but it should be fine.
 
 int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
 {
-	if (cmd->infile)
+	if (cmd->heredoc || cmd->infile)
 	{
 		*saved_stdin = dup(STDIN_FILENO);
 		if (*saved_stdin == -1)
@@ -43,10 +46,38 @@ int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
 
 int	redirect_io(t_command *cmd)
 {
-	int	fd;
-	int	flags;
+	int		fd;
+	int		flags;
+	int		pipefd[2];
+	pid_t	pid;
 
-	if (cmd->infile)
+	if (cmd->heredoc)
+	{
+		pipe(pipefd);
+		pid = fork();
+		if (pid == 0)
+		{
+			close(pipefd[0]);
+			while (1)
+			{
+				char *line = readline("> ");
+				if (line == NULL || strcmp(line, cmd->heredoc) == 0)
+				{
+					free(line);
+					break ;
+				}
+				dprintf(pipefd[1], "%s\n", line);
+				free(line);
+			}
+			close(pipefd[1]);
+			exit(MS_XSUCCESS);
+		}
+		close(pipefd[1]);
+		waitpid(pid, NULL, 0);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+	}
+	else if (cmd->infile)
 	{
 		fd = open(cmd->infile, O_RDONLY);
 		if (fd == -1)
@@ -75,7 +106,7 @@ int	redirect_io(t_command *cmd)
 // Cleanup function
 int	restore_io(t_command *cmd, int saved_stdin, int saved_stdout)
 {
-	if (cmd->infile)
+	if (cmd->heredoc || cmd->infile)
 	{
 		if (dup2(saved_stdin, STDIN_FILENO) == -1)
 		{
