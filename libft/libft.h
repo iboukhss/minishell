@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2024/12/14 17:13:21 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:24:46 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ char	*ft_xstrdup(const char *s);
 // String array functions (glib)
 char	**ft_xstrdupv(char **str_array);
 void	ft_strfreev(char **str_array);
-int		ft_strlenv(char **str_array);
+int		ft_strv_length(char **str_array);
 
 #endif

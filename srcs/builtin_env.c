@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 19:54:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 16:58:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/07 12:54:14 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,22 @@
 
 #include <stdio.h>
 
-void	builtin_env(t_command *cmd, t_shell *shell)
+int	builtin_env(t_command *cmd, t_shell *shell)
 {
 	int		argc;
 	char	**envp;
 
-	argc = ft_strlenv(cmd->args);
-	envp = shell->envs;
-	if (argc == 1)
-	{
-		while (*envp != NULL)
-		{
-			printf("%s\n", *envp);
-			envp++;
-		}
-		shell->exit_status = 0;
-	}
-	else
+	argc = ft_strv_length(cmd->args);
+	if (argc != 1)
 	{
 		fprintf(stderr, "env: too many arguments\n");
-		shell->exit_status = 1;
+		return (MS_XBADUSAGE);
 	}
+	envp = shell->envs;
+	while (*envp != NULL)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
+	return (MS_XSUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 11:27:24 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/19 13:44:17 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/21 22:25:03 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	unset_env(const char *key, t_shell *shell)
 		return ;
 	}
 	envp = shell->envs;
-	envp_len = ft_strlenv(envp);
+	envp_len = ft_strv_length(envp);
 	new_envp = ft_xmalloc(envp_len * sizeof(*new_envp));
 	key_len = ft_strlen(key);
 	i = 0;
@@ -83,7 +83,7 @@ void	set_env(const char *expr, t_shell *shell)
 	end = ft_strchrnul(beg, '=');
 	key = strndup(beg, end - beg);
 	envp = shell->envs;
-	envp_len = ft_strlenv(envp);
+	envp_len = ft_strv_length(envp);
 	if (get_env(key, shell) == NULL)
 	{
 		new_envp = ft_xmalloc((envp_len + 2) * sizeof(*new_envp));

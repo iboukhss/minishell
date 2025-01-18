@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/12 12:53:24 by iboukhss         ###   ########.fr       */
+/*   Updated: 2024/12/29 15:14:09 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
+		fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
 		free_all(line, token_list, cmd_list);
 	}
 	rl_clear_history();

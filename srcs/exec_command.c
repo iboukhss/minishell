@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/18 11:27:59 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:40:52 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ void	exit_shell(int status, t_shell *shell)
 static char	*resolve_path(const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
-	char	*cmd_path;
 	char	*dir_name;
 	char	*beg, *end;
 
 	if (access(cmd_name, X_OK) == 0)
 	{
-		return (ft_xstrdup(cmd_name));
+		*cmd_path = ft_xstrdup(cmd_name);
+		return (MS_XSUCCESS);
 	}
 	path_var = get_env("PATH", shell);
 	if (path_var == NULL)
 	{
 		fprintf(stderr, "PATH variable not set\n");
-		exit_shell(EXIT_FAILURE, shell);
+		return (MS_XNOTFOUND);
 	}
 	beg = path_var;
 	end = beg;
@@ -58,106 +58,117 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 		if (end - beg > 0)
 		{
 			dir_name = strndup(beg, end - beg);
-			if (asprintf(&cmd_path, "%s/%s", dir_name, cmd_name) == -1)
-			{
-				perror("asprintf");
-				free(dir_name);
-				return (NULL);
-			}
+			asprintf(cmd_path, "%s/%s", dir_name, cmd_name);
 			free(dir_name);
-			if (access(cmd_path, X_OK) == 0)
+			if (access(*cmd_path, X_OK) == 0)
 			{
-				return (cmd_path);
+				return (MS_XSUCCESS);
 			}
-			free(cmd_path);
+			free(*cmd_path);
 		}
 		beg = end + 1;
 	}
 	fprintf(stderr, "%s: command not found\n", cmd_name);
-	exit_shell(127, shell);
-	return (NULL);
+	return (MS_XNOTFOUND);
 }
 
-void	exec_builtin(t_command *cmd, t_shell *shell)
+int	exec_builtin(t_command *cmd, t_shell *shell)
 {
 	if (strcmp(cmd->args[0], "env") == 0)
 	{
-		builtin_env(cmd, shell);
+		return (builtin_env(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "unset") == 0)
 	{
-		builtin_unset(cmd, shell);
+		return (builtin_unset(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "export") == 0)
 	{
-		builtin_export(cmd, shell);
+		return (builtin_export(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "exit") == 0)
 	{
-		builtin_exit(cmd, shell);
+		return (builtin_exit(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "echo") == 0)
 	{
-		builtin_echo(cmd, shell);
+		return (builtin_echo(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "pwd") == 0)
 	{
-		builtin_pwd(cmd, shell);
+		return (builtin_pwd(cmd, shell));
 	}
 	else if (strcmp(cmd->args[0], "cd") == 0)
 	{
-		builtin_cd(cmd, shell);
+		return (builtin_cd(cmd, shell));
+	}
+	return (MS_XFAILURE);
+}
+
+// TODO(ismail): Take care of NULL pointers.
+int	exec_external(t_command *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	char	*bin_path;
+	int		status;
+	int		err;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		err = find_command(&bin_path, cmd->args[0], shell);
+		if (err)
+		{
+			exit(err);
+		}
+		execve(bin_path, cmd->args, shell->envs);
+		perror(cmd->args[0]);
+		free(bin_path);
+		exit(MS_XFAILURE);
+	}
+	else
+	{
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid");
+			return (MS_XFAILURE);
+		}
+		if (WIFEXITED(status))
+		{
+			return (WEXITSTATUS(status));
+		}
+		else if (WIFSIGNALED(status))
+		{
+			return (128 + WTERMSIG(status));
+		}
+		return (MS_XFAILURE);
 	}
 }
 
 void	exec_command(t_command *cmd, t_shell *shell)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
+	int	saved_stdin;
+	int	saved_stdout;
 
-	if (cmd->is_builtin)
+	backup_io(cmd, &saved_stdin, &saved_stdout);
+	if (redirect_io(cmd) == -1)
 	{
-		exec_builtin(cmd, shell);
+		restore_io(cmd, saved_stdin, saved_stdout);
+		shell->exit_status = MS_XFAILURE;
 		return ;
 	}
-	pid = fork();
-	if (pid < 0)
+	if (cmd->is_builtin)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		shell->exit_status = exec_builtin(cmd, shell);
 	}
-	// Child process
-	if (pid == 0)
-	{
-		// Any memory allocated, file descriptors duplicated only affect
-		// this context, so in theory there should be no memory leaks, or
-		// issues with file descriptors not restored.
-		if (setup_redirections(cmd) < 0)
-		{
-			exit_shell(EXIT_FAILURE, shell);
-		}
-		cmd_path = resolve_path(cmd->args[0], shell);
-		execve(cmd_path, cmd->args, shell->envs);
-		perror("execve");
-		free(cmd_path);
-		exit_shell(EXIT_FAILURE, shell);
-	}
-	// Parent process
 	else
 	{
-		if (waitpid(pid, &status, 0) < 0)
-		{
-			perror("waitpid");
-			shell->exit_status = 1;
-		}
-		if (WIFEXITED(status))
-		{
-			shell->exit_status = WEXITSTATUS(status);
-		}
-		else
-		{
-			shell->exit_status = 1;
-		}
+		shell->exit_status = exec_external(cmd, shell);
 	}
+	restore_io(cmd, saved_stdin, saved_stdout);
 }

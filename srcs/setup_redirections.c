@@ -6,59 +6,123 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/15 06:30:59 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/09 19:07:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 #include <fcntl.h>
+#include <readline/readline.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
-// NOTE(ismail): The file descriptor table is copied on fork() but remains
-// separate between processes, that means, modifications to the file
-// descriptors of the child process won't propagate back to the parent process.
-int	setup_redirections(t_command *cmd)
-{
-	int	fd;
-	int	oflags;
+// NOTE(ismail): Error handling is not perfect but it should be fine.
 
-	// Output redir (> and >>)
+int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
+{
+	if (cmd->heredoc || cmd->infile)
+	{
+		*saved_stdin = dup(STDIN_FILENO);
+		if (*saved_stdin == -1)
+		{
+			perror("dup: failed to backup stdin");
+			return (-1);
+		}
+	}
 	if (cmd->outfile)
 	{
-		oflags = O_WRONLY | O_CREAT | (cmd->append_mode ? O_APPEND : O_TRUNC);
-		fd = open(cmd->outfile, oflags, 0644);
-		if (fd < 0)
+		*saved_stdout = dup(STDOUT_FILENO);
+		if (*saved_stdout == -1)
 		{
-			perror(cmd->outfile);
+			perror("dup: failed to backup stdout");
 			return (-1);
 		}
-		if (dup2(fd, STDOUT_FILENO) < 0)
-		{
-			perror("dup2");
-			close(fd);
-			return (-1);
-		}
-		close(fd);
 	}
-	// Input redir (<)
-	if (cmd->infile)
+	return (0);
+}
+
+int	redirect_io(t_command *cmd)
+{
+	int		fd;
+	int		flags;
+	int		pipefd[2];
+	pid_t	pid;
+
+	if (cmd->heredoc)
 	{
-		oflags = O_RDONLY;
-		fd = open(cmd->infile, oflags);
-		if (fd < 0)
+		pipe(pipefd);
+		pid = fork();
+		if (pid == 0)
+		{
+			close(pipefd[0]);
+			while (1)
+			{
+				char *line = readline("> ");
+				if (line == NULL || strcmp(line, cmd->heredoc) == 0)
+				{
+					free(line);
+					break ;
+				}
+				dprintf(pipefd[1], "%s\n", line);
+				free(line);
+			}
+			close(pipefd[1]);
+			exit(MS_XSUCCESS);
+		}
+		close(pipefd[1]);
+		waitpid(pid, NULL, 0);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+	}
+	else if (cmd->infile)
+	{
+		fd = open(cmd->infile, O_RDONLY);
+		if (fd == -1)
 		{
 			perror(cmd->infile);
 			return (-1);
 		}
-		if (dup2(fd, STDIN_FILENO) < 0)
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+	}
+	if (cmd->outfile)
+	{
+		flags = O_WRONLY | O_CREAT | (cmd->append_mode ? O_APPEND : O_TRUNC);
+		fd = open(cmd->outfile, flags, 0644);
+		if (fd == -1)
 		{
-			perror("dup2");
-			close(fd);
+			perror(cmd->outfile);
 			return (-1);
 		}
-		close (fd);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+	return (0);
+}
+
+// Cleanup function
+int	restore_io(t_command *cmd, int saved_stdin, int saved_stdout)
+{
+	if (cmd->heredoc || cmd->infile)
+	{
+		if (dup2(saved_stdin, STDIN_FILENO) == -1)
+		{
+			perror("dup2: failed to restore stdin");
+			return (-1);
+		}
+		close(saved_stdin);
+	}
+	if (cmd->outfile)
+	{
+		if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+		{
+			perror("dup2: failed to restore stdout");
+			return (-1);
+		}
+		close(saved_stdout);
 	}
 	return (0);
 }

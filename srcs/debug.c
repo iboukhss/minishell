@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:18:26 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/11/30 21:18:35 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:37:21 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void print_cmd_list(t_command *cmd_list)
 		printf("Cmd node %d\n", node_count);
 		printf("Cmd node address : %p\n", current);
 		printf("Args : ");
+		// NOTE(ismail): dirty patch to clearly show empty commands
+		if (current->args[0] == NULL) printf("(null)");
 		while (current->args[i] != NULL)
 		{
 			if (i != 0)
