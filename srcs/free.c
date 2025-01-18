@@ -65,7 +65,10 @@ void free_cmd_list(t_command *cmd_list)
 //t_command *cmd_list to be included
 void free_all(char *line, t_token *token_list, t_command *cmd_list)
 {
-	free_token_list(token_list);
-	free_cmd_list(cmd_list);
-	free(line);
+	if (token_list != NULL)
+		free_token_list(token_list);
+	if (cmd_list != NULL)
+		free_cmd_list(cmd_list);
+	if (line != NULL)
+		free(line);
 }

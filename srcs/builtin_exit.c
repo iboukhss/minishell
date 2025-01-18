@@ -24,10 +24,16 @@ int	builtin_exit(t_command *cmd, t_shell *shell)
 	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
+		free_cmd_list(cmd);
+		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
+		//free_shell(shell);
 		exit(shell->exit_status);
 	}
 	else if (argc == 2)
 	{
+		free_cmd_list(cmd);
+		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
+		//free_shell(shell);
 		exit(atoi(cmd->args[1]));
 	}
 	else

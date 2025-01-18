@@ -16,6 +16,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+Description : function to retrieve the value of a key stored in the env.
+Logic : Loop over the keys in the env[i][j] and if the key is found in env[i],
+then return a pointer to the first char following the equal sign env[i][keylen + 1]
+*/
 char	*get_env(const char *key, t_shell *shell)
 {
 	char	**envp;
@@ -36,6 +41,11 @@ char	*get_env(const char *key, t_shell *shell)
 	return (NULL);
 }
 
+/*
+Description: Check if the value exists in the shell->envs.
+If value exists copy over all keys to be kept to new_envs.
+Free(shell->envs) and define shell->envs = new_envs.
+*/
 void	unset_env(const char *key, t_shell *shell)
 {
 	char	**envp;
