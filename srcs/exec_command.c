@@ -13,6 +13,8 @@
 #include "exec.h"
 #include "libft.h"
 
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <linux/limits.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,9 +22,13 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+
+//DHE: Here we need to free : line, line_history and all struct -> store the pointers in the shell struct
 void	exit_shell(int status, t_shell *shell)
 {
 	shell->exit_status = status;
+	rl_clear_history();
+	free(shell);
 	exit(status);
 }
 
