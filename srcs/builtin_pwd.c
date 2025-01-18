@@ -19,7 +19,7 @@
 
 // NOTE(ismail): Will fail if the current working directory is somehow longer
 // than PATH_MAX.
-int	builtin_pwd(t_command *cmd, t_shell *shell)
+int	builtin_pwd(t_command *cmd)
 {
 	int		argc;
 	char	cwd[PATH_MAX];

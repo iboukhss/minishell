@@ -18,7 +18,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-static t_shell	*init_shell(char **envp)
+/*
+Description: allocating memory for the shell struct. Copying the env into shell->envs
+*/
+t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
 
@@ -28,7 +31,7 @@ static t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
-static void	free_shell(t_shell *shell)
+void	free_shell(t_shell *shell)
 {
 	ft_strfreev(shell->envs);
 	free(shell);
@@ -52,28 +55,31 @@ int	main(int argc, char **argv, char **envp)
         line = readline("(minishell) ");
 		if (line == NULL)
 		{
-			break ;
+			continue ;
 		}
 		add_history(line);
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
 			free(line);
-			break ;
+			continue ;
 		}
 		//print_token_list(token_list);
 		cmd_list = parsing_tokens(token_list);
 		if (cmd_list == NULL)
 		{
-			free(token_list);
+			free_token_list(token_list);
 			free(line);
-			break ;
+			continue ;
 		}
-		print_cmd_list(cmd_list);
+		free(line); //free line in case cmd executed = exit
+		free_token_list(token_list); //free line in case cmd executed = exit
+		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
 		fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
-		free_all(line, token_list, cmd_list);
+		free_cmd_list(cmd_list);
     }
+	clear_history();
 	free_shell(shell);
     return (0);
 }

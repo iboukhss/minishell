@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int	builtin_echo(t_command *cmd, t_shell *shell)
+int	builtin_echo(t_command *cmd)
 {
 	bool	newline;
 	int		argc;

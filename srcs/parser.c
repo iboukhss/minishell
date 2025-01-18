@@ -13,9 +13,11 @@
 #include "minishell.h"
 #include "libft.h"
 
-//parse the tokens and assemble cmd structures
-
 /*
+
+Description: Interrate over the token list to build cmd structs.
+A cmd struct corresponds to one or multiple consecutive tokens limited by a pipe or end of the token_list.
+Multiple cmd form the cmd_list.
 
 typedef struct s_command
 {
@@ -29,20 +31,20 @@ typedef struct s_command
 }	t_command;
 
 example : cat file.txt | grep "test" > output.txt
-
-if token->type = 'w' then token->content to args
-if token->type = '<' then (token->next)->content to infile
-if token->type = '>' then (token->next)->content to outfile
-if token->type = '-' then append_mode = TRUE and (token->next)->content to outfile
-if token->type = '+' then handle heredoc deliminter
-if token->type = '|' then current cmd is complete, create next cmd node and point to these one
+	if token->type = 'w' then token->content to args
+	if token->type = '<' then (token->next)->content to infile
+	if token->type = '>' then (token->next)->content to outfile
+	if token->type = '-' then append_mode = TRUE and (token->next)->content to outfile
+	if token->type = '+' then handle heredoc deliminter
+	if token->type = '|' then current cmd is complete, create next cmd node and point to these one
 
 The workflow involves tokenizing → parsing → validating → executing.
 */
 
-//function that returns 1 if the token->content is build in command covered by the subject
-//to do : can the array be defined in the minishell.h ?
 
+/*
+Description: Check if a token->content corresponds to a builtin command.
+*/
 int is_builtin(t_token *token)
 {
 	const char	*builtin_cmd[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
@@ -63,6 +65,9 @@ int is_builtin(t_token *token)
 	return (0);
 }
 
+/*
+Description: Adding token->content to cmd->args
+*/
 int	add_arg(t_command *cmd, t_token *token)
 {
 	int i;
@@ -76,8 +81,9 @@ int	add_arg(t_command *cmd, t_token *token)
 	return (1);
 }
 
-//building the command node
-//QUESTION : Should in the case of our project a builtin command be always in the first place ?
+/*
+Description: Building the command node that is limited by the pipe or end of line.
+*/
 int	build_cmd(t_token *token, t_command *cmd)
 {
 	if (cmd->args[0] == NULL && is_builtin(token) == 1)

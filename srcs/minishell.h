@@ -75,9 +75,11 @@ void		print_cmd_list(t_command *cmd_list);
 void		free_all(char *line, t_token *token_list, t_command *cmd_list);
 void		free_token_list(t_token *head);
 void		free_cmd_list(t_command *cmd_list);
+void		free_shell(t_shell *shell);
 t_token		*get_token(char *line, t_shell *shell);
 t_token		*init_token(char *content, char type);
 t_command	*init_cmd(void);
 t_command	*parsing_tokens(t_token *token_list);
+t_shell		*init_shell(char **envp);
 
 #endif

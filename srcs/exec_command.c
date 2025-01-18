@@ -81,11 +81,11 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	}
 	else if (strcmp(cmd->args[0], "echo") == 0)
 	{
-		return (builtin_echo(cmd, shell));
+		return (builtin_echo(cmd));
 	}
 	else if (strcmp(cmd->args[0], "pwd") == 0)
 	{
-		return (builtin_pwd(cmd, shell));
+		return (builtin_pwd(cmd));
 	}
 	else if (strcmp(cmd->args[0], "cd") == 0)
 	{

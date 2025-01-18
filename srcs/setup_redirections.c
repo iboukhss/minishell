@@ -20,7 +20,11 @@
 #include <unistd.h>
 
 // NOTE(ismail): Error handling is not perfect but it should be fine.
-
+/*
+Description: Backs up the standard input and/or standard output file descriptors 
+if the command involves a heredoc, input redirection, or output redirection.
+Saves the current file descriptors to the provided pointers.
+*/
 int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
 {
 	if (cmd->heredoc || cmd->infile)
