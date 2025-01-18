@@ -37,6 +37,7 @@ static char	*resolve_path(const char *cmd_name, t_shell *shell)
 	char	*path_var;
 	char	*dir_name;
 	char	*beg, *end;
+	char	*cmd_path;
 
 	if (access(cmd_name, X_OK) == 0)
 	{
