@@ -40,7 +40,7 @@ void	free_shell(t_shell *shell)
 // TODO(ismail): Consider adding non-interactive mode with "-c" like BASH
 int	main(int argc, char **argv, char **envp)
 {
-	char		*line;
+	char		*line; //does not to be free'd
 	t_token		*token_list;
 	t_command	*cmd_list;
 	t_shell		*shell;
@@ -61,7 +61,6 @@ int	main(int argc, char **argv, char **envp)
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
-			free(line);
 			continue ;
 		}
 		//print_token_list(token_list);
@@ -69,10 +68,8 @@ int	main(int argc, char **argv, char **envp)
 		if (cmd_list == NULL)
 		{
 			free_token_list(token_list);
-			free(line);
 			continue ;
 		}
-		free(line); //free line in case cmd executed = exit
 		free_token_list(token_list); //free line in case cmd executed = exit
 		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
