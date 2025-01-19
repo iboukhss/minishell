@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/29 15:14:09 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/19 13:32:46 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	free_shell(t_shell *shell)
 // TODO(ismail): Consider adding non-interactive mode with "-c" like BASH
 int	main(int argc, char **argv, char **envp)
 {
-	char		*line; //does not to be free'd
+	char		*line;
 	t_token		*token_list;
 	t_command	*cmd_list;
 	t_shell		*shell;
@@ -55,23 +55,26 @@ int	main(int argc, char **argv, char **envp)
         line = readline("(minishell) ");
 		if (line == NULL)
 		{
-			continue ;
+			break ;
 		}
 		add_history(line);
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
+			free(line);
 			continue ;
 		}
 		//print_token_list(token_list);
 		cmd_list = parsing_tokens(token_list);
 		if (cmd_list == NULL)
 		{
+			free(line);
 			free_token_list(token_list);
-			continue ;
+			continue ; // NOTE(ismail): not clear if this is a failure or not? In what case would parsing_tokens return NULL?
 		}
-		free_token_list(token_list); //free line in case cmd executed = exit
-		//print_cmd_list(cmd_list);
+		free(line);
+		free_token_list(token_list);
+		print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
 		fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
 		free_cmd_list(cmd_list);
