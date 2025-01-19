@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/07 12:54:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/19 13:41:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,24 @@
 int	builtin_exit(t_command *cmd, t_shell *shell)
 {
 	int	argc;
+	int	saved_exit_status;
 
 	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
+		saved_exit_status = shell->exit_status;
 		free_cmd_list(cmd);
-		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
 		clear_history();
-		//free_shell(shell);
-		exit(shell->exit_status);
+		free_shell(shell);
+		exit(saved_exit_status);
 	}
 	else if (argc == 2)
 	{
+		saved_exit_status = atoi(cmd->args[1]);
 		free_cmd_list(cmd);
 		clear_history();
-		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
-		//free_shell(shell);
-		exit(atoi(cmd->args[1]));
+		free_shell(shell);
+		exit(saved_exit_status);
 	}
 	else
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_functions.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/19 13:19:11 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/01/19 13:19:15 by iboukhss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -20,6 +32,7 @@ void add_back_cmd(t_command **cmd_head, t_command *new_cmd)
 	new_cmd->next = NULL;
 }
 
+// NOTE(ismail): init_cmd can never return NULL because of xmalloc.
 t_command	*init_cmd(void)
 {
 	t_command   *cmd;

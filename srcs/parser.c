@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 17:32:26 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/13 17:32:30 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/19 13:29:06 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ Description: Check if a token->content corresponds to a builtin command.
 int is_builtin(t_token *token)
 {
 	const char	*builtin_cmd[] = {"echo", "cd", "pwd", "export", "unset", "env", "exit", NULL};
-	const char 		**builtin_cmd_ptr;
-	size_t         len_token;
+	const char	**builtin_cmd_ptr;
+	size_t		len_token;
 
 	builtin_cmd_ptr = builtin_cmd;
 	len_token = ft_strlen(token->content);
@@ -59,7 +59,7 @@ int is_builtin(t_token *token)
 				ft_strlen(*builtin_cmd_ptr) == len_token)
 				{
 					return (1);
-				}	
+				}
 		builtin_cmd_ptr++;
 	}
 	return (0);
@@ -70,7 +70,7 @@ Description: Adding token->content to cmd->args
 */
 int	add_arg(t_command *cmd, t_token *token)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->args[i] != NULL && i < MAX_ARGS)
@@ -119,15 +119,14 @@ int	build_cmd(t_token *token, t_command *cmd)
 		cmd->heredoc = ft_xstrdup((token->next)->content);
 	}
 	return (1);
-
 }
 
 t_command *parsing_tokens(t_token *token_list)
 {
-	t_command *cmd_list;
-	t_command *cmd;
-	t_token *token;
-	int		status;
+	t_command	*cmd_list;
+	t_command	*cmd;
+	t_token		*token;
+	int			status;
 
 	token = token_list;
 	cmd = NULL;
@@ -136,11 +135,6 @@ t_command *parsing_tokens(t_token *token_list)
 	while (token != NULL)
 	{
 		cmd = init_cmd();
-		if (cmd == NULL)
-		{
-			free_cmd_list(cmd_list);
-			return (NULL);
-		}
 		while (token != NULL && token->type != '|')
 		{
 			status = build_cmd(token, cmd);
@@ -158,4 +152,3 @@ t_command *parsing_tokens(t_token *token_list)
 	}
 	return (cmd_list);
 }
-
