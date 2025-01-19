@@ -15,6 +15,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // TODO(ismail): Handle more error codes.
 int	builtin_exit(t_command *cmd, t_shell *shell)
@@ -26,12 +28,14 @@ int	builtin_exit(t_command *cmd, t_shell *shell)
 	{
 		free_cmd_list(cmd);
 		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
+		clear_history();
 		//free_shell(shell);
 		exit(shell->exit_status);
 	}
 	else if (argc == 2)
 	{
 		free_cmd_list(cmd);
+		clear_history();
 		//DHE: As per my understanding, we need to free the shell struct here but we need to adjust the return value accordingly
 		//free_shell(shell);
 		exit(atoi(cmd->args[1]));
