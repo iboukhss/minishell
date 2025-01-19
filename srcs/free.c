@@ -16,48 +16,35 @@
 
 void free_token_list(t_token *head)
 {
-	t_token	*current;
     t_token *tmp;
 
-    if (head == NULL)
+	while (head != NULL)
 	{
-		return ;
-	}
-	current = head;	
-	while (current != NULL)
-	{
-		tmp = current;
-        if (current->content != NULL)
-            free(current->content);
-        current = current->next;
+		tmp = head;
+        free(head->content);
+        head = head->next;
         free(tmp);
 	}
 }
 
 void free_cmd_list(t_command *cmd_list)
 {
-	t_command	*current;
 	t_command	*tmp;
 	size_t		i;
 
-	if (cmd_list == NULL)
+	while (cmd_list != NULL)
 	{
-		return ;
-	}
-	current = cmd_list;	
-	while (current != NULL)
-	{
-		tmp = current;
-		free(current->infile);
-		free(current->outfile);		
-		free(current->heredoc);
+		tmp = cmd_list;
+		free(cmd_list->infile);
+		free(cmd_list->outfile);		
+		free(cmd_list->heredoc);
 		i = 0;
-		while(current->args[i] != NULL)
+		while(cmd_list->args[i] != NULL)
 		{
-			free(current->args[i]);
+			free(cmd_list->args[i]);
 			i++;
 		}
-		current = current->next;
+		cmd_list = cmd_list->next;
 		free(tmp);
 	}
 }
