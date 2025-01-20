@@ -19,15 +19,15 @@ char *tokenize_ack_sym(t_token **token_list, char *line)
 	char 	type;
 	t_token *new_token;
 
-	if (*line == '|')
+	if (*line == '|' && ft_isalnum(*(line + 1)) == 1)
 		type = '|';
-	else if (*line == '<' && *(line + 1) == '<')
+	else if (*line == '<' && *(line + 1) == '<' && ft_isalnum(*(line + 2)) == 1)
 		type = '+';
-	else if (*line == '<')
+	else if (*line == '<' && ft_isalnum(*(line + 1)) == 1)
 		type = '<';
-	else if (*line == '>' && *(line + 1) == '>')
+	else if (*line == '>' && *(line + 1) == '>' && ft_isalnum(*(line + 2)) == 1)
 		type = '-';
-	else if (*line == '>')
+	else if (*line == '>' && ft_isalnum(*(line + 1)) == 1)
 		type = '>';
 	else
 		return (NULL);
