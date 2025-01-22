@@ -76,6 +76,8 @@ void		free_all(char *line, t_token *token_list, t_command *cmd_list);
 void		free_token_list(t_token *head);
 void		free_cmd_list(t_command *cmd_list);
 void		free_shell(t_shell *shell);
+void		setup_signals(void);
+void		handle_signal(int sig);
 t_token		*get_token(char *line, t_shell *shell);
 t_token		*init_token(char *content, char type);
 t_command	*init_cmd(void);
