@@ -50,9 +50,10 @@ int	main(int argc, char **argv, char **envp)
 	token_list = NULL;
 	cmd_list = NULL;
 	shell = init_shell(envp);
+	setup_signals();
     while (1)
     {
-        line = readline("(minishell) ");
+		line = readline("(minishell) ");
 		if (line == NULL)
 		{
 			break ;
