@@ -8,6 +8,7 @@ PROJ_SRCS_DIR = srcs
 
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
+				ft_itoa.c \
 				ft_isalnum.c \
 				ft_memcpy.c \
 				ft_strchr.c \
