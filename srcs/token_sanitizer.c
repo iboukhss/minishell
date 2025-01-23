@@ -94,6 +94,19 @@ char *sanitize_token_content(char *line, char *end, t_shell *shell)
 			continue;
 		}
 		//concat content before $ to content, then retrieve the var_name for the expansion
+		if (line[i] == '$' && line[i + 1] == '?' && !in_single)
+		{
+			content = concat_content(content, start, &line[i] - start);
+			var_value = ft_itoa(shell->exit_status);
+			tmp = content;
+			content = ft_strjoin(content, var_value);
+			free(tmp);
+			free(var_value);
+			i = i + 1;
+			start = &line[i + 1];
+			continue;
+		}
+
 		if (line[i] == '$' && !in_single)
 		{
 			content = concat_content(content, start, &line[i] - start);
