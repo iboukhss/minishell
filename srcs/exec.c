@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/11 16:40:52 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/23 16:41:45 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-// TODO(ismail): This function doesn't care about NULL pointers.
+/*
+ * Find the full command path for a binary.
+ * Needs improvement.
+ */
 int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
@@ -61,6 +64,9 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 	return (MS_XNOTFOUND);
 }
 
+/*
+ * Finds the proper shell builtin.
+ */
 int	exec_builtin(t_command *cmd, t_shell *shell)
 {
 	if (strcmp(cmd->args[0], "env") == 0)
@@ -94,38 +100,139 @@ int	exec_builtin(t_command *cmd, t_shell *shell)
 	return (MS_XFAILURE);
 }
 
-// TODO(ismail): Take care of NULL pointers.
+/*
+ * Executes an external binary and returns the proper exit status.
+ */
 int	exec_external(t_command *cmd, t_shell *shell)
 {
-	pid_t	pid;
 	char	*bin_path;
-	int		status;
 	int		err;
 
-	pid = fork();
-	if (pid == -1)
+	err = find_command(&bin_path, cmd->args[0], shell);
+	if (err)
 	{
-		perror("fork");
-		return (1);
+		return (err);
 	}
-	if (pid == 0)
+	execve(bin_path, cmd->args, shell->envs);
+	perror(cmd->args[0]);
+	free(bin_path);
+	return (MS_XFAILURE);
+}
+
+/*
+ * Helper function for exec_pipeline
+ */
+void	exec_simple_command_from_pipe(t_command *cmd, t_shell *shell)
+{
+	if (cmd->is_builtin)
 	{
-		err = find_command(&bin_path, cmd->args[0], shell);
-		if (err)
-		{
-			exit(err);
-		}
-		execve(bin_path, cmd->args, shell->envs);
-		perror(cmd->args[0]);
-		free(bin_path);
-		exit(MS_XFAILURE);
+		exit(exec_builtin(cmd, shell));
 	}
 	else
 	{
+		exit(exec_external(cmd, shell));
+	}
+}
+
+/*
+ * Executes the pipeline.
+ * Need to add redirections.
+ * Exit status stuff is probably wrong.
+ */
+int	exec_pipeline(t_command *cmd, t_shell *shell)
+{
+	int		prev_fd;
+	int		pipefd[2];
+	pid_t	pid;
+	int		status;
+
+	prev_fd = -1;
+	while (cmd != NULL)
+	{
+		if (cmd->next && pipe(pipefd) == -1)
+		{
+			perror("pipe");
+			exit(MS_XFAILURE);
+		}
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(MS_XFAILURE);
+		}
+		if (pid == 0)
+		{
+			if (prev_fd != -1)
+			{
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (cmd->next)
+			{
+				close(pipefd[0]);
+				dup2(pipefd[1], STDOUT_FILENO);
+				close(pipefd[1]);
+			}
+			exec_simple_command_from_pipe(cmd, shell);
+		}
+		if (prev_fd != -1)
+		{
+			close(prev_fd);
+		}
+		if (cmd->next)
+		{
+			close(pipefd[1]);
+			prev_fd = pipefd[0];
+		}
+		cmd = cmd->next;
+	}
+	while (wait(&status) > 0)
+	{
+		// waits for all child processes
+	}
+	if (WIFEXITED(status))
+	{
+		return (WEXITSTATUS(status));
+	}
+	else if (WIFSIGNALED(status))
+	{
+		return (128 + WTERMSIG(status));
+	}
+	else
+	{
+		return (MS_XFAILURE);
+	}
+}
+
+/*
+ * Executes a simple command, which can be of two forms: a shell builtin
+ * function or an external binary.
+ */
+int	exec_simple_command(t_command *cmd, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	if (cmd->is_builtin)
+	{
+		return (exec_builtin(cmd, shell));
+	}
+	else
+	{
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(MS_XFAILURE);
+		}
+		if (pid == 0)
+		{
+			exit(exec_external(cmd, shell));
+		}
 		if (waitpid(pid, &status, 0) == -1)
 		{
 			perror("waitpid");
-			return (MS_XFAILURE);
+			exit(MS_XFAILURE);
 		}
 		if (WIFEXITED(status))
 		{
@@ -135,10 +242,17 @@ int	exec_external(t_command *cmd, t_shell *shell)
 		{
 			return (128 + WTERMSIG(status));
 		}
-		return (MS_XFAILURE);
+		else
+		{
+			return (MS_XFAILURE);
+		}
 	}
 }
 
+/*
+ * Entrypoint function, checks whether the input is a pipeline or a simple
+ * and branches accordingly.
+ */
 void	exec_command(t_command *cmd, t_shell *shell)
 {
 	int	saved_stdin;
@@ -151,13 +265,13 @@ void	exec_command(t_command *cmd, t_shell *shell)
 		shell->exit_status = MS_XFAILURE;
 		return ;
 	}
-	if (cmd->is_builtin)
+	if (cmd->next)
 	{
-		shell->exit_status = exec_builtin(cmd, shell);
+		shell->exit_status = exec_pipeline(cmd, shell);
 	}
 	else
 	{
-		shell->exit_status = exec_external(cmd, shell);
+		shell->exit_status = exec_simple_command(cmd, shell);
 	}
 	restore_io(cmd, saved_stdin, saved_stdout);
 }
