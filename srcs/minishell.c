@@ -57,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			break ;
 		}
+		shell->exit_status = 0;
 		add_history(line);
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
@@ -74,9 +75,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free(line);
 		free_token_list(token_list);
-		print_cmd_list(cmd_list);
+		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
-		fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
+		//fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
 		free_cmd_list(cmd_list);
     }
 	clear_history();
