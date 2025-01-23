@@ -57,7 +57,6 @@ int	main(int argc, char **argv, char **envp)
 		{
 			break ;
 		}
-		shell->exit_status = 0;
 		add_history(line);
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
