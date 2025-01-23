@@ -36,12 +36,12 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				cmd_functions.c \
 				debug.c \
 				env.c \
-				exec_command.c \
+				exec.c \
 				free.c \
 				get_token.c \
 				minishell.c \
 				parser.c \
-				setup_redirections.c \
+				redir.c \
 				token_functions.c \
 				token_sanitizer.c)
 
