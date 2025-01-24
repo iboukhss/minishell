@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:07:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/07 12:52:13 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/24 19:07:19 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,11 @@ t_token		*init_token(char *content, char type);
 t_command	*init_cmd(void);
 t_command	*parsing_tokens(t_token *token_list);
 t_shell		*init_shell(char **envp);
+
+// Signals
+void	sigint_handler(int sig);
+int		handle_signals(void);
+void	setup_signal_handlers(void);
+void	setup_readline(void);
 
 #endif

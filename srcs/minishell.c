@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/19 13:32:46 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/24 19:37:26 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "exec.h"
 #include "libft.h"
 
-#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 /*
 Description: allocating memory for the shell struct. Copying the env into shell->envs
@@ -50,11 +51,14 @@ int	main(int argc, char **argv, char **envp)
 	token_list = NULL;
 	cmd_list = NULL;
 	shell = init_shell(envp);
+	setup_signal_handlers();
+	setup_readline();
     while (1)
     {
         line = readline("(minishell) ");
 		if (line == NULL)
 		{
+			write(STDOUT_FILENO, "\n", 1);
 			break ;
 		}
 		add_history(line);
