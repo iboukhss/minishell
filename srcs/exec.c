@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#define _GNU_SOURCE
 #include "exec.h"
 #include "libft.h"
-
+#include <fcntl.h>
 #include <linux/limits.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -121,6 +122,7 @@ int	exec_external(t_command *cmd, t_shell *shell)
 
 /*
  * Helper function for exec_pipeline
+ DHE : This function has been carried over to exec_from_pipe
  */
 void	exec_simple_command_from_pipe(t_command *cmd, t_shell *shell)
 {
@@ -133,6 +135,48 @@ void	exec_simple_command_from_pipe(t_command *cmd, t_shell *shell)
 		exit(exec_external(cmd, shell));
 	}
 }
+
+void exec_from_pipe(t_command *cmd, t_shell *shell)
+{
+	//setting in / out depending on infile / outfile in cmd struct
+	if (cmd->infile)
+	{
+		int infile_fd;
+
+		infile_fd = open(cmd->infile, O_RDONLY);
+		if (infile_fd == -1)
+		{
+			perror("redirection to infile error");
+			exit(MS_XFAILURE);
+		}
+		dup2(infile_fd, STDIN_FILENO);
+		close(infile_fd);
+	}
+	if (cmd->outfile)
+	{
+		int outfile_fd;
+		if (cmd->append_mode == 1)
+			outfile_fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else
+			outfile_fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (outfile_fd == -1)
+		{
+			perror("redirection error to outfile");
+			exit(MS_XFAILURE);
+		}
+		dup2(outfile_fd, STDOUT_FILENO);
+		close(outfile_fd);
+	}	
+	if (cmd->is_builtin)
+	{
+		exit(exec_builtin(cmd, shell));
+	}
+	else
+	{
+		exit(exec_external(cmd, shell));
+	}
+}
+
 
 /*
  * Executes the pipeline.
@@ -173,7 +217,7 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 				dup2(pipefd[1], STDOUT_FILENO);
 				close(pipefd[1]);
 			}
-			exec_simple_command_from_pipe(cmd, shell);
+			exec_from_pipe(cmd, shell);
 		}
 		if (prev_fd != -1)
 		{
