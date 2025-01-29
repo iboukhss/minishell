@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/19 13:41:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/29 21:00:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,24 @@
 int	builtin_exit(t_command *cmd, t_shell *shell)
 {
 	int	argc;
-	int	saved_exit_status;
+	int	last_exit_status;
 
 	argc = ft_strv_length(cmd->args);
 	if (argc == 1)
 	{
-		saved_exit_status = shell->exit_status;
+		last_exit_status = shell->exit_status;
 		free_cmd_list(cmd);
 		clear_history();
 		free_shell(shell);
-		exit(saved_exit_status);
+		exit(last_exit_status);
 	}
 	else if (argc == 2)
 	{
-		saved_exit_status = atoi(cmd->args[1]);
+		last_exit_status = atoi(cmd->args[1]);
 		free_cmd_list(cmd);
 		clear_history();
 		free_shell(shell);
-		exit(saved_exit_status);
+		exit(last_exit_status);
 	}
 	else
 	{
