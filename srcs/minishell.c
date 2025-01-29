@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/24 19:37:26 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/29 21:01:54 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ void	free_shell(t_shell *shell)
 	free(shell);
 }
 
-// TODO(ismail): Consider adding non-interactive mode with "-c" like BASH
-int	main(int argc, char **argv, char **envp)
+void	interactive_mode(t_shell *shell)
 {
 	char		*line;
 	t_token		*token_list;
 	t_command	*cmd_list;
-	t_shell		*shell;
 
-	(void)argc;
-	(void)argv;
-	token_list = NULL;
-	cmd_list = NULL;
-	shell = init_shell(envp);
 	setup_signal_handlers();
 	setup_readline();
     while (1)
@@ -58,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
         line = readline("(minishell) ");
 		if (line == NULL)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			write(STDOUT_FILENO, "exit\n", 5);
 			break ;
 		}
 		add_history(line);
@@ -74,16 +67,68 @@ int	main(int argc, char **argv, char **envp)
 		{
 			free(line);
 			free_token_list(token_list);
-			continue ; // NOTE(ismail): not clear if this is a failure or not? In what case would parsing_tokens return NULL?
+			continue ;
 		}
 		free(line);
 		free_token_list(token_list);
 		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
-		//fprintf(stderr, "info: last command exit status %d\n", shell->exit_status);
 		free_cmd_list(cmd_list);
     }
 	clear_history();
+}
+
+void	non_interactive_mode(t_shell *shell)
+{
+	char		*line;
+	size_t		line_len;
+	t_token		*token_list;
+	t_command	*cmd_list;
+
+	line = NULL;
+	line_len = 0;
+    while (getline(&line, &line_len, stdin) != -1)
+    {
+		// temporary hack for minishell_tester
+		puts("(minishell) ");
+		token_list = get_token(line, shell);
+		if (token_list == NULL)
+		{
+			continue ;
+		}
+		//print_token_list(token_list);
+		cmd_list = parsing_tokens(token_list);
+		if (cmd_list == NULL)
+		{
+			free_token_list(token_list);
+			continue ;
+		}
+		free_token_list(token_list);
+		//print_cmd_list(cmd_list);
+		exec_command(cmd_list, shell);
+		free_cmd_list(cmd_list);
+    }
+	free(line);
+}
+
+// TODO(ismail): Consider adding non-interactive mode with "-c" like BASH
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	*shell;
+	int		last_exit_status;
+
+	(void)argc;
+	(void)argv;
+	shell = init_shell(envp);
+	if (isatty(STDIN_FILENO))
+	{
+		interactive_mode(shell);
+	}
+	else
+	{
+		non_interactive_mode(shell);
+	}
+	last_exit_status = shell->exit_status;
 	free_shell(shell);
-    return (0);
+    return (last_exit_status);
 }
