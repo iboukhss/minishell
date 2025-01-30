@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/23 16:41:45 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:19:37 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,53 +120,39 @@ int	exec_external(t_command *cmd, t_shell *shell)
 	return (MS_XFAILURE);
 }
 
-/*
- * Helper function for exec_pipeline
- DHE : This function has been carried over to exec_from_pipe
- */
-void	exec_simple_command_from_pipe(t_command *cmd, t_shell *shell)
-{
-	if (cmd->is_builtin)
-	{
-		exit(exec_builtin(cmd, shell));
-	}
-	else
-	{
-		exit(exec_external(cmd, shell));
-	}
-}
-
 void exec_from_pipe(t_command *cmd, t_shell *shell)
 {
-	//setting in / out depending on infile / outfile in cmd struct
+	int	fd;
+
 	if (cmd->infile)
 	{
-		int infile_fd;
-
-		infile_fd = open(cmd->infile, O_RDONLY);
-		if (infile_fd == -1)
+		fd = open(cmd->infile, O_RDONLY);
+		if (fd == -1)
 		{
-			perror("redirection to infile error");
+			perror(cmd->infile);
 			exit(MS_XFAILURE);
 		}
-		dup2(infile_fd, STDIN_FILENO);
-		close(infile_fd);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 	if (cmd->outfile)
 	{
-		int outfile_fd;
-		if (cmd->append_mode == 1)
-			outfile_fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			outfile_fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (outfile_fd == -1)
+		if (cmd->append_mode)
 		{
-			perror("redirection error to outfile");
+			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		else
+		{
+			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		}
+		if (fd == -1)
+		{
+			perror(cmd->outfile);
 			exit(MS_XFAILURE);
 		}
-		dup2(outfile_fd, STDOUT_FILENO);
-		close(outfile_fd);
-	}	
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 	if (cmd->is_builtin)
 	{
 		exit(exec_builtin(cmd, shell));
@@ -176,7 +162,6 @@ void exec_from_pipe(t_command *cmd, t_shell *shell)
 		exit(exec_external(cmd, shell));
 	}
 }
-
 
 /*
  * Executes the pipeline.
@@ -191,7 +176,7 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 	int		status;
 
 	prev_fd = -1;
-	while (cmd != NULL)
+	while (cmd)
 	{
 		if (cmd->next && pipe(pipefd) == -1)
 		{
@@ -301,12 +286,14 @@ void	exec_command(t_command *cmd, t_shell *shell)
 {
 	int	saved_stdin;
 	int	saved_stdout;
+	int	err;
 
 	backup_io(cmd, &saved_stdin, &saved_stdout);
-	if (redirect_io(cmd) == -1)
+	err = redirect_io(cmd);
+	if (err)
 	{
 		restore_io(cmd, saved_stdin, saved_stdout);
-		shell->exit_status = MS_XFAILURE;
+		shell->exit_status = err;
 		return ;
 	}
 	if (cmd->next)
