@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:37:11 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/24 19:34:00 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/30 21:48:54 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	sigint_handler(int sig)
 /*
  * This function is used by rl_event_hook to handle readline operations safely
  * outside of the main signal handler.
+ * Not sure if this is the best way to clear the line.
  */
 int	handle_signals(void)
 {
@@ -48,6 +49,7 @@ int	handle_signals(void)
 /*
  * Prepares the signals for the shell, using sigaction over signal as it is
  * considered a best practice.
+ * SA_RESTART could be useful? (unsure)
  */
 void	setup_signal_handlers(void)
 {
@@ -55,7 +57,7 @@ void	setup_signal_handlers(void)
 
 	sa.sa_handler = sigint_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
@@ -64,10 +66,11 @@ void	setup_signal_handlers(void)
 /*
  * Prepares necessary readline variables for signals.
  * Disables readline's built-in signal handling.
- * Sets a custom readline event hook.
+ * Sets a custom readline signal event hook.
+ * https://stackoverflow.com/a/53167537/23471454
  */
 void	setup_readline(void)
 {
 	rl_catch_signals = 0;
-	rl_event_hook = handle_signals;
+	rl_signal_event_hook = handle_signals;
 }
