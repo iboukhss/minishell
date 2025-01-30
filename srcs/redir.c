@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/09 19:07:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:22:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
 int	redirect_io(t_command *cmd)
 {
 	int		fd;
-	int		flags;
 	int		pipefd[2];
 	pid_t	pid;
 
@@ -87,19 +86,25 @@ int	redirect_io(t_command *cmd)
 		if (fd == -1)
 		{
 			perror(cmd->infile);
-			return (-1);
+			return (MS_XFAILURE);
 		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
 	if (cmd->outfile)
 	{
-		flags = O_WRONLY | O_CREAT | (cmd->append_mode ? O_APPEND : O_TRUNC);
-		fd = open(cmd->outfile, flags, 0644);
+		if (cmd->append_mode)
+		{
+			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
+		else
+		{
+			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		}
 		if (fd == -1)
 		{
 			perror(cmd->outfile);
-			return (-1);
+			return (MS_XFAILURE);
 		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
