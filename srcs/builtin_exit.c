@@ -6,15 +6,17 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/29 21:00:59 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:43:16 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-#include "libft.h"
 
-#include <stdlib.h>
+#include "parse.h"
+
+#include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 

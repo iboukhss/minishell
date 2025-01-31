@@ -6,13 +6,13 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/07 12:54:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:44:43 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-#include "libft.h"
 
+#include "libft.h"
 #include <stdio.h>
 
 // TODO(ismail): Improve this function to handle multiple variables.
