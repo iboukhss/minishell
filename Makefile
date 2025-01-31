@@ -43,7 +43,7 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				minishell.c \
 				parser.c \
 				redir.c \
-				signals.c \
+				sig.c \
 				token_functions.c \
 				token_sanitizer.c)
 
@@ -52,7 +52,8 @@ LIBFT_HDRS = $(addprefix $(LIBFT_DIR)/, libft.h)
 
 PROJ_HDRS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec.h \
-				minishell.h)
+				minishell.h \
+				sig.h)
 
 # object and dependency files
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)

@@ -6,14 +6,15 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/29 21:01:54 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:02:38 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "exec.h"
-#include "libft.h"
+#include "sig.h"
 
+#include "libft.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
