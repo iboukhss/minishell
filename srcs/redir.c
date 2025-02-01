@@ -6,11 +6,12 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/30 17:22:08 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:24:01 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "sig.h"
 
 #include <fcntl.h>
 #include <readline/readline.h>
@@ -19,40 +20,12 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-// NOTE(ismail): Error handling is not perfect but it should be fine.
-/*
-Description: Backs up the standard input and/or standard output file descriptors 
-if the command involves a heredoc, input redirection, or output redirection.
-Saves the current file descriptors to the provided pointers.
-*/
-int	backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout)
-{
-	if (cmd->heredoc || cmd->infile)
-	{
-		*saved_stdin = dup(STDIN_FILENO);
-		if (*saved_stdin == -1)
-		{
-			perror("dup: failed to backup stdin");
-			return (-1);
-		}
-	}
-	if (cmd->outfile)
-	{
-		*saved_stdout = dup(STDOUT_FILENO);
-		if (*saved_stdout == -1)
-		{
-			perror("dup: failed to backup stdout");
-			return (-1);
-		}
-	}
-	return (0);
-}
-
-int	redirect_io(t_command *cmd)
+int	redirect_io(t_command *cmd, t_shell *shell)
 {
 	int		fd;
 	int		pipefd[2];
 	pid_t	pid;
+	int		status;
 
 	if (cmd->heredoc)
 	{
@@ -60,6 +33,7 @@ int	redirect_io(t_command *cmd)
 		pid = fork();
 		if (pid == 0)
 		{
+			setup_heredoc_signal_handlers();
 			close(pipefd[0]);
 			while (1)
 			{
@@ -76,7 +50,14 @@ int	redirect_io(t_command *cmd)
 			exit(MS_XSUCCESS);
 		}
 		close(pipefd[1]);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+		{
+			close(pipefd[0]);
+			write(STDOUT_FILENO, "\n", 1);
+			tcsetattr(STDIN_FILENO, TCSANOW, &shell->term);
+			return (128 + WTERMSIG(status));
+		}
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 	}
@@ -99,7 +80,7 @@ int	redirect_io(t_command *cmd)
 		}
 		else
 		{
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		}
 		if (fd == -1)
 		{
@@ -113,25 +94,23 @@ int	redirect_io(t_command *cmd)
 }
 
 // Cleanup function
-int	restore_io(t_command *cmd, int saved_stdin, int saved_stdout)
+int	restore_io(t_command *cmd, t_shell *shell)
 {
 	if (cmd->heredoc || cmd->infile)
 	{
-		if (dup2(saved_stdin, STDIN_FILENO) == -1)
+		if (dup2(shell->stdin, STDIN_FILENO) == -1)
 		{
 			perror("dup2: failed to restore stdin");
 			return (-1);
 		}
-		close(saved_stdin);
 	}
 	if (cmd->outfile)
 	{
-		if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+		if (dup2(shell->stdout, STDOUT_FILENO) == -1)
 		{
 			perror("dup2: failed to restore stdout");
 			return (-1);
 		}
-		close(saved_stdout);
 	}
 	return (0);
 }

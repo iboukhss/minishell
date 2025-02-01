@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 17:58:25 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 17:59:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 00:27:22 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void	sigint_handler(int sig);
 int		handle_signals(void);
 void	setup_signal_handlers(void);
+void	setup_heredoc_signal_handlers(void);
 void	setup_readline(void);
 
 #endif

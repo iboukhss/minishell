@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:07:41 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 18:38:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:12:44 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,18 @@
 // scopes
 # include <stdbool.h>
 # include <stddef.h>
+# include <termios.h>
 
 // Forward declarations here
 typedef struct s_command	t_command;
 
 typedef struct s_shell
 {
-	char	**envs;				// Current shell environment variables
-	int		exit_status;		// Last command exit status ($?)
+	char			**envs;			// Current shell environment variables
+	int				exit_status;	// Last command exit status ($?)
+	int				stdin;			// Permanent stdin backup
+	int				stdout;			// Permanent stdout backup
+	struct termios	term;			// Original terminal settings backup
 }	t_shell;
 
 typedef struct s_command

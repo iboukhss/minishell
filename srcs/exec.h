@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/07 12:15:42 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:36:11 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ void	exec_command(t_command *cmd, t_shell *shell);
 int		exec_builtin(t_command *cmd, t_shell *shell);
 int		exec_external(t_command *cmd, t_shell *shell);
 
-int		backup_io(t_command *cmd, int *saved_stdin, int *saved_stdout);
-int		redirect_io(t_command *cmd);
-int		restore_io(t_command *cmd, int saved_stdin, int saved_stdout);
+int		redirect_io(t_command *cmd, t_shell *shell);
+int		restore_io(t_command *cmd, t_shell *shell);
 
 char	*get_env(const char *key, t_shell *shell);
 void	unset_env(const char *key, t_shell *shell);
