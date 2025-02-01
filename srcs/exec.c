@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 19:36:16 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 00:23:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,15 +286,12 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
  */
 void	exec_command(t_command *cmd, t_shell *shell)
 {
-	int	saved_stdin;
-	int	saved_stdout;
 	int	err;
 
-	backup_io(cmd, &saved_stdin, &saved_stdout);
-	err = redirect_io(cmd);
+	err = redirect_io(cmd, shell);
 	if (err)
 	{
-		restore_io(cmd, saved_stdin, saved_stdout);
+		restore_io(cmd, shell);
 		shell->exit_status = err;
 		return ;
 	}
@@ -306,5 +303,5 @@ void	exec_command(t_command *cmd, t_shell *shell)
 	{
 		shell->exit_status = exec_simple_command(cmd, shell);
 	}
-	restore_io(cmd, saved_stdin, saved_stdout);
+	restore_io(cmd, shell);
 }

@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 17:58:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 17:59:37 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/01 12:33:20 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,20 @@ void	setup_signal_handlers(void)
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
+}
+
+/*
+ * Need to explicitely initialize the struct in order to silence Valgrind
+ * warnings.
+ */
+void	setup_heredoc_signal_handlers(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_DFL;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 /*
