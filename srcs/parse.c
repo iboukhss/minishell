@@ -13,6 +13,7 @@
 #include "parse.h"
 
 #include "libft.h"
+#include <stdio.h>
 
 /*
 
@@ -85,7 +86,34 @@ int	add_arg(t_command *cmd, t_token *token)
 /*
 Description: Building the command node that is limited by the pipe or end of line.
 */
-int	build_cmd(t_token **token, t_command *cmd)
+
+
+int check_syntax_errors(t_token *token_list)
+{
+	t_token *token;
+	
+	token = token_list;
+
+	while (token != NULL)
+	{
+		if (token->type == '|' && (!token->next || token->next->type == '|'))
+		{
+			perror("Incorrect syntax : pipe should be followed by command");
+			return (0);
+		}
+
+		if ((token->type == '<' || token->type == '>' || token->type == '+' || token->type == '-') &&
+			(!token->next || token->next->type != 'w'))
+		{
+			perror("Incorrect syntax : incorrect sequence of symbols");
+			return (0);
+		}
+		token = token->next;
+	}
+	return (1);
+}
+
+int	build_cmd(t_token *token, t_command *cmd)
 {
 	if (cmd->args[0] == NULL && is_builtin(*token) == 1)
 	{
@@ -137,6 +165,10 @@ t_command *parsing_tokens(t_token *token_list)
 	cmd = NULL;
 	cmd_list = NULL;
 	status = 0;
+	if (check_syntax_errors(token_list) == 0)
+	{
+		return (NULL);
+	}
 	while (token != NULL)
 	{
 		cmd = init_cmd();
