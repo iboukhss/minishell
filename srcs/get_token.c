@@ -20,6 +20,8 @@ char	*tokenize_ack_sym(t_token **token_list, char *line)
 	char	type;
 	t_token	*new_token;
 
+	if (!line || !*line)
+		return (NULL);
 	if (*line == '|')
 		type = '|';
 	else if (*line == '<' && *(line + 1) == '<')
