@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 12:37:48 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 18:43:16 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:08:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	builtin_exit(t_command *cmd, t_shell *shell)
 	}
 	else
 	{
-		fprintf(stderr, "exit: too many arguments\n");
+		log_error("exit: too many arguments\n");
 		return (MS_XBADUSAGE);
 	}
 }

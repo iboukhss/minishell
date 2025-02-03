@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:44:17 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 18:42:52 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:08:09 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	builtin_cd(t_command *cmd, t_shell *shell)
 		new_cwd = get_env("HOME", shell);
 		if (new_cwd == NULL)
 		{
-			fprintf(stderr, "cd: HOME not set\n");
+			log_error("cd: HOME not set\n");
 			return (MS_XFAILURE);
 		}
 		if (chdir(new_cwd) == -1)
@@ -49,7 +49,7 @@ int	builtin_cd(t_command *cmd, t_shell *shell)
 	}
 	else
 	{
-		fprintf(stderr, "cd: too many arguments\n");
+		log_error("cd: too many arguments\n");
 		return (MS_XBADUSAGE);
 	}
 }
