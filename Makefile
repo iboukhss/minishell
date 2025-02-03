@@ -30,6 +30,7 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_xmalloc.c \
 				ft_xstrdup.c \
 				ft_xstrdupv.c \
+				log_error.c \
 				printf_core.c)
 
 PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
