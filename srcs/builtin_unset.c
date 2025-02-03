@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 18:44:27 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:08:07 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_unset(t_command *cmd, t_shell *shell)
 	argc = ft_strv_length(cmd->args);
 	if (argc != 2)
 	{
-		fprintf(stderr, "unset: too many arguments\n");
+		log_error("unset: too many arguments\n");
 		return (MS_XBADUSAGE);
 	}
 	unset_env(cmd->args[1], shell);
