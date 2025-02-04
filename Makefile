@@ -8,14 +8,13 @@ PROJ_SRCS_DIR = srcs
 
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
-				ft_itoa.c \
-				ft_isalnum.c \
-				ft_memcpy.c \
+				ft_asprintf.c \
 				ft_dprintf.c \
+				ft_isalnum.c \
+				ft_itoa.c \
+				ft_memcpy.c \
 				ft_printf.c \
 				ft_snprintf.c \
-				ft_vdprintf.c \
-				ft_vsnprintf.c \
 				ft_strchr.c \
 				ft_strchrnul.c \
 				ft_strcpy.c \
@@ -27,9 +26,14 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_strncmp.c \
 				ft_strv_length.c \
 				ft_substr.c \
+				ft_vasprintf.c \
+				ft_vdprintf.c \
+				ft_vsnprintf.c \
+				ft_xasprintf.c \
 				ft_xmalloc.c \
 				ft_xstrdup.c \
 				ft_xstrdupv.c \
+				ft_xvasprintf.c \
 				log_error.c \
 				printf_core.c)
 
