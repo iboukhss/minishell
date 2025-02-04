@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 02:53:52 by iboukhss          #+#    #+#             */
-/*   Updated: 2024/12/03 02:56:30 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:58:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 char	*ft_xstrdup(const char *s)
 {
-	int		len;
+	size_t	len;
 	char	*dup;
 
 	len = ft_strlen(s);
-	dup = ft_xmalloc((len + 1) * sizeof(*dup));
-	return (ft_memcpy(dup, s, len + 1));
+	dup = ft_xmalloc(len + 1);
+	ft_memcpy(dup, s, len + 1);
+	return (dup);
 }
