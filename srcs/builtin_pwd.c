@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/03 17:08:07 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:04:14 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	builtin_pwd(t_command *cmd)
 	argc = ft_strv_length(cmd->args);
 	if (argc != 1)
 	{
-		log_error("pwd: too many arguments\n");
+		log_error("pwd: too many arguments");
 		return (MS_XBADUSAGE);
 	}
 	if (getcwd(cwd, PATH_MAX) == NULL)
