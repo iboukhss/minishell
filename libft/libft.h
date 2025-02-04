@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/04 17:02:17 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:48:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	log_error(const char *s);
 void	*ft_xmalloc(size_t size);
 void	*ft_xrealloc(void *old_ptr, size_t old_size, size_t new_size);
 char	*ft_xstrdup(const char *s);
+char	*ft_xstrndup(const char *s, size_t n);
 char	*ft_xasprintf(const char *fmt, ...);
 char	*ft_xvasprintf(const char *fmt, va_list ap);
 
