@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/01 12:36:11 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:21:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		restore_io(t_command *cmd, t_shell *shell);
 
 char	*get_env(const char *key, t_shell *shell);
 void	unset_env(const char *key, t_shell *shell);
-void	set_env(const char *expr, t_shell *shell);
+void	set_env(const char *key, const char *val, t_shell *shell);
 
 // Builtins
 int		builtin_env(t_command *cmd, t_shell *shell);
