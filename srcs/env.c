@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 11:27:24 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 19:35:17 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 17:35:49 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,38 @@ void	unset_env(const char *key, t_shell *shell)
 	shell->envs = new_envp;
 }
 
-void	set_env(const char *expr, t_shell *shell)
+void	set_env(const char *key, const char *val, t_shell *shell)
+{
+	int		i;
+	size_t	key_len;
+	char	*expr;
+	char	**envp;
+	char	**new_envp;
+
+	i = 0;
+	key_len = ft_strlen(key);
+	expr = ft_xasprintf("%s=%s", key, val);
+	envp = shell->envs;
+	while (envp[i] != NULL)
+	{
+		if (ft_strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
+		{
+			free(envp[i]);
+			envp[i] = expr;
+			return ;
+		}
+		i++;
+	}
+	new_envp = ft_xrealloc(envp, (i + 1) * sizeof(*envp), (i + 2) * sizeof(*envp));
+	new_envp[i] = expr;
+	new_envp[i + 1] = NULL;
+	shell->envs = new_envp;
+}
+
+/*
+ * Deprecated set_env function.
+ */
+void	old_set_env(const char *expr, t_shell *shell)
 {
 	char		**envp;
 	char		**new_envp;

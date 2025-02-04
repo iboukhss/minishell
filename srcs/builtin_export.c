@@ -6,26 +6,42 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 08:37:16 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/04 12:04:01 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 18:08:32 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 #include "libft.h"
-#include <stdio.h>
+#include <stdlib.h>
 
-// TODO(ismail): Improve this function to handle multiple variables.
 int	builtin_export(t_command *cmd, t_shell *shell)
 {
-	int	argc;
+	int		i;
+	int		argc;
+	char	*key;
+	char	*val;
+	char	*end;
 
 	argc = ft_strv_length(cmd->args);
-	if (argc != 2)
+	if (argc < 2)
 	{
-		log_error("export: too many arguments");
+		log_error("export: not enough arguments");
 		return (MS_XBADUSAGE);
 	}
-	set_env(cmd->args[1], shell);
+	i = 1;
+	while (i < argc)
+	{
+		end = ft_strchr(cmd->args[i], '=');
+		if (end)
+		{
+			key = ft_xstrndup(cmd->args[i], end - cmd->args[i]);
+			val = ft_xstrdup(end + 1);
+			set_env(key, val, shell);
+			free(key);
+			free(val);
+		}
+		i++;
+	}
 	return (MS_XSUCCESS);
 }
