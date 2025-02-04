@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/03 16:59:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:00:44 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_dprintf(int fd, const char *fmt, ...);
 int		ft_vdprintf(int fd, const char *fmt, va_list ap);
 int		ft_snprintf(char *s, size_t n, const char *fmt, ...);
 int		ft_vsnprintf(char *s, size_t n, const char *fmt, va_list ap);
-void	log_error(const char *fmt, ...);
+void	log_error(const char *s);
 
 // Fail-safe alloc functions
 void	*ft_xmalloc(size_t size);

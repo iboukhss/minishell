@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/03 17:08:04 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:07:00 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 	path_var = get_env("PATH", shell);
 	if (path_var == NULL)
 	{
-		log_error("PATH variable not set\n");
+		log_error("PATH variable not set");
 		return (MS_XNOTFOUND);
 	}
 	beg = path_var;
@@ -63,7 +63,7 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 		}
 		beg = end + 1;
 	}
-	log_error("%s: command not found\n", cmd_name);
+	log_error("minishell: command not found");
 	return (MS_XNOTFOUND);
 }
 
