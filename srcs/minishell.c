@@ -98,7 +98,7 @@ void	non_interactive_mode(t_shell *shell)
     while (getline(&line, &line_len, stdin) != -1)
     {
 		// temporary hack for minishell_tester
-		puts("(minishell) ");
+		//puts("(minishell) ");
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
