@@ -1,1 +1,2 @@
-echo env | grep "PWD"
+echo env | grep "USER"
+cat | cat | ls
