@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/01 00:23:52 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:31:43 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	non_interactive_mode(t_shell *shell)
     while (getline(&line, &line_len, stdin) != -1)
     {
 		// temporary hack for minishell_tester
-		//puts("(minishell) ");
+		//ft_puts("(minishell) ");
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{

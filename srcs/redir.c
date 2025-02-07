@@ -6,13 +6,14 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/01 12:24:01 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/05 20:01:48 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "sig.h"
 
+#include "libft.h"
 #include <fcntl.h>
 #include <readline/readline.h>
 #include <stdio.h>
@@ -43,7 +44,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 					free(line);
 					break ;
 				}
-				dprintf(pipefd[1], "%s\n", line);
+				ft_dprintf(pipefd[1], "%s\n", line);
 				free(line);
 			}
 			close(pipefd[1]);
