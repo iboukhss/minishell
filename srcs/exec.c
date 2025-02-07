@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 17:55:41 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 02:41:55 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void exec_from_pipe(t_command *cmd, t_shell *shell)
 			perror(cmd->infile);
 			exit(MS_XFAILURE);
 		}
-		dup2(fd, STDIN_FILENO);
+		ft_xdup2(fd, STDIN_FILENO);
 		close(fd);
 	}
 	if (cmd->outfile)
@@ -149,7 +149,7 @@ void exec_from_pipe(t_command *cmd, t_shell *shell)
 			perror(cmd->outfile);
 			exit(MS_XFAILURE);
 		}
-		dup2(fd, STDOUT_FILENO);
+		ft_xdup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
 	if (cmd->is_builtin)
@@ -192,13 +192,13 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 		{
 			if (prev_fd != -1)
 			{
-				dup2(prev_fd, STDIN_FILENO);
+				ft_xdup2(prev_fd, STDIN_FILENO);
 				close(prev_fd);
 			}
 			if (cmd->next)
 			{
 				close(pipefd[0]);
-				dup2(pipefd[1], STDOUT_FILENO);
+				ft_xdup2(pipefd[1], STDOUT_FILENO);
 				close(pipefd[1]);
 			}
 			exec_from_pipe(cmd, shell);

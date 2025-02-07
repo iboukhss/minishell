@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:19:50 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 17:31:43 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:03:31 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_shell	*init_shell(char **envp)
 	shell = ft_xmalloc(sizeof(*shell));
 	shell->envs = ft_xstrdupv(envp);
 	shell->exit_status = 0;
-	shell->stdin = dup(STDIN_FILENO);
-	shell->stdout = dup(STDOUT_FILENO);
+	shell->stdin = ft_xdup(STDIN_FILENO);
+	shell->stdout = ft_xdup(STDOUT_FILENO);
 	tcgetattr(STDIN_FILENO, &shell->term);
 	return (shell);
 }
