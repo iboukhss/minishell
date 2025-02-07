@@ -1,45 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/15 06:42:18 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 17:23:01 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/05 18:03:46 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/05 18:10:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-
 #include "libft.h"
 
-int	builtin_echo(t_command *cmd)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	bool	newline;
-	int		argc;
-	int		i;
-
-	argc = ft_strv_length(cmd->args);
-	newline = 1;
-	i = 1;
-	if (argc >= 2 && ft_strcmp(cmd->args[i], "-n") == 0)
+	while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2)
 	{
-		newline = 0;
-		i++;
+		s1++;
+		s2++;
 	}
-	while (i < argc)
-	{
-		ft_printf("%s", cmd->args[i]);
-		if (i + 1 < argc)
-		{
-			ft_printf(" ");
-		}
-		i++;
-	}
-	if (newline)
-	{
-		ft_printf("\n");
-	}
-	return (MS_XSUCCESS);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

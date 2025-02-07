@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/05 17:50:12 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:55:41 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <linux/limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -50,7 +49,7 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 		// Skip empty tokens
 		if (end - beg > 0)
 		{
-			dir_name = strndup(beg, end - beg);
+			dir_name = ft_xstrndup(beg, end - beg);
 			*cmd_path = ft_xasprintf("%s/%s", dir_name, cmd_name);
 			free(dir_name);
 			if (access(*cmd_path, X_OK) == 0)
@@ -70,31 +69,31 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
  */
 int	exec_builtin(t_command *cmd, t_shell *shell)
 {
-	if (strcmp(cmd->args[0], "env") == 0)
+	if (ft_strcmp(cmd->args[0], "env") == 0)
 	{
 		return (builtin_env(cmd, shell));
 	}
-	else if (strcmp(cmd->args[0], "unset") == 0)
+	else if (ft_strcmp(cmd->args[0], "unset") == 0)
 	{
 		return (builtin_unset(cmd, shell));
 	}
-	else if (strcmp(cmd->args[0], "export") == 0)
+	else if (ft_strcmp(cmd->args[0], "export") == 0)
 	{
 		return (builtin_export(cmd, shell));
 	}
-	else if (strcmp(cmd->args[0], "exit") == 0)
+	else if (ft_strcmp(cmd->args[0], "exit") == 0)
 	{
 		return (builtin_exit(cmd, shell));
 	}
-	else if (strcmp(cmd->args[0], "echo") == 0)
+	else if (ft_strcmp(cmd->args[0], "echo") == 0)
 	{
 		return (builtin_echo(cmd));
 	}
-	else if (strcmp(cmd->args[0], "pwd") == 0)
+	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
 	{
 		return (builtin_pwd(cmd));
 	}
-	else if (strcmp(cmd->args[0], "cd") == 0)
+	else if (ft_strcmp(cmd->args[0], "cd") == 0)
 	{
 		return (builtin_cd(cmd, shell));
 	}

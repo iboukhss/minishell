@@ -39,7 +39,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 			while (1)
 			{
 				char *line = readline("> ");
-				if (line == NULL || strcmp(line, cmd->heredoc) == 0)
+				if (line == NULL || ft_strcmp(line, cmd->heredoc) == 0)
 				{
 					free(line);
 					break ;
