@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 13:45:28 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/04 12:04:14 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:58:16 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int	builtin_pwd(t_command *cmd)
 		perror("pwd: getcwd");
 		return (MS_XFAILURE);
 	}
-	puts(cwd);
+	ft_puts(cwd);
 	return (MS_XSUCCESS);
 }

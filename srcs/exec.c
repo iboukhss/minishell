@@ -6,11 +6,9 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/04 12:07:00 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/05 17:50:12 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#define _GNU_SOURCE
 
 #include "exec.h"
 
@@ -53,7 +51,7 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 		if (end - beg > 0)
 		{
 			dir_name = strndup(beg, end - beg);
-			asprintf(cmd_path, "%s/%s", dir_name, cmd_name);
+			*cmd_path = ft_xasprintf("%s/%s", dir_name, cmd_name);
 			free(dir_name);
 			if (access(*cmd_path, X_OK) == 0)
 			{

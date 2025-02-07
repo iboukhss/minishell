@@ -14,6 +14,7 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_itoa.c \
 				ft_memcpy.c \
 				ft_printf.c \
+				ft_puts.c \
 				ft_realloc.c \
 				ft_snprintf.c \
 				ft_strchr.c \

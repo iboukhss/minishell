@@ -1,36 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_env.c                                      :+:      :+:    :+:   */
+/*   ft_puts.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 19:54:29 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/05 17:52:20 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/05 17:54:08 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/05 17:58:41 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-
 #include "libft.h"
-#include <stdio.h>
 
-int	builtin_env(t_command *cmd, t_shell *shell)
+int	ft_puts(const char *s)
 {
-	int		argc;
-	char	**envp;
-
-	argc = ft_strv_length(cmd->args);
-	if (argc != 1)
-	{
-		log_error("env: too many arguments");
-		return (MS_XBADUSAGE);
-	}
-	envp = shell->envs;
-	while (*envp != NULL)
-	{
-		ft_printf("%s\n", *envp);
-		envp++;
-	}
-	return (MS_XSUCCESS);
+	return (ft_printf("%s\n", s));
 }
