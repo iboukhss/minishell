@@ -20,7 +20,11 @@ run_test() {
     fi
 
     while IFS= read -r cmd || [ -n "$cmd" ]; do
-        [ -z "$cmd" ] && continue  # Skip empty lines
+	# Skip empty lines
+        [ -z "$cmd" ] && continue
+
+	# Skip comments
+	[[ "$cmd" =~ ^# ]] && continue
 
         OUTPUT_MINISHELL=$(echo "$cmd" | $MINISHELL 2>&1)
         OUTPUT_BASH=$(echo "$cmd" | $BASH 2>&1)
