@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/05 17:57:34 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:22:28 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@
 # include <stdarg.h>
 # include <stddef.h>
 
-// Standard libc functions
+// String functions
+size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strchrnul(const char *s, int c);
 char	*ft_strcpy(char *dst, const char *src);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 char	*ft_strdup(const char *s);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+int		ft_isalnum(int c);
+
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_itoa(int n);
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+
+// Mem functions
 void	*ft_memcpy(void *dest, const void *src, size_t n);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_isalnum(int c);
 void	*ft_realloc(void *old_ptr, size_t old_size, size_t new_size);
 
 // Print functions
