@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_xmalloc.c                                       :+:      :+:    :+:   */
+/*   ft_xdup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 00:38:22 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 17:44:33 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/07 17:44:40 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/07 17:47:35 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-void	*ft_xmalloc(size_t size)
+int	ft_xdup(int fd)
 {
-	void	*ptr;
+	int	ret;
 
-	ptr = malloc(size);
-	if (ptr == NULL)
+	ret = dup(fd);
+	if (ret == -1)
 	{
-		perror("malloc");
+		perror("dup");
 		exit(EXIT_FAILURE);
 	}
-	return (ptr);
+	return (ret);
 }

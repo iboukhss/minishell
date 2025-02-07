@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/05 20:01:48 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:06:41 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 			tcsetattr(STDIN_FILENO, TCSANOW, &shell->term);
 			return (128 + WTERMSIG(status));
 		}
-		dup2(pipefd[0], STDIN_FILENO);
+		ft_xdup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
 	}
 	else if (cmd->infile)
@@ -70,7 +70,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 			perror(cmd->infile);
 			return (MS_XFAILURE);
 		}
-		dup2(fd, STDIN_FILENO);
+		ft_xdup2(fd, STDIN_FILENO);
 		close(fd);
 	}
 	if (cmd->outfile)
@@ -88,7 +88,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 			perror(cmd->outfile);
 			return (MS_XFAILURE);
 		}
-		dup2(fd, STDOUT_FILENO);
+		ft_xdup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
 	return (0);
@@ -99,19 +99,11 @@ int	restore_io(t_command *cmd, t_shell *shell)
 {
 	if (cmd->heredoc || cmd->infile)
 	{
-		if (dup2(shell->stdin, STDIN_FILENO) == -1)
-		{
-			perror("dup2: failed to restore stdin");
-			return (-1);
-		}
+		ft_xdup2(shell->stdin, STDIN_FILENO);
 	}
 	if (cmd->outfile)
 	{
-		if (dup2(shell->stdout, STDOUT_FILENO) == -1)
-		{
-			perror("dup2: failed to restore stdout");
-			return (-1);
-		}
+		ft_xdup2(shell->stdout, STDOUT_FILENO);
 	}
 	return (0);
 }
