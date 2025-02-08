@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/08 02:41:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 03:14:39 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,12 +182,7 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 			perror("pipe");
 			exit(MS_XFAILURE);
 		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(MS_XFAILURE);
-		}
+		pid = ft_xfork();
 		if (pid == 0)
 		{
 			if (prev_fd != -1)
@@ -247,12 +242,7 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
 	}
 	else
 	{
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(MS_XFAILURE);
-		}
+		pid = ft_xfork();
 		if (pid == 0)
 		{
 			exit(exec_external(cmd, shell));

@@ -35,6 +35,7 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_xasprintf.c \
 				ft_xdup.c \
 				ft_xdup2.c \
+				ft_xfork.c \
 				ft_xmalloc.c \
 				ft_xrealloc.c \
 				ft_xstrdup.c \
