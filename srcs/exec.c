@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/08 03:14:39 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 03:18:12 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,10 +177,9 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 	prev_fd = -1;
 	while (cmd)
 	{
-		if (cmd->next && pipe(pipefd) == -1)
+		if (cmd->next)
 		{
-			perror("pipe");
-			exit(MS_XFAILURE);
+			ft_xpipe(pipefd);
 		}
 		pid = ft_xfork();
 		if (pid == 0)

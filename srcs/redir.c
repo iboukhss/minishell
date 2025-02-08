@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/08 02:40:28 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 03:00:09 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 
 	if (cmd->heredoc)
 	{
-		pipe(pipefd);
+		ft_xpipe(pipefd);
 		pid = ft_xfork();
 		if (pid == 0)
 		{
