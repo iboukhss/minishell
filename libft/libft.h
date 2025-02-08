@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/07 17:51:24 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 02:41:16 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdarg.h>
 # include <stddef.h>
+# include <sys/types.h>
 
 // String functions
 size_t	ft_strlen(const char *s);
@@ -58,6 +59,7 @@ char	*ft_xvasprintf(const char *fmt, va_list ap);
 // Fail-safe wrappers
 int		ft_xdup(int fd);
 int		ft_xdup2(int oldfd, int newfd);
+pid_t	ft_xfork(void);
 
 // String array functions (glib)
 char	**ft_xstrdupv(char **str_array);

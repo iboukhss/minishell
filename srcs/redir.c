@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 18:06:41 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/08 02:40:28 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	redirect_io(t_command *cmd, t_shell *shell)
 	if (cmd->heredoc)
 	{
 		pipe(pipefd);
-		pid = fork();
+		pid = ft_xfork();
 		if (pid == 0)
 		{
 			setup_heredoc_signal_handlers();
