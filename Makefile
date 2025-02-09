@@ -11,6 +11,11 @@ LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_asprintf.c \
 				ft_dprintf.c \
 				ft_isalnum.c \
+				ft_isalpha.c \
+				ft_isdigit.c \
+				ft_islower.c \
+				ft_isspace.c \
+				ft_isupper.c \
 				ft_itoa.c \
 				ft_memcpy.c \
 				ft_printf.c \

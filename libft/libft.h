@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/08 02:57:44 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:52:09 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,13 @@ char	*ft_strdup(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+// Type functions
+int		ft_isalpha(int c);
 int		ft_isalnum(int c);
+int		ft_islower(int c);
+int		ft_isupper(int c);
+int		ft_isdigit(int c);
+int		ft_isspace(int c);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
