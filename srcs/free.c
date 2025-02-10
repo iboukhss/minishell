@@ -14,20 +14,20 @@
 
 #include <stdlib.h>
 
-void free_token_list(t_token *head)
+void	free_token_list(t_token *head)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
 	while (head != NULL)
 	{
 		tmp = head;
-        free(head->content);
-        head = head->next;
-        free(tmp);
+		free(head->content);
+		head = head->next;
+		free(tmp);
 	}
 }
 
-void free_cmd_list(t_command *cmd_list)
+void	free_cmd_list(t_command *cmd_list)
 {
 	t_command	*tmp;
 	size_t		i;
@@ -36,10 +36,10 @@ void free_cmd_list(t_command *cmd_list)
 	{
 		tmp = cmd_list;
 		free(cmd_list->infile);
-		free(cmd_list->outfile);		
+		free(cmd_list->outfile);
 		free(cmd_list->heredoc);
 		i = 0;
-		while(cmd_list->args[i] != NULL)
+		while (cmd_list->args[i] != NULL)
 		{
 			free(cmd_list->args[i]);
 			i++;
@@ -50,7 +50,7 @@ void free_cmd_list(t_command *cmd_list)
 }
 
 //t_command *cmd_list to be included
-void free_all(char *line, t_token *token_list, t_command *cmd_list)
+void	free_all(char *line, t_token *token_list, t_command *cmd_list)
 {
 	if (token_list != NULL)
 		free_token_list(token_list);

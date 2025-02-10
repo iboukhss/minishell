@@ -14,9 +14,10 @@
 
 #include "libft.h"
 
-void add_back_cmd(t_command **cmd_head, t_command *new_cmd)
+void	add_back_cmd(t_command **cmd_head, t_command *new_cmd)
 {
-	t_command *current;
+	t_command	*current;
+
 	if (new_cmd == NULL)
 		return ;
 	if (*cmd_head == NULL)
@@ -36,21 +37,21 @@ void add_back_cmd(t_command **cmd_head, t_command *new_cmd)
 // NOTE(ismail): init_cmd can never return NULL because of xmalloc.
 t_command	*init_cmd(void)
 {
-	t_command   *cmd;
-    size_t      i;
+	t_command	*cmd;
+	size_t		i;
 
 	cmd = ft_xmalloc(sizeof(t_command));
-    i = 0;
-    while (i < MAX_ARGS)
-    {
-        cmd->args[i] = NULL;
-        i++;
-    }
-    cmd->append_mode = 0;
-    cmd->heredoc = NULL;
-    cmd->infile = NULL;
-    cmd->is_builtin = 0;
-    cmd->next = NULL;
-    cmd->outfile = NULL;
+	i = 0;
+	while (i < MAX_ARGS)
+	{
+		cmd->args[i] = NULL;
+		i++;
+	}
+	cmd->append_mode = 0;
+	cmd->heredoc = NULL;
+	cmd->infile = NULL;
+	cmd->is_builtin = 0;
+	cmd->next = NULL;
+	cmd->outfile = NULL;
 	return (cmd);
 }
