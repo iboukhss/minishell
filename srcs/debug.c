@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-void print_token_list(t_token *token_list)
+void	print_token_list(t_token *token_list)
 {
 	t_token	*current;
 
@@ -22,15 +22,15 @@ void print_token_list(t_token *token_list)
 	{
 		return ;
 	}
-	current = token_list;	
+	current = token_list;
 	while (current != NULL)
 	{
-		printf("content = %s, type : %c\n",current->content, current->type);
+		printf("content = %s, type : %c\n", current->content, current->type);
 		current = current->next;
 	}
 }
 
-void print_cmd_list(t_command *cmd_list)
+void	print_cmd_list(t_command *cmd_list)
 {
 	t_command	*current;
 	size_t		i;
@@ -41,15 +41,15 @@ void print_cmd_list(t_command *cmd_list)
 	{
 		return ;
 	}
-	current = cmd_list;	
+	current = cmd_list;
 	while (current != NULL)
 	{
 		i = 0;
 		printf("Cmd node %d\n", node_count);
 		printf("Cmd node address : %p\n", current);
 		printf("Args : ");
-		// NOTE(ismail): dirty patch to clearly show empty commands
-		if (current->args[0] == NULL) printf("(null)");
+		if (current->args[0] == NULL)
+			printf("(null)");
 		while (current->args[i] != NULL)
 		{
 			if (i != 0)
@@ -67,5 +67,5 @@ void print_cmd_list(t_command *cmd_list)
 		printf("\n");
 		node_count++;
 		current = current->next;
-	}	
+	}
 }

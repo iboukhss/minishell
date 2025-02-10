@@ -14,7 +14,7 @@
 
 #include <stdlib.h>
 
-char *scan_quote(char *line, char quote)
+char	*scan_quote(char *line, char quote)
 {
 	int	i;
 
@@ -30,9 +30,10 @@ char *scan_quote(char *line, char quote)
 	return (NULL);
 }
 
-void add_back_token(t_token **token_head, t_token *new_token)
+void	add_back_token(t_token **token_head, t_token *new_token)
 {
-	t_token *current;
+	t_token	*current;
+
 	if (new_token == NULL)
 		return ;
 	if (*token_head == NULL)
@@ -51,7 +52,7 @@ void add_back_token(t_token **token_head, t_token *new_token)
 
 t_token	*init_token(char *content, char type)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
