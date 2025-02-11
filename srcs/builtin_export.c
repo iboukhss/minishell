@@ -25,10 +25,7 @@ int	builtin_export(t_command *cmd, t_shell *shell)
 
 	argc = ft_strv_length(cmd->args);
 	if (argc < 2)
-	{
-		log_error("export: not enough arguments");
-		return (MS_XBADUSAGE);
-	}
+		return (log_error("export: not enough arguments"), MS_XBADUSAGE);
 	i = 1;
 	while (i < argc)
 	{
