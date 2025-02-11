@@ -64,6 +64,12 @@ char	*handle_variable(char *content, char **start, char *c, t_shell *shell)
 	size_t	var_name_len;
 
 	content = concat_content(content, *start, c - *start);
+	if (ft_isalnum(c[1]) == 0 && c[1] != '_')
+	{
+    	content = concat_content(content, "$", 1);
+		*start = c + 1;
+		return (content);
+	}
 	var_value = expand_var(c + 1, &var_name_len, shell);
 	tmp = content;
 	content = ft_strjoin(content, var_value);

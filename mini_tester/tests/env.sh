@@ -1,5 +1,7 @@
-env
+env | grep -v "_"
 export SCHOOL=42
-echo "welcome at $SCHOOL"
-unset school
-echo "welcome at $SCHOOL"
+export PROJECT=minishell SCORE=100
+echo "welcome at $SCHOOL. You passed the project $PROJECT with a score of $SCORE"
+unset SCHOOL
+echo "welcome at $SCHOOL. You passed the project $PROJECT with a score of $SCORE"
+unset PROJECT SCORE
