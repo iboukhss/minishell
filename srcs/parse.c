@@ -85,39 +85,43 @@ int	add_arg(t_command *cmd, t_token *token)
 /*
 Description: Building the command node that is limited by the pipe or end of line.
 */
-int	build_cmd(t_token *token, t_command *cmd)
+int	build_cmd(t_token **token, t_command *cmd)
 {
-	if (cmd->args[0] == NULL && is_builtin(token) == 1)
+	if (cmd->args[0] == NULL && is_builtin(*token) == 1)
 	{
 		cmd->is_builtin = 1;
 	}
-	if (token->type == 'w' && cmd->append_mode == 0 && cmd->heredoc == NULL &&
-			cmd->infile == NULL && cmd->outfile == NULL && add_arg(cmd, token) == 0)
+	if ((*token)->type == 'w' && add_arg(cmd, *token) == 0 && cmd->append_mode == 0 && cmd->heredoc == NULL &&
+			cmd->infile == NULL && cmd->outfile == NULL)
 	{
 		return (0);
 	}
-	else if (token->type == '<')
+	else if ((*token)->type == '<')
 	{
-		cmd->infile = ft_xstrdup((token->next)->content);
+		cmd->infile = ft_xstrdup(((*token)->next)->content);
+		*token = (*token)->next;
 	}
-	else if (token->type == '>')
+	else if ((*token)->type == '>')
 	{
-		if (token->next == NULL)
+		if ((*token)->next == NULL)
 			return (0);
-		cmd->outfile = ft_xstrdup((token->next)->content);
+		cmd->outfile = ft_xstrdup(((*token)->next)->content);
+		*token = (*token)->next;
 	}
-	else if (token->type == '-')
+	else if ((*token)->type == '-')
 	{
-		if (token->next == NULL)
+		if ((*token)->next == NULL)
 			return (0);
 		cmd->append_mode = 1;
-		cmd->outfile = ft_xstrdup((token->next)->content);
+		cmd->outfile = ft_xstrdup(((*token)->next)->content);
+		*token = (*token)->next;
 	}
-	else if (token->type == '+')
+	else if ((*token)->type == '+')
 	{
-		if (token->next == NULL)
+		if ((*token)->next == NULL)
 			return (0);
-		cmd->heredoc = ft_xstrdup((token->next)->content);
+		cmd->heredoc = ft_xstrdup(((*token)->next)->content);
+		*token = (*token)->next;
 	}
 	return (1);
 }
@@ -138,7 +142,7 @@ t_command *parsing_tokens(t_token *token_list)
 		cmd = init_cmd();
 		while (token != NULL && token->type != '|')
 		{
-			status = build_cmd(token, cmd);
+			status = build_cmd(&token, cmd);
 			if (status == 0)
 			{
 				free_cmd_list(cmd_list);
@@ -151,5 +155,6 @@ t_command *parsing_tokens(t_token *token_list)
 		if (token != NULL && token->type == '|')
 			token = token->next;
 	}
+	//print_cmd_list(cmd_list);
 	return (cmd_list);
 }
