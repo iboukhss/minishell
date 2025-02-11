@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 15:52:12 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:17:50 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		wait_for_all_children(void);
 int		find_command(char **cmd_path, const char *cmd_name, t_shell *shell);
 
 // Redir
+int		handle_heredoc(t_command *cmd, t_shell *shell);
 int		redirect_io(t_command *cmd, t_shell *shell);
 int		restore_io(t_command *cmd, t_shell *shell);
 

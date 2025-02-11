@@ -6,92 +6,77 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 11:08:38 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/08 03:00:09 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:31:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-#include "sig.h"
 
 #include "libft.h"
 #include <fcntl.h>
-#include <readline/readline.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
 #include <unistd.h>
+
+static int	redirect_input(t_command *cmd)
+{
+	int	fd;
+
+	fd = open(cmd->infile, O_RDONLY);
+	if (fd == -1)
+	{
+		perror(cmd->infile);
+		return (MS_XFAILURE);
+	}
+	ft_xdup2(fd, STDIN_FILENO);
+	close(fd);
+	return (MS_XSUCCESS);
+}
+
+static int	redirect_output(t_command *cmd)
+{
+	int	fd;
+
+	if (cmd->append_mode)
+	{
+		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	else
+	{
+		fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	if (fd == -1)
+	{
+		perror(cmd->outfile);
+		return (MS_XFAILURE);
+	}
+	ft_xdup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (MS_XSUCCESS);
+}
 
 int	redirect_io(t_command *cmd, t_shell *shell)
 {
-	int		fd;
-	int		pipefd[2];
-	pid_t	pid;
-	int		status;
+	int	err;
 
 	if (cmd->heredoc)
 	{
-		ft_xpipe(pipefd);
-		pid = ft_xfork();
-		if (pid == 0)
-		{
-			setup_heredoc_signal_handlers();
-			close(pipefd[0]);
-			while (1)
-			{
-				char *line = readline("> ");
-				if (line == NULL || ft_strcmp(line, cmd->heredoc) == 0)
-				{
-					free(line);
-					break ;
-				}
-				ft_dprintf(pipefd[1], "%s\n", line);
-				free(line);
-			}
-			close(pipefd[1]);
-			exit(MS_XSUCCESS);
-		}
-		close(pipefd[1]);
-		waitpid(pid, &status, 0);
-		if (WIFSIGNALED(status))
-		{
-			close(pipefd[0]);
-			write(STDOUT_FILENO, "\n", 1);
-			tcsetattr(STDIN_FILENO, TCSANOW, &shell->term);
-			return (128 + WTERMSIG(status));
-		}
-		ft_xdup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
+		err = handle_heredoc(cmd, shell);
+		if (err)
+			return (err);
 	}
 	else if (cmd->infile)
 	{
-		fd = open(cmd->infile, O_RDONLY);
-		if (fd == -1)
-		{
-			perror(cmd->infile);
-			return (MS_XFAILURE);
-		}
-		ft_xdup2(fd, STDIN_FILENO);
-		close(fd);
+		err = redirect_input(cmd);
+		if (err)
+			return (err);
 	}
 	if (cmd->outfile)
 	{
-		if (cmd->append_mode)
-		{
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		else
-		{
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		if (fd == -1)
-		{
-			perror(cmd->outfile);
-			return (MS_XFAILURE);
-		}
-		ft_xdup2(fd, STDOUT_FILENO);
-		close(fd);
+		err = redirect_output(cmd);
+		if (err)
+			return (err);
 	}
-	return (0);
+	return (MS_XSUCCESS);
 }
 
 // Cleanup function
