@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 11:27:24 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 10:13:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:26:57 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 
 #include "libft.h"
 #include <stdlib.h>
-#include <string.h>
 
-/*
-Description : function to retrieve the value of a key stored in the env.
-Logic : Loop over the keys in the env[i][j] and if the key is found in env[i],
-then return a pointer to the first char following the equal sign env[i][keylen + 1]
-*/
 char	*get_env(const char *key, t_shell *shell)
 {
 	char	**envp;
@@ -41,68 +35,58 @@ char	*get_env(const char *key, t_shell *shell)
 	return (NULL);
 }
 
-/*
-Description: Check if the value exists in the shell->envs.
-If value exists copy over all keys to be kept to new_envs.
-Free(shell->envs) and define shell->envs = new_envs.
-*/
 void	unset_env(const char *key, t_shell *shell)
 {
 	char	**envp;
-	char	**new_envp;
-	int		envp_len;
 	int		key_len;
+	int		slots_left;
 	int		i;
 
-	if (get_env(key, shell) == NULL)
-	{
-		return ;
-	}
 	envp = shell->envs;
-	envp_len = ft_strv_length(envp);
-	new_envp = ft_xmalloc(envp_len * sizeof(*new_envp));
 	key_len = ft_strlen(key);
 	i = 0;
-	while (*envp != NULL)
+	while (envp[i] != NULL)
 	{
-		if (ft_strncmp(*envp, key, key_len) == 0 && (*envp)[key_len] == '=')
+		if (ft_strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
 		{
-			free(*envp);
+			slots_left = ft_strv_length(&envp[i]);
+			free(envp[i]);
+			ft_memmove(&envp[i], &envp[i + 1], slots_left * sizeof(*envp));
+			break ;
 		}
 		else
 		{
-			new_envp[i++] = *envp;
+			i++;
 		}
-		envp++;
 	}
-	new_envp[i] = NULL;
-	free(shell->envs);
-	shell->envs = new_envp;
 }
 
+/*
+ * Renamed envp to e because of norm.
+ */
 void	set_env(const char *key, const char *val, t_shell *shell)
 {
 	int		i;
 	size_t	key_len;
 	char	*expr;
-	char	**envp;
+	char	**e;
 	char	**new_envp;
 
 	i = 0;
 	key_len = ft_strlen(key);
 	expr = ft_xasprintf("%s=%s", key, val);
-	envp = shell->envs;
-	while (envp[i] != NULL)
+	e = shell->envs;
+	while (e[i] != NULL)
 	{
-		if (ft_strncmp(envp[i], key, key_len) == 0 && envp[i][key_len] == '=')
+		if (ft_strncmp(e[i], key, key_len) == 0 && e[i][key_len] == '=')
 		{
-			free(envp[i]);
-			envp[i] = expr;
+			free(e[i]);
+			e[i] = expr;
 			return ;
 		}
 		i++;
 	}
-	new_envp = ft_xrealloc(envp, (i + 1) * sizeof(*envp), (i + 2) * sizeof(*envp));
+	new_envp = ft_xrealloc(e, (i + 1) * sizeof(*e), (i + 2) * sizeof(*e));
 	new_envp[i] = expr;
 	new_envp[i + 1] = NULL;
 	shell->envs = new_envp;
