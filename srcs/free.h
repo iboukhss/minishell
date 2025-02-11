@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   free.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,22 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#ifndef FREE_H
+# define FREE_H
 
-# include "minishell.h"
 # include "token.h"
+# include "minishell.h"
 
-void		add_back_cmd(t_command **cmd_head, t_command *new_cmd);
-int			append(t_token **token, t_command *cmd);
-int			heredoc(t_token **token, t_command *cmd);
-int			outfile(t_token **token, t_command *cmd);
-int			infile(t_token **token, t_command *cmd);
-int			is_builtin(t_token *token);
-int			add_arg(t_command *cmd, t_token *token);
-int			check_syntax_errors(t_token *token_list, t_shell *shell);
-int			build_cmd(t_token **token, t_command *cmd);
-t_command	*parsing_tokens(t_token *token_list, t_shell *shell);
-t_command	*init_cmd(void);
+void		free_all(char *line, t_token *token_list, t_command *cmd_list);
+void		free_token_list(t_token *head);
+void		free_cmd_list(t_command *cmd_list);
+void		free_shell(t_shell *shell);
 
 #endif
