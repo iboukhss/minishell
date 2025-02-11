@@ -1,41 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/15 06:42:18 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/07 17:23:01 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/01/31 18:09:31 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/01/31 18:38:29 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-#include "libft.h"
+# include "minishell.h"
+# include "token.h"
 
-int	builtin_echo(t_command *cmd)
-{
-	bool	newline;
-	int		argc;
-	int		i;
+void	print_token_list(t_token *token_list);
+void	print_cmd_list(t_command *cmd_list);
 
-	argc = ft_strv_length(cmd->args);
-	newline = 1;
-	i = 1;
-	if (argc >= 2 && ft_strcmp(cmd->args[i], "-n") == 0)
-	{
-		newline = 0;
-		i++;
-	}
-	while (i < argc)
-	{
-		ft_printf("%s", cmd->args[i]);
-		if (i + 1 < argc)
-			ft_printf(" ");
-		i++;
-	}
-	if (newline)
-		ft_printf("\n");
-	return (MS_XSUCCESS);
-}
+#endif

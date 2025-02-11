@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   token_sanitizer.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:18:49 by iboukhss          #+#    #+#             */
 /*   Updated: 2025/02/11 10:09:18 by iboukhss         ###   ########.fr       */
@@ -57,28 +57,6 @@ char	*expand_var(char *var_start, size_t *var_name_len, t_shell *shell)
 		return (ft_strdup(""));
 }
 
-char	*handle_variable(char *content, char **start, char *c, t_shell *shell)
-{
-	char	*var_value;
-	char	*tmp;
-	size_t	var_name_len;
-
-	content = concat_content(content, *start, c - *start);
-	if (ft_isalnum(c[1]) == 0 && c[1] != '_')
-	{
-    	content = concat_content(content, "$", 1);
-		*start = c + 1;
-		return (content);
-	}
-	var_value = expand_var(c + 1, &var_name_len, shell);
-	tmp = content;
-	content = ft_strjoin(content, var_value);
-	free(tmp);
-	free(var_value);
-	*start = c + var_name_len + 1;
-	return (content);
-}
-
 void	init_variables(char *line, char **start, char **content, size_t *i)
 {
 	*i = 0;
@@ -90,31 +68,6 @@ void	init_bool(bool *in_single, bool*in_double)
 {
 	*in_single = false;
 	*in_double = false;
-}
-
-char	*handle_quotes(char *content, char **start, char *c, bool *quote_flag)
-{
-	content = concat_content(content, *start, c - *start);
-	*quote_flag = !(*quote_flag);
-	*start = c + 1;
-	return (content);
-}
-
-char	*get_exit(char *content, char **start, char *c, t_shell *shell)
-{
-	char	*var_value;
-	char	*tmp;
-
-	content = concat_content(content, *start, c - *start);
-	var_value = ft_itoa(shell->exit_status);
-	if (!var_value)
-		return (NULL);
-	tmp = content;
-	content = ft_strjoin(content, var_value);
-	free(tmp);
-	free(var_value);
-	*start = c + 2;
-	return (content);
 }
 
 //function used to remove quotes and expand variables

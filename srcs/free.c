@@ -10,9 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
-
+#include "token.h"
+#include "exec.h"
+#include "minishell.h"
+#include "libft.h"
+#include <unistd.h>
 #include <stdlib.h>
+
+void	free_shell(t_shell *shell)
+{
+	ft_strfreev(shell->envs);
+	close(shell->stdin);
+	close(shell->stdout);
+	free(shell);
+}
 
 void	free_token_list(t_token *head)
 {
@@ -49,7 +60,6 @@ void	free_cmd_list(t_command *cmd_list)
 	}
 }
 
-//t_command *cmd_list to be included
 void	free_all(char *line, t_token *token_list, t_command *cmd_list)
 {
 	if (token_list != NULL)
