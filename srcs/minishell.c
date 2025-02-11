@@ -23,7 +23,8 @@
 #include <unistd.h>
 
 /*
-Description: allocating memory for the shell struct. Copying the env into shell->envs
+Description: allocating memory for the shell struct
+			Copying the env into shell->envs
 */
 t_shell	*init_shell(char **envp)
 {
@@ -54,9 +55,9 @@ void	interactive_mode(t_shell *shell)
 
 	setup_signal_handlers();
 	setup_readline();
-    while (1)
-    {
-        line = readline("(minishell) ");
+	while (1)
+	{
+		line = readline("(minishell) ");
 		if (line == NULL)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -80,7 +81,7 @@ void	interactive_mode(t_shell *shell)
 		free_token_list(token_list);
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
-    }
+	}
 	clear_history();
 }
 
@@ -93,10 +94,8 @@ void	non_interactive_mode(t_shell *shell)
 
 	line = NULL;
 	line_len = 0;
-    while (getline(&line, &line_len, stdin) != -1)
-    {
-		// temporary hack for minishell_tester
-		//ft_puts("(minishell) ");
+	while (getline(&line, &line_len, stdin) != -1)
+	{
 		token_list = get_token(line, shell);
 		if (token_list == NULL)
 		{
@@ -110,10 +109,9 @@ void	non_interactive_mode(t_shell *shell)
 			continue ;
 		}
 		free_token_list(token_list);
-		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
-    }
+	}
 	free(line);
 }
 
@@ -136,5 +134,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	last_exit_status = shell->exit_status;
 	free_shell(shell);
-    return (last_exit_status);
+	return (last_exit_status);
 }
