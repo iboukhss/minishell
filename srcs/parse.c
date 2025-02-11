@@ -87,7 +87,6 @@ int	add_arg(t_command *cmd, t_token *token)
 Description: Building the command node that is limited by the pipe or end of line.
 */
 
-
 int check_syntax_errors(t_token *token_list)
 {
 	t_token *token;
@@ -98,14 +97,14 @@ int check_syntax_errors(t_token *token_list)
 	{
 		if (token->type == '|' && (!token->next || token->next->type == '|'))
 		{
-			perror("Incorrect syntax : pipe should be followed by command");
+			log_error("Incorrect syntax : pipe should be followed by command");
 			return (0);
 		}
 
 		if ((token->type == '<' || token->type == '>' || token->type == '+' || token->type == '-') &&
 			(!token->next || token->next->type != 'w'))
 		{
-			perror("Incorrect syntax : incorrect sequence of symbols");
+			log_error("Incorrect syntax : incorrect sequence of symbols");
 			return (0);
 		}
 		token = token->next;
@@ -113,7 +112,7 @@ int check_syntax_errors(t_token *token_list)
 	return (1);
 }
 
-int	build_cmd(t_token *token, t_command *cmd)
+int	build_cmd(t_token **token, t_command *cmd)
 {
 	if (cmd->args[0] == NULL && is_builtin(*token) == 1)
 	{
@@ -187,6 +186,5 @@ t_command *parsing_tokens(t_token *token_list)
 		if (token != NULL && token->type == '|')
 			token = token->next;
 	}
-	//print_cmd_list(cmd_list);
 	return (cmd_list);
 }
