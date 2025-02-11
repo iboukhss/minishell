@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 11:27:24 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/04 17:35:49 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:13:15 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,57 +105,5 @@ void	set_env(const char *key, const char *val, t_shell *shell)
 	new_envp = ft_xrealloc(envp, (i + 1) * sizeof(*envp), (i + 2) * sizeof(*envp));
 	new_envp[i] = expr;
 	new_envp[i + 1] = NULL;
-	shell->envs = new_envp;
-}
-
-/*
- * Deprecated set_env function.
- */
-void	old_set_env(const char *expr, t_shell *shell)
-{
-	char		**envp;
-	char		**new_envp;
-	char		*key;
-	int			envp_len;
-	const char	*beg, *end;
-	int			i;
-
-	beg = expr;
-	end = ft_strchrnul(beg, '=');
-	key = strndup(beg, end - beg);
-	envp = shell->envs;
-	envp_len = ft_strv_length(envp);
-	if (get_env(key, shell) == NULL)
-	{
-		new_envp = ft_xmalloc((envp_len + 2) * sizeof(*new_envp));
-		i = 0;
-		while (*envp != NULL)
-		{
-			new_envp[i++] = *envp;
-			envp++;
-		}
-		new_envp[i++] = ft_xstrdup(expr);
-	}
-	else
-	{
-		new_envp = ft_xmalloc((envp_len + 1) * sizeof(*new_envp));
-		i = 0;
-		while (*envp != NULL)
-		{
-			if (ft_strncmp(*envp, key, end - beg) == 0 && (*envp)[end - beg] == '=')
-			{
-				free(*envp);
-				new_envp[i++] = ft_xstrdup(expr);
-			}
-			else
-			{
-				new_envp[i++] = *envp;
-			}
-			envp++;
-		}
-	}
-	new_envp[i] = NULL;
-	free(key);
-	free(shell->envs);
 	shell->envs = new_envp;
 }
