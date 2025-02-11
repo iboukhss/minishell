@@ -58,7 +58,12 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				cmd_functions.c \
 				debug.c \
 				env.c \
-				exec.c \
+				exec_builtin.c \
+				exec_command.c \
+				exec_external.c \
+				exec_pipeline.c \
+				exec_simple_command.c \
+				exec_utils.c \
 				free.c \
 				get_token.c \
 				minishell.c \

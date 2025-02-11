@@ -5,17 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 15:22:12 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/11 15:19:28 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/11 15:51:14 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-#include "libft.h"
-#include <fcntl.h>
-#include <linux/limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
+/*
+ * Entrypoint function, checks whether the input is a pipeline or a simple
+ * and branches accordingly.
+ */
+void	exec_command(t_command *cmd, t_shell *shell)
+{
+	int	err;
+
+	err = redirect_io(cmd, shell);
+	if (err)
+	{
+		restore_io(cmd, shell);
+		shell->exit_status = err;
+		return ;
+	}
+	if (cmd->next)
+	{
+		shell->exit_status = exec_pipeline(cmd, shell);
+	}
+	else
+	{
+		shell->exit_status = exec_simple_command(cmd, shell);
+	}
+	restore_io(cmd, shell);
+}

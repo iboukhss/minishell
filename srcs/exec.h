@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:39:56 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/04 16:21:55 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:52:12 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,21 @@
 
 # include "minishell.h"
 
-// Add function prototypes here
-int		find_command(char **cmd_path, const char *cmd_name, t_shell *shell);
-
+// Exec
 void	exec_command(t_command *cmd, t_shell *shell);
+int		exec_pipeline(t_command *cmd, t_shell *shell);
+int		exec_simple_command(t_command *cmd, t_shell *shell);
 int		exec_builtin(t_command *cmd, t_shell *shell);
 int		exec_external(t_command *cmd, t_shell *shell);
 
+int		wait_for_all_children(void);
+int		find_command(char **cmd_path, const char *cmd_name, t_shell *shell);
+
+// Redir
 int		redirect_io(t_command *cmd, t_shell *shell);
 int		restore_io(t_command *cmd, t_shell *shell);
 
+// Env
 char	*get_env(const char *key, t_shell *shell);
 void	unset_env(const char *key, t_shell *shell);
 void	set_env(const char *key, const char *val, t_shell *shell);
