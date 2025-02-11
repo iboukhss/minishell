@@ -62,10 +62,12 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				get_token.c \
 				minishell.c \
 				parse.c \
+				parse_functions.c \
 				redir.c \
 				sig.c \
 				token_functions.c \
-				token_sanitizer.c)
+				token_sanitizer.c \
+				token_sanitizer_functions.c)
 
 # header files
 LIBFT_HDRS = $(addprefix $(LIBFT_DIR)/, \
@@ -85,7 +87,7 @@ PROJ_OBJS = $(PROJ_SRCS:.c=.o)
 PROJ_DEPS = $(PROJ_OBJS:.o=.d)
 
 # general debug c flags
-CFLAGS += -Wall -Wextra -g3 -MMD
+CFLAGS += -Wall -Wextra -Werror
 
 # asan flags (disabled because of conflict with valgrind)
 # pass these flags via environment if necessary
@@ -132,5 +134,23 @@ run: all
 
 val: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(PROJ_NAME)
+
+test_all:
+	cd mini_tester && ./runner.sh full
+
+test_echo:
+	cd mini_tester && ./runner.sh echo
+
+test_pipe:
+	cd mini_tester && ./runner.sh pipe
+
+test_env:
+	cd mini_tester && ./runner.sh env
+
+test_syntax:
+	cd mini_tester && ./runner.sh syntax
+
+test_redir:
+	cd mini_tester && ./runner.sh redir
 
 -include $(LIBFT_DEPS) $(PROJ_DEPS)
