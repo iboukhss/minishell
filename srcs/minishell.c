@@ -69,8 +69,7 @@ void	interactive_mode(t_shell *shell)
 			free(line);
 			continue ;
 		}
-		//print_token_list(token_list);
-		cmd_list = parsing_tokens(token_list);
+		cmd_list = parsing_tokens(token_list, shell);
 		if (cmd_list == NULL)
 		{
 			free(line);
@@ -79,7 +78,6 @@ void	interactive_mode(t_shell *shell)
 		}
 		free(line);
 		free_token_list(token_list);
-		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
     }
@@ -105,7 +103,7 @@ void	non_interactive_mode(t_shell *shell)
 			continue ;
 		}
 		//print_token_list(token_list);
-		cmd_list = parsing_tokens(token_list);
+		cmd_list = parsing_tokens(token_list, shell);
 		if (cmd_list == NULL)
 		{
 			free_token_list(token_list);
