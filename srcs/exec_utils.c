@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:21:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 17:09:57 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 17:58:08 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,16 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 	return (MS_XNOTFOUND);
 }
 
+/*
+ * (void)0 is a no-op for norminette
+ */
 int	wait_for_all_children(void)
 {
 	int	status;
 
 	while (wait(&status) > 0)
 	{
-		// wait for all children
+		(void)0;
 	}
 	if (WIFEXITED(status))
 	{
