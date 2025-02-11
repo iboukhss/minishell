@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 21:18:49 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/01/31 18:32:15 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:09:18 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char	*sanitize_token_content(char *line, char *end, t_shell *shell)
 		else if (line[i] == '\"' && !in_single)
 			content = handle_quotes(content, &start, line + i, &in_double);
 		else if (line[i] == '$' && line[i + 1] == '?' && !in_single)
-			content = handle_exit(content, &start, line + i, shell);
+			content = get_exit(content, &start, line + i, shell);
 		else if (line[i] == '$' && !in_single)
 			content = handle_variable(content, &start, line + i, shell);
 		i++;
