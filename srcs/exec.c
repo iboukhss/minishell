@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:43:53 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/08 03:18:12 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:01:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 {
 	char	*path_var;
 	char	*dir_name;
-	char	*beg, *end;
+	char	*beg;
+	char	*end;
 
 	if (access(cmd_name, X_OK) == 0)
 	{
@@ -46,7 +47,6 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 	while (*end != '\0')
 	{
 		end = ft_strchrnul(beg, ':');
-		// Skip empty tokens
 		if (end - beg > 0)
 		{
 			dir_name = ft_xstrndup(beg, end - beg);
@@ -70,33 +70,19 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 int	exec_builtin(t_command *cmd, t_shell *shell)
 {
 	if (ft_strcmp(cmd->args[0], "env") == 0)
-	{
 		return (builtin_env(cmd, shell));
-	}
 	else if (ft_strcmp(cmd->args[0], "unset") == 0)
-	{
 		return (builtin_unset(cmd, shell));
-	}
 	else if (ft_strcmp(cmd->args[0], "export") == 0)
-	{
 		return (builtin_export(cmd, shell));
-	}
 	else if (ft_strcmp(cmd->args[0], "exit") == 0)
-	{
 		return (builtin_exit(cmd, shell));
-	}
 	else if (ft_strcmp(cmd->args[0], "echo") == 0)
-	{
 		return (builtin_echo(cmd));
-	}
 	else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-	{
 		return (builtin_pwd(cmd));
-	}
 	else if (ft_strcmp(cmd->args[0], "cd") == 0)
-	{
 		return (builtin_cd(cmd, shell));
-	}
 	return (MS_XFAILURE);
 }
 
@@ -119,39 +105,9 @@ int	exec_external(t_command *cmd, t_shell *shell)
 	return (MS_XFAILURE);
 }
 
-void exec_from_pipe(t_command *cmd, t_shell *shell)
+void exec_from_pipeline(t_command *cmd, t_shell *shell)
 {
-	int	fd;
-
-	if (cmd->infile)
-	{
-		fd = open(cmd->infile, O_RDONLY);
-		if (fd == -1)
-		{
-			perror(cmd->infile);
-			exit(MS_XFAILURE);
-		}
-		ft_xdup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	if (cmd->outfile)
-	{
-		if (cmd->append_mode)
-		{
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		}
-		else
-		{
-			fd = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		}
-		if (fd == -1)
-		{
-			perror(cmd->outfile);
-			exit(MS_XFAILURE);
-		}
-		ft_xdup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
+	redirect_io(cmd, shell);
 	if (cmd->is_builtin)
 	{
 		exit(exec_builtin(cmd, shell));
@@ -195,7 +151,7 @@ int	exec_pipeline(t_command *cmd, t_shell *shell)
 				ft_xdup2(pipefd[1], STDOUT_FILENO);
 				close(pipefd[1]);
 			}
-			exec_from_pipe(cmd, shell);
+			exec_from_pipeline(cmd, shell);
 		}
 		if (prev_fd != -1)
 		{
@@ -246,11 +202,7 @@ int	exec_simple_command(t_command *cmd, t_shell *shell)
 		{
 			exit(exec_external(cmd, shell));
 		}
-		if (waitpid(pid, &status, 0) == -1)
-		{
-			perror("waitpid");
-			exit(MS_XFAILURE);
-		}
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 		{
 			return (WEXITSTATUS(status));
