@@ -9,6 +9,8 @@ echo "cat lol.c | cat > lol.c"
 echo "          lol           " 'this is a test      !'
 echo "mix 'quotes to see' what happens" '  hello "$USER" how it goes'
 echo "mix ' $PWD ' what happens" '  hello "$USER" how it goes'
-
-# I know this one fails
 echo $
+echo $ $
+
+#Case that Bash is returning an integer while minishell is printing $$
+#echo $$
