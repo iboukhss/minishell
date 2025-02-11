@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   exec_external.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:32 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/11 15:20:56 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/11 16:00:34 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-#include "libft.h"
+#include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-int	builtin_unset(t_command *cmd, t_shell *shell)
+/*
+ * Executes an external binary and returns the proper exit status.
+ */
+int	exec_external(t_command *cmd, t_shell *shell)
 {
-	int	argc;
-	int	i;
+	char	*bin_path;
+	int		err;
 
-	argc = ft_strv_length(cmd->args);
-	i = 1;
-	while (i < argc)
+	err = find_command(&bin_path, cmd->args[0], shell);
+	if (err)
 	{
-		unset_env(cmd->args[i], shell);
-		i++;
+		return (err);
 	}
-	return (MS_XSUCCESS);
+	execve(bin_path, cmd->args, shell->envs);
+	perror(cmd->args[0]);
+	free(bin_path);
+	return (MS_XFAILURE);
 }
