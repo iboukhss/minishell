@@ -14,7 +14,9 @@
 
 #include "exec.h"
 #include "parse.h"
+#include "token.h"
 #include "sig.h"
+#include "free.h"
 
 #include "libft.h"
 #include <readline/readline.h>
@@ -39,16 +41,34 @@ t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
-void	free_shell(t_shell *shell)
+int	handle_input(char *line, t_token **token_list,
+	t_command **cmd_list, t_shell **shell)
 {
-	ft_strfreev(shell->envs);
-	close(shell->stdin);
-	close(shell->stdout);
-	free(shell);
+	if (line == NULL)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
+		return (-1);
+	}
+	add_history(line);
+	*token_list = get_token(line, *shell);
+	if (*token_list == NULL)
+	{
+		free(line);
+		return (1);
+	}
+	*cmd_list = parsing_tokens(*token_list, *shell);
+	if (*cmd_list == NULL)
+	{
+		free(line);
+		free_token_list(*token_list);
+		return (1);
+	}
+	return (0);
 }
 
 void	interactive_mode(t_shell *shell)
 {
+	int			status;
 	char		*line;
 	t_token		*token_list;
 	t_command	*cmd_list;
@@ -58,25 +78,11 @@ void	interactive_mode(t_shell *shell)
 	while (1)
 	{
 		line = readline("(minishell) ");
-		if (line == NULL)
-		{
-			write(STDOUT_FILENO, "exit\n", 5);
+		status = handle_input(line, &token_list, &cmd_list, &shell);
+		if (status == -1)
 			break ;
-		}
-		add_history(line);
-		token_list = get_token(line, shell);
-		if (token_list == NULL)
-		{
-			free(line);
+		else if (status == 1)
 			continue ;
-		}
-		cmd_list = parsing_tokens(token_list, shell);
-		if (cmd_list == NULL)
-		{
-			free(line);
-			free_token_list(token_list);
-			continue ;
-		}
 		free(line);
 		free_token_list(token_list);
 		exec_command(cmd_list, shell);
@@ -101,7 +107,6 @@ void	non_interactive_mode(t_shell *shell)
 		{
 			continue ;
 		}
-		//print_token_list(token_list);
 		cmd_list = parsing_tokens(token_list, shell);
 		if (cmd_list == NULL)
 		{
