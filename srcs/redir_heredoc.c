@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 20:16:20 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:26:49 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:43:42 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,27 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+static void	handle_child(int pipefd[2], const char *delim)
+{
+	char	*line;
+
+	close(pipefd[0]);
+	setup_heredoc_signal_handlers();
+	while (1)
+	{
+		line = readline("> ");
+		if (line == NULL || ft_strcmp(line, delim) == 0)
+		{
+			free(line);
+			break ;
+		}
+		ft_dprintf(pipefd[1], "%s\n", line);
+		free(line);
+	}
+	close(pipefd[1]);
+	exit(MS_XSUCCESS);
+}
+
 int	handle_heredoc(t_command *cmd, t_shell *shell)
 {
 	int		pipefd[2];
@@ -29,21 +50,7 @@ int	handle_heredoc(t_command *cmd, t_shell *shell)
 	pid = ft_xfork();
 	if (pid == 0)
 	{
-		close(pipefd[0]);
-		setup_heredoc_signal_handlers();
-		while (1)
-		{
-			char *line = readline("> ");
-			if (line == NULL || ft_strcmp(line, cmd->heredoc) == 0)
-			{
-				free(line);
-				break ;
-			}
-			ft_dprintf(pipefd[1], "%s\n", line);
-			free(line);
-		}
-		close(pipefd[1]);
-		exit(MS_XSUCCESS);
+		handle_child(pipefd, cmd->heredoc);
 	}
 	close(pipefd[1]);
 	waitpid(pid, &status, 0);
