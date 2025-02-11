@@ -6,7 +6,7 @@
 /*   By: dheck <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:40:51 by dheck             #+#    #+#             */
-/*   Updated: 2025/02/08 02:57:44 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 11:09:04 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*ft_itoa(int n);
 // Mem functions
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_realloc(void *old_ptr, size_t old_size, size_t new_size);
+void	*ft_memmove(void *dest, const void *src, size_t n);
 
 // Print functions
 int		ft_printf(const char *fmt, ...);
