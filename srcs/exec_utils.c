@@ -6,7 +6,7 @@
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:21:39 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 17:58:08 by iboukhss         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:59:59 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,16 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/*
- * Find the full command path for a binary.
- * Needs improvement.
- */
-int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
+static int	search_in_path(char **cmd_path, const char *cmd_name,
+				const char *path_var)
 {
-	char	*path_var;
-	char	*dir_name;
-	char	*beg;
-	char	*end;
+	char		*dir_name;
+	const char	*beg;
+	const char	*end;
 
-	if (access(cmd_name, X_OK) == 0)
-	{
-		*cmd_path = ft_xstrdup(cmd_name);
-		return (MS_XSUCCESS);
-	}
-	path_var = get_env("PATH", shell);
-	if (path_var == NULL)
-	{
-		log_error("PATH variable not set");
-		return (MS_XNOTFOUND);
-	}
 	beg = path_var;
 	end = beg;
-	while (*end != '\0')
+	while (*end)
 	{
 		end = ft_strchrnul(beg, ':');
 		if (end - beg > 0)
@@ -57,8 +42,30 @@ int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
 		}
 		beg = end + 1;
 	}
-	log_error("minishell: command not found");
 	return (MS_XNOTFOUND);
+}
+
+int	find_command(char **cmd_path, const char *cmd_name, t_shell *shell)
+{
+	const char	*path_var;
+
+	if (access(cmd_name, X_OK) == 0)
+	{
+		*cmd_path = ft_xstrdup(cmd_name);
+		return (MS_XSUCCESS);
+	}
+	path_var = get_env("PATH", shell);
+	if (!path_var)
+	{
+		log_error("PATH variable not set");
+		return (MS_XNOTFOUND);
+	}
+	if (search_in_path(cmd_path, cmd_name, path_var) != 0)
+	{
+		log_error("minishell: command not found");
+		return (MS_XNOTFOUND);
+	}
+	return (MS_XSUCCESS);
 }
 
 /*
