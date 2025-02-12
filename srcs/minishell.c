@@ -112,7 +112,6 @@ void	non_interactive_mode(t_shell *shell)
 		if (status == -1)
 			break ;
 		else if (status == 1)
-		
 			continue ;
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
