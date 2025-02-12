@@ -89,7 +89,8 @@ PROJ_HDRS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec.h \
 				minishell.h \
 				parse.h \
-				sig.h)
+				sig.h \
+				token.h)
 
 # object and dependency files
 LIBFT_OBJS = $(LIBFT_SRCS:.c=.o)
