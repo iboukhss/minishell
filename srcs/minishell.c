@@ -88,7 +88,7 @@ int	handle_input_non_interactive(char *line, t_token **token_list,
 	}
 	*cmd_list = parsing_tokens(*token_list, *shell);
 	free_token_list(*token_list);
-	if (cmd_list == NULL)
+	if (*cmd_list == NULL)
 	{
 		free(line);
 		line = get_next_line(STDIN_FILENO);
@@ -112,6 +112,7 @@ void	non_interactive_mode(t_shell *shell)
 		if (status == -1)
 			break ;
 		else if (status == 1)
+		
 			continue ;
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
