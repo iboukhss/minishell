@@ -10,6 +10,8 @@ PROJ_SRCS_DIR = srcs
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
 				ft_asprintf.c \
 				ft_dprintf.c \
+				get_next_line.c \
+				get_next_line_utils.c \
 				ft_isalnum.c \
 				ft_itoa.c \
 				ft_memcpy.c \
@@ -79,7 +81,8 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 # header files
 LIBFT_HDRS = $(addprefix $(LIBFT_DIR)/, \
 				libft.h \
-				printf_core.h)
+				printf_core.h \
+				get_next_line.h)
 
 PROJ_HDRS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec.h \
