@@ -10,10 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
-
+#include "token.h"
+#include "debug.h"
+#include "free.h"
 #include "libft.h"
+
 #include <stdio.h>
+
+int	set_type(char *line, char *type)
+{
+	if (*line == '|')
+		*type = '|';
+	else if (*line == '<' && *(line + 1) == '<')
+		*type = '+';
+	else if (*line == '<')
+		*type = '<';
+	else if (*line == '>' && *(line + 1) == '>')
+		*type = '-';
+	else if (*line == '>')
+		*type = '>';
+	else
+		return (0);
+	return (1);
+}
 
 char	*tokenize_ack_sym(t_token **token_list, char *line)
 {
@@ -22,17 +41,7 @@ char	*tokenize_ack_sym(t_token **token_list, char *line)
 
 	if (!line || !*line)
 		return (NULL);
-	if (*line == '|')
-		type = '|';
-	else if (*line == '<' && *(line + 1) == '<')
-		type = '+';
-	else if (*line == '<')
-		type = '<';
-	else if (*line == '>' && *(line + 1) == '>')
-		type = '-';
-	else if (*line == '>')
-		type = '>';
-	else
+	if (set_type(line, &type) == 0)
 		return (NULL);
 	if (type == '+' || type == '-')
 		new_token = init_token(ft_substr(line, 0, 2), type);

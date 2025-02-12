@@ -32,14 +32,10 @@ int	builtin_echo(t_command *cmd)
 	{
 		ft_printf("%s", cmd->args[i]);
 		if (i + 1 < argc)
-		{
 			ft_printf(" ");
-		}
 		i++;
 	}
 	if (newline)
-	{
 		ft_printf("\n");
-	}
 	return (MS_XSUCCESS);
 }

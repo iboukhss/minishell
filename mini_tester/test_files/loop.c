@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:32 by iboukhss         ###   ########.fr       */
+/*   Created: 2022/06/22 17:32:45 by lalex-ku          #+#    #+#             */
+/*   Updated: 2022/06/22 17:32:50 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-
-#include "libft.h"
+#include <fcntl.h>
 #include <stdio.h>
+#include <unistd.h>
 
-int	builtin_unset(t_command *cmd, t_shell *shell)
+int	main(int argc, char const *argv[])
 {
-	int	argc;
-	int	i;
+	int	pid;
 
-	argc = ft_strv_length(cmd->args);
-	i = 1;
-	while (i < argc)
+	pid = fork();
+	open("infile", O_RDONLY);
+	while (1)
 	{
-		unset_env(cmd->args[i], shell);
-		i++;
+		printf("Helloo miniHELL %i\n", pid);
+		sleep(1);
 	}
-	return (MS_XSUCCESS);
+	return (0);
 }

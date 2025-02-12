@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:32 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/01/31 18:09:31 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/01/31 18:38:29 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-#include "libft.h"
-#include <stdio.h>
+# include "minishell.h"
+# include "token.h"
 
-int	builtin_unset(t_command *cmd, t_shell *shell)
-{
-	int	argc;
-	int	i;
+void	print_token_list(t_token *token_list);
+void	print_cmd_list(t_command *cmd_list);
 
-	argc = ft_strv_length(cmd->args);
-	i = 1;
-	while (i < argc)
-	{
-		unset_env(cmd->args[i], shell);
-		i++;
-	}
-	return (MS_XSUCCESS);
-}
+#endif

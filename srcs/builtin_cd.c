@@ -29,35 +29,18 @@ int	builtin_cd(t_command *cmd, t_shell *shell)
 	{
 		target = get_env("HOME", shell);
 		if (target == NULL)
-		{
-			log_error("cd: HOME not set");
-			return (MS_XFAILURE);
-		}
+			return (log_error("cd: HOME not set"), MS_XFAILURE);
 	}
 	else if (argc == 2)
-	{
 		target = cmd->args[1];
-	}
 	else
-	{
-		log_error("cd: too many arguments");
-		return (MS_XBADUSAGE);
-	}
+		return (log_error("cd: too many arguments"), MS_XBADUSAGE);
 	if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
-	{
-		perror("cd: getcwd");
-		return (MS_XFAILURE);
-	}
+		return (perror("cd: getcwd"), MS_XFAILURE);
 	if (chdir(target) == -1)
-	{
-		perror("cd: chdir");
-		return (MS_XFAILURE);
-	}
+		return (perror("cd: chdir"), MS_XFAILURE);
 	if (getcwd(new_cwd, sizeof(new_cwd)) == NULL)
-	{
-		perror("cd: getcwd");
-		return (MS_XFAILURE);
-	}
+		return (perror("cd: getcwd"), MS_XFAILURE);
 	set_env("OLDPWD", old_cwd, shell);
 	set_env("PWD", new_cwd, shell);
 	return (MS_XSUCCESS);

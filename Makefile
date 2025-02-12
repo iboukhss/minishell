@@ -8,11 +8,15 @@ PROJ_SRCS_DIR = srcs
 
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
+				ft_atoi.c \
 				ft_asprintf.c \
 				ft_dprintf.c \
+				get_next_line.c \
+				get_next_line_utils.c \
 				ft_isalnum.c \
 				ft_itoa.c \
 				ft_memcpy.c \
+				ft_memmove.c \
 				ft_printf.c \
 				ft_puts.c \
 				ft_realloc.c \
@@ -57,20 +61,29 @@ PROJ_SRCS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				cmd_functions.c \
 				debug.c \
 				env.c \
-				exec.c \
+				exec_builtin.c \
+				exec_command.c \
+				exec_external.c \
+				exec_pipeline.c \
+				exec_simple_command.c \
+				exec_utils.c \
 				free.c \
 				get_token.c \
 				minishell.c \
 				parse.c \
+				parse_functions.c \
 				redir.c \
+				redir_heredoc.c \
 				sig.c \
 				token_functions.c \
-				token_sanitizer.c)
+				token_sanitizer.c \
+				token_sanitizer_functions.c)
 
 # header files
 LIBFT_HDRS = $(addprefix $(LIBFT_DIR)/, \
 				libft.h \
-				printf_core.h)
+				printf_core.h \
+				get_next_line.h)
 
 PROJ_HDRS = $(addprefix $(PROJ_SRCS_DIR)/, \
 				exec.h \
@@ -85,7 +98,7 @@ PROJ_OBJS = $(PROJ_SRCS:.c=.o)
 PROJ_DEPS = $(PROJ_OBJS:.o=.d)
 
 # general debug c flags
-CFLAGS += -Wall -Wextra -g3 -MMD
+CFLAGS += -Wall -Wextra -Werror
 
 # asan flags (disabled because of conflict with valgrind)
 # pass these flags via environment if necessary
@@ -132,5 +145,23 @@ run: all
 
 val: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --suppressions=valgrind.supp ./$(PROJ_NAME)
+
+test_all:
+	cd mini_tester && ./runner.sh full
+
+test_echo:
+	cd mini_tester && ./runner.sh echo
+
+test_pipe:
+	cd mini_tester && ./runner.sh pipe
+
+test_env:
+	cd mini_tester && ./runner.sh env
+
+test_syntax:
+	cd mini_tester && ./runner.sh syntax
+
+test_redir:
+	cd mini_tester && ./runner.sh redir
 
 -include $(LIBFT_DEPS) $(PROJ_DEPS)

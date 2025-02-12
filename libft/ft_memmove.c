@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:32 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/11 11:04:25 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/11 11:08:45 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
-
 #include "libft.h"
-#include <stdio.h>
 
-int	builtin_unset(t_command *cmd, t_shell *shell)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	int	argc;
-	int	i;
+	char		*d;
+	const char	*s;
 
-	argc = ft_strv_length(cmd->args);
-	i = 1;
-	while (i < argc)
+	d = dest;
+	s = src;
+	if (dest < src)
 	{
-		unset_env(cmd->args[i], shell);
-		i++;
+		ft_memcpy(d, s, n);
 	}
-	return (MS_XSUCCESS);
+	else
+	{
+		while (n > 0)
+		{
+			d[n] = s[n];
+			n--;
+		}
+	}
+	return (dest);
 }

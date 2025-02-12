@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*   exec_simple_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iboukhss <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:29:27 by iboukhss          #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:32 by iboukhss         ###   ########.fr       */
+/*   Created: 2025/02/11 15:20:00 by iboukhss          #+#    #+#             */
+/*   Updated: 2025/02/11 16:02:32 by iboukhss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
 #include "libft.h"
-#include <stdio.h>
+#include <stdlib.h>
 
-int	builtin_unset(t_command *cmd, t_shell *shell)
+/*
+ * Executes a simple command, which can be of two forms: a shell builtin
+ * function or an external binary.
+ */
+int	exec_simple_command(t_command *cmd, t_shell *shell)
 {
-	int	argc;
-	int	i;
+	pid_t	pid;
 
-	argc = ft_strv_length(cmd->args);
-	i = 1;
-	while (i < argc)
+	if (cmd->is_builtin)
 	{
-		unset_env(cmd->args[i], shell);
-		i++;
+		return (exec_builtin(cmd, shell));
 	}
-	return (MS_XSUCCESS);
+	else
+	{
+		pid = ft_xfork();
+		if (pid == 0)
+		{
+			exit(exec_external(cmd, shell));
+		}
+		return (wait_for_all_children());
+	}
 }

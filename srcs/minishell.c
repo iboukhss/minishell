@@ -14,107 +14,110 @@
 
 #include "exec.h"
 #include "parse.h"
+#include "token.h"
 #include "sig.h"
+#include "free.h"
 
 #include "libft.h"
+#include "get_next_line.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-/*
-Description: allocating memory for the shell struct. Copying the env into shell->envs
-*/
-t_shell	*init_shell(char **envp)
+int	handle_input_interactive(char *line, t_token **token_list,
+	t_command **cmd_list, t_shell **shell)
 {
-	t_shell	*shell;
-
-	shell = ft_xmalloc(sizeof(*shell));
-	shell->envs = ft_xstrdupv(envp);
-	shell->exit_status = 0;
-	shell->stdin = ft_xdup(STDIN_FILENO);
-	shell->stdout = ft_xdup(STDOUT_FILENO);
-	tcgetattr(STDIN_FILENO, &shell->term);
-	return (shell);
-}
-
-void	free_shell(t_shell *shell)
-{
-	ft_strfreev(shell->envs);
-	close(shell->stdin);
-	close(shell->stdout);
-	free(shell);
+	if (line == NULL)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
+		return (-1);
+	}
+	add_history(line);
+	*token_list = get_token(line, *shell);
+	if (*token_list == NULL)
+	{
+		free(line);
+		return (1);
+	}
+	*cmd_list = parsing_tokens(*token_list, *shell);
+	free_token_list(*token_list);
+	if (*cmd_list == NULL)
+	{
+		free(line);
+		return (1);
+	}
+	return (0);
 }
 
 void	interactive_mode(t_shell *shell)
 {
+	int			status;
 	char		*line;
 	t_token		*token_list;
 	t_command	*cmd_list;
 
 	setup_signal_handlers();
 	setup_readline();
-    while (1)
-    {
-        line = readline("(minishell) ");
-		if (line == NULL)
-		{
-			write(STDOUT_FILENO, "exit\n", 5);
+	while (1)
+	{
+		line = readline("(minishell) ");
+		status = handle_input_interactive(line, &token_list, &cmd_list, &shell);
+		if (status == -1)
 			break ;
-		}
-		add_history(line);
-		token_list = get_token(line, shell);
-		if (token_list == NULL)
-		{
-			free(line);
+		else if (status == 1)
 			continue ;
-		}
-		cmd_list = parsing_tokens(token_list, shell);
-		if (cmd_list == NULL)
-		{
-			free(line);
-			free_token_list(token_list);
-			continue ;
-		}
 		free(line);
-		free_token_list(token_list);
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
-    }
-	clear_history();
+	}
+	rl_clear_history();
+}
+
+int	handle_input_non_interactive(char *line, t_token **token_list,
+	t_command **cmd_list, t_shell **shell)
+{
+	if (line == NULL)
+		return (-1);
+	*token_list = get_token(line, *shell);
+	if (*token_list == NULL)
+	{
+		free(line);
+		line = get_next_line(STDIN_FILENO);
+		return (1);
+	}
+	*cmd_list = parsing_tokens(*token_list, *shell);
+	free_token_list(*token_list);
+	if (*cmd_list == NULL)
+	{
+		free(line);
+		line = get_next_line(STDIN_FILENO);
+		return (1);
+	}
+	return (0);
 }
 
 void	non_interactive_mode(t_shell *shell)
 {
 	char		*line;
-	size_t		line_len;
+	int			status;
 	t_token		*token_list;
 	t_command	*cmd_list;
 
-	line = NULL;
-	line_len = 0;
-    while (getline(&line, &line_len, stdin) != -1)
-    {
-		// temporary hack for minishell_tester
-		//ft_puts("(minishell) ");
-		token_list = get_token(line, shell);
-		if (token_list == NULL)
-		{
+	line = get_next_line(STDIN_FILENO);
+	while (line != NULL)
+	{
+		status = handle_input_non_interactive(line, &token_list,
+				&cmd_list, &shell);
+		if (status == -1)
+			break ;
+		else if (status == 1)
 			continue ;
-		}
-		//print_token_list(token_list);
-		cmd_list = parsing_tokens(token_list, shell);
-		if (cmd_list == NULL)
-		{
-			free_token_list(token_list);
-			continue ;
-		}
-		free_token_list(token_list);
-		//print_cmd_list(cmd_list);
 		exec_command(cmd_list, shell);
 		free_cmd_list(cmd_list);
-    }
-	free(line);
+		free(line);
+		line = get_next_line(STDIN_FILENO);
+	}
 }
 
 // TODO(ismail): Consider adding non-interactive mode with "-c" like BASH
@@ -136,5 +139,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	last_exit_status = shell->exit_status;
 	free_shell(shell);
-    return (last_exit_status);
+	return (last_exit_status);
 }
