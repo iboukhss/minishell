@@ -30,10 +30,36 @@ void	print_token_list(t_token *token_list)
 	}
 }
 
+void	print_cmd(t_command *current, int node_count)
+{
+	int	i;
+
+	i = 0;
+	printf("Cmd node %d\n", node_count);
+	printf("Cmd node address : %p\n", current);
+	printf("Args : ");
+	if (current->args[0] == NULL)
+		printf("(null)");
+	while (current->args[i] != NULL)
+	{
+		if (i != 0)
+			printf(", ");
+		printf("%s ", current->args[i]);
+		i++;
+	}
+	printf("\n");
+	printf("Infile : %s\n", current->infile);
+	printf("Outfile : %s\n", current->outfile);
+	printf("Heredoc : %s\n", current->heredoc);
+	printf("Append_mode : %d\n", current->append_mode);
+	printf("Builtin : %d\n", current->is_builtin);
+	printf("Next cmd address : %p\n", current->next);
+	printf("\n");
+}
+
 void	print_cmd_list(t_command *cmd_list)
 {
 	t_command	*current;
-	size_t		i;
 	int			node_count;
 
 	node_count = 0;
@@ -44,27 +70,7 @@ void	print_cmd_list(t_command *cmd_list)
 	current = cmd_list;
 	while (current != NULL)
 	{
-		i = 0;
-		printf("Cmd node %d\n", node_count);
-		printf("Cmd node address : %p\n", current);
-		printf("Args : ");
-		if (current->args[0] == NULL)
-			printf("(null)");
-		while (current->args[i] != NULL)
-		{
-			if (i != 0)
-				printf(", ");
-			printf("%s ", current->args[i]);
-			i++;
-		}
-		printf("\n");
-		printf("Infile : %s\n", current->infile);
-		printf("Outfile : %s\n", current->outfile);
-		printf("Heredoc : %s\n", current->heredoc);
-		printf("Append_mode : %d\n", current->append_mode);
-		printf("Builtin : %d\n", current->is_builtin);
-		printf("Next cmd address : %p\n", current->next);
-		printf("\n");
+		print_cmd(current, node_count);
 		node_count++;
 		current = current->next;
 	}
