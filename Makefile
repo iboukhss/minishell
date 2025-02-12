@@ -8,6 +8,7 @@ PROJ_SRCS_DIR = srcs
 
 # source files
 LIBFT_SRCS = $(addprefix $(LIBFT_DIR)/, \
+				ft_atoi.c \
 				ft_asprintf.c \
 				ft_dprintf.c \
 				get_next_line.c \
