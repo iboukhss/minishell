@@ -37,7 +37,7 @@ int	builtin_exit(t_command *cmd, t_shell *shell)
 	}
 	else if (argc == 2)
 	{
-		last_exit_status = atoi(cmd->args[1]);
+		last_exit_status = ft_atoi(cmd->args[1]);
 		free_cmd_list(cmd);
 		clear_history();
 		free_shell(shell);
@@ -45,7 +45,7 @@ int	builtin_exit(t_command *cmd, t_shell *shell)
 	}
 	else
 	{
-		log_error("exit: too many arguments");
+		log_error("exit: maximum 1 argument allowed");
 		return (MS_XBADUSAGE);
 	}
 }
