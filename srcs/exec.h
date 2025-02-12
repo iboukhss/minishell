@@ -31,6 +31,7 @@ int		redirect_io(t_command *cmd, t_shell *shell);
 int		restore_io(t_command *cmd, t_shell *shell);
 
 // Env
+t_shell	*init_shell(char **envp);
 char	*get_env(const char *key, t_shell *shell);
 void	unset_env(const char *key, t_shell *shell);
 void	set_env(const char *key, const char *val, t_shell *shell);

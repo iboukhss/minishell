@@ -14,6 +14,24 @@
 
 #include "libft.h"
 #include <stdlib.h>
+#include <unistd.h>
+
+/*
+Description: allocating memory for the shell struct
+			Copying the env into shell->envs
+*/
+t_shell	*init_shell(char **envp)
+{
+	t_shell	*shell;
+
+	shell = ft_xmalloc(sizeof(*shell));
+	shell->envs = ft_xstrdupv(envp);
+	shell->exit_status = 0;
+	shell->stdin = ft_xdup(STDIN_FILENO);
+	shell->stdout = ft_xdup(STDOUT_FILENO);
+	tcgetattr(STDIN_FILENO, &shell->term);
+	return (shell);
+}
 
 char	*get_env(const char *key, t_shell *shell)
 {
