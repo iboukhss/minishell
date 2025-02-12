@@ -14,14 +14,14 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 100
 # endif
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 
-int	    ft_gnl_strchr(const char *s, int c);
+int		ft_gnl_strchr(const char *s, int c);
 char	*get_next_line(int fd);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
